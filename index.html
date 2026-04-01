@@ -27,7 +27,7 @@
             align-items: center;
         }
 
-        /* --- HERO HEADER BARU (KARTU ZAMRUD) --- */
+        /* --- HERO HEADER (KARTU ZAMRUD) --- */
         .hero-header {
             background: linear-gradient(135deg, var(--nu-green-dark) 0%, var(--nu-green) 100%);
             width: 100%;
@@ -44,7 +44,6 @@
             border-bottom: 5px solid var(--nu-gold);
         }
         
-        /* Ornamen Lingkaran Halus di Background */
         .hero-header::before {
             content: '';
             position: absolute;
@@ -59,10 +58,9 @@
             bottom: -80px; right: -50px;
             width: 200px; height: 200px;
             border-radius: 50%;
-            background: rgba(220, 167, 21, 0.08); /* Aksen emas tipis */
+            background: rgba(220, 167, 21, 0.08); 
         }
 
-        /* Teks Header */
         .hero-title {
             font-size: 14px;
             color: var(--nu-gold);
@@ -80,6 +78,7 @@
             letter-spacing: 1px;
             position: relative;
             z-index: 2;
+            color: white; /* Memastikan h1 di header tetap putih */
         }
         .hero-supervised {
             font-size: 13px;
@@ -91,7 +90,6 @@
             z-index: 2;
         }
 
-        /* Jam dan Tanggal di Header */
         .hero-date {
             font-size: 18px;
             color: rgba(255, 255, 255, 0.9);
@@ -108,13 +106,12 @@
             margin-bottom: 10px;
             letter-spacing: 2px;
             text-shadow: 0 4px 15px rgba(0,0,0,0.2);
-            font-variant-numeric: tabular-nums; /* Mencegah jam goyang saat angka berganti */
+            font-variant-numeric: tabular-nums; 
             position: relative;
             z-index: 2;
             line-height: 1;
         }
 
-        /* Kapsul Hitung Mundur Melayang */
         .hero-countdown {
             background: white;
             display: inline-flex;
@@ -128,7 +125,7 @@
             font-size: 16px;
             position: relative;
             z-index: 2;
-            transform: translateY(20px); /* Efek melayang menembus batas bawah banner */
+            transform: translateY(20px); 
         }
         .hero-countdown .badge-current {
             background: var(--nu-gold);
@@ -229,16 +226,26 @@
         }
         table { width: 100%; border-collapse: collapse; text-align: center; white-space: nowrap; }
         th, td { padding: 14px 15px; border-bottom: 1px solid #eee; }
-        th { background-color: var(--nu-green); color: white; position: sticky; top: 0; }
+        th { background-color: var(--nu-green); color: white; position: sticky; top: 0; z-index: 10;}
         tbody tr:nth-child(even) { background-color: #F8FBF9; }
         
+        /* --- STYLE BARU: HIGHLIGHT BARIS TABEL HARI INI (High Contrast) --- */
         .current-day-row {
-            background-color: rgba(2, 99, 54, 0.1) !important;
-            border-left: 4px solid var(--nu-gold);
+            background-color: var(--nu-green) !important; /* Hijau Solid */
+            border-left: 5px solid var(--nu-gold);
+            box-shadow: 0 2px 10px rgba(2, 99, 54, 0.3);
         }
         .current-day-row td {
             font-weight: bold;
-            color: var(--nu-green-dark);
+            color: white !important; /* Teks Putih untuk kontras maksimal */
+        }
+        /* Memastikan elemen strong di dalam baris ini juga menjadi putih */
+        .current-day-row td strong {
+            color: white !important;
+        }
+        /* Menyesuaikan warna border bawah agar serasi */
+        .current-day-row td {
+            border-bottom: 1px solid rgba(255,255,255,0.1);
         }
 
         /* --- FOOTER & COPYRIGHT ELEGAN --- */
@@ -271,10 +278,10 @@
         .copyright span { color: var(--nu-green); font-weight: 700; }
         .loading { text-align: center; font-size: 16px; color: var(--nu-green); padding: 20px; display: none; font-weight: 600; }
         
-        /* Penyesuaian responsif untuk HP */
+        /* Penyesuaian responsif */
         @media (max-width: 768px) {
             .hero-clock { font-size: 52px; }
-            .hero-countdown { flex-direction: column; text-align: center; gap: 5px; padding: 15px; }
+            .hero-countdown { flex-direction: column; text-align: center; gap: 5px; padding: 15px; transform: translateY(25px);}
         }
         @media (max-width: 600px) {
             .friendly-greeting { flex-direction: column; text-align: center; gap: 10px; }
