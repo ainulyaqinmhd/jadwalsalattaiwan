@@ -10,6 +10,16 @@ const namaHari = ["Ahad", "Senin", "Selasa", "Rabu", "Kamis", "Jumat", "Sabtu"];
 const namaBulan = ["Januari", "Februari", "Maret", "April", "Mei", "Juni", "Juli", "Agustus", "September", "Oktober", "November", "Desember"];
 const namaBulanHijri = ["Muharam", "Safar", "Rabiul Awal", "Rabiul Akhir", "Jumadil Awal", "Jumadil Akhir", "Rajab", "Syakban", "Ramadan", "Syawal", "Zulkaidah", "Zulhijah"];
 
+const prayerIcons = {
+    Imsak: `<svg class="prayer-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path></svg>`,
+    Fajr: `<svg class="prayer-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 18a5 5 0 0 0-10 0"></path><line x1="12" y1="2" x2="12" y2="9"></line><line x1="4.22" y1="10.22" x2="5.64" y2="11.64"></line><line x1="1" y1="18" x2="3" y2="18"></line><line x1="21" y1="18" x2="23" y2="18"></line><line x1="18.36" y1="11.64" x2="19.78" y2="10.22"></line><line x1="23" y1="22" x2="1" y2="22"></line><polyline points="8 6 12 2 16 6"></polyline></svg>`,
+    Sunrise: `<svg class="prayer-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="5"></circle><line x1="12" y1="1" x2="12" y2="3"></line><line x1="12" y1="21" x2="12" y2="23"></line><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line><line x1="1" y1="12" x2="3" y2="12"></line><line x1="21" y1="12" x2="23" y2="12"></line><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line></svg>`,
+    Dhuhr: `<svg class="prayer-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="5"></circle><line x1="12" y1="1" x2="12" y2="3"></line><line x1="12" y1="21" x2="12" y2="23"></line><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line><line x1="1" y1="12" x2="3" y2="12"></line><line x1="21" y1="12" x2="23" y2="12"></line><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line></svg>`,
+    Asr: `<svg class="prayer-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg>`,
+    Maghrib: `<svg class="prayer-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 18a5 5 0 0 0-10 0"></path><line x1="12" y1="9" x2="12" y2="2"></line><line x1="4.22" y1="10.22" x2="5.64" y2="11.64"></line><line x1="1" y1="18" x2="3" y2="18"></line><line x1="21" y1="18" x2="23" y2="18"></line><line x1="18.36" y1="11.64" x2="19.78" y2="10.22"></line><line x1="23" y1="22" x2="1" y2="22"></line><polyline points="16 5 12 9 8 5"></polyline></svg>`,
+    Isha: `<svg class="prayer-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path></svg>`
+};
+
 const METHOD = 20;
 const IHTIYATH = 2;
 const TUNE = `${IHTIYATH},${IHTIYATH},0,${IHTIYATH},${IHTIYATH},${IHTIYATH},0,${IHTIYATH},0`;
@@ -132,13 +142,13 @@ async function loadTodayPrayers(lat, lng) {
     }
 
     document.getElementById("todayPrayers").innerHTML = `
-        <div class="prayer-card" id="card-Imsak"><div class="prayer-name">Imsak</div><div class="prayer-time">${t.Imsak.substring(0,5)}</div></div>
-        <div class="prayer-card" id="card-Fajr"><div class="prayer-name">Subuh</div><div class="prayer-time">${t.Fajr.substring(0,5)}</div></div>
-        <div class="prayer-card" id="card-Sunrise"><div class="prayer-name">Terbit</div><div class="prayer-time">${t.Sunrise.substring(0,5)}</div></div>
-        <div class="prayer-card" id="card-Dhuhr"><div class="prayer-name">Dhuhur</div><div class="prayer-time">${t.Dhuhr.substring(0,5)}</div></div>
-        <div class="prayer-card" id="card-Asr"><div class="prayer-name">Ashar</div><div class="prayer-time">${t.Asr.substring(0,5)}</div></div>
-        <div class="prayer-card" id="card-Maghrib"><div class="prayer-name">Maghrib</div><div class="prayer-time">${t.Maghrib.substring(0,5)}</div></div>
-        <div class="prayer-card" id="card-Isha"><div class="prayer-name">Isya</div><div class="prayer-time">${t.Isha.substring(0,5)}</div></div>
+        <div class="prayer-card" id="card-Imsak">${prayerIcons.Imsak}<div class="prayer-name">Imsak</div><div class="prayer-time">${t.Imsak.substring(0,5)}</div></div>
+        <div class="prayer-card" id="card-Fajr">${prayerIcons.Fajr}<div class="prayer-name">Subuh</div><div class="prayer-time">${t.Fajr.substring(0,5)}</div></div>
+        <div class="prayer-card" id="card-Sunrise">${prayerIcons.Sunrise}<div class="prayer-name">Terbit</div><div class="prayer-time">${t.Sunrise.substring(0,5)}</div></div>
+        <div class="prayer-card" id="card-Dhuhr">${prayerIcons.Dhuhr}<div class="prayer-name">Dhuhur</div><div class="prayer-time">${t.Dhuhr.substring(0,5)}</div></div>
+        <div class="prayer-card" id="card-Asr">${prayerIcons.Asr}<div class="prayer-name">Ashar</div><div class="prayer-time">${t.Asr.substring(0,5)}</div></div>
+        <div class="prayer-card" id="card-Maghrib">${prayerIcons.Maghrib}<div class="prayer-name">Maghrib</div><div class="prayer-time">${t.Maghrib.substring(0,5)}</div></div>
+        <div class="prayer-card" id="card-Isha">${prayerIcons.Isha}<div class="prayer-name">Isya</div><div class="prayer-time">${t.Isha.substring(0,5)}</div></div>
     `;
     updateLiveClock();
 }
