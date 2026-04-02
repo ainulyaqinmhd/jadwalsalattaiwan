@@ -568,7 +568,13 @@ button {
     border-radius: 2px;
 }
 
-/* --- Toggle Masehi / Hijriah --- */
+/* --- Toggle Masehi / Hijriah & Export --- */
+.calendar-actions {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
 .calendar-toggle {
     display: flex;
     background: var(--bg-primary);
@@ -576,6 +582,31 @@ button {
     padding: 3px;
     border: var(--border-subtle);
     box-shadow: var(--shadow-sm);
+}
+
+.btn-export {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    padding: 6px 14px;
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--nu-green);
+    background: white;
+    border: 1px solid var(--border-color);
+    border-radius: var(--radius-pill);
+    cursor: pointer;
+    box-shadow: var(--shadow-sm);
+    transition: var(--transition-fast);
+}
+
+.btn-export:hover {
+    background: var(--bg-secondary);
+    border-color: var(--nu-green);
+}
+
+.btn-export:active {
+    transform: scale(0.96);
 }
 
 .toggle-btn {

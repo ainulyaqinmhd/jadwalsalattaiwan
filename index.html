@@ -5,10 +5,13 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Jadwal Salat Otomatis - PCINU Taiwan</title>
-    <meta name="description" content="Jadwal waktu salat untuk umat Muslim Indonesia di Taiwan, disupervisi oleh Lembaga Falakiyah NU (LFNU) Taiwan.">
+    <meta name="description"
+        content="Jadwal waktu salat untuk umat Muslim Indonesia di Taiwan, disupervisi oleh Lembaga Falakiyah NU (LFNU) Taiwan.">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:ital,wght@0,400;0,500;0,600;0,700;0,800&display=swap" rel="stylesheet">
+    <link
+        href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:ital,wght@0,400;0,500;0,600;0,700;0,800&display=swap"
+        rel="stylesheet">
     <link rel="stylesheet" href="css/style.css">
 </head>
 
@@ -80,7 +83,11 @@
         <!-- Kontrol Filter -->
         <section class="controls" aria-label="Filter lokasi dan bulan">
             <button class="btn-location" onclick="useCurrentLocation()">
-                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path><circle cx="12" cy="10" r="3"></circle></svg>
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                    stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path>
+                    <circle cx="12" cy="10" r="3"></circle>
+                </svg>
                 Gunakan GPS
             </button>
             <div class="control-group">
@@ -95,7 +102,7 @@
                 <label>Bulan Hijriah</label>
                 <div style="display: flex; gap: 8px;">
                     <select id="hijriMonthSelect" onchange="loadData()">
-                        <option value="1">Muharam</option>
+                        <option value="1">Muharram</option>
                         <option value="2">Safar</option>
                         <option value="3">Rabiul Awal</option>
                         <option value="4">Rabiul Akhir</option>
@@ -108,7 +115,8 @@
                         <option value="11">Zulkaidah</option>
                         <option value="12">Zulhijah</option>
                     </select>
-                    <input type="number" id="hijriYearSelect" onchange="loadData()" min="1400" max="1500" style="width: 80px;">
+                    <input type="number" id="hijriYearSelect" onchange="loadData()" min="1400" max="1500"
+                        style="width: 80px;">
                 </div>
             </div>
         </section>
@@ -122,9 +130,22 @@
         <section class="table-section" aria-label="Jadwal salat bulanan">
             <div class="section-header">
                 <h2 class="section-title"><span id="sectionTitleText">Jadwal Bulanan</span></h2>
-                <div class="calendar-toggle" id="calendarToggle">
-                    <button class="toggle-btn active" data-mode="masehi" onclick="switchCalendarMode('masehi')">Masehi</button>
-                    <button class="toggle-btn" data-mode="hijriah" onclick="switchCalendarMode('hijriah')">Hijriah</button>
+                <div class="calendar-actions">
+                    <div class="calendar-toggle" id="calendarToggle">
+                        <button class="toggle-btn active" data-mode="masehi"
+                            onclick="switchCalendarMode('masehi')">Masehi</button>
+                        <button class="toggle-btn" data-mode="hijriah"
+                            onclick="switchCalendarMode('hijriah')">Hijriah</button>
+                    </div>
+                    <button class="btn-export" onclick="exportToExcel()" aria-label="Export ke Excel">
+                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                            stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+                            <polyline points="7 10 12 15 17 10"></polyline>
+                            <line x1="12" y1="15" x2="12" y2="3"></line>
+                        </svg>
+                        Excel
+                    </button>
                 </div>
             </div>
             <div class="table-container">
@@ -187,13 +208,16 @@
             </div>
 
             <div class="copyright">
-                &copy; 2026 <span>PCINU Taiwan</span> · <a href="https://github.com/ainulyaqinmhd" target="_blank" rel="noopener">@ainulyaqinmhd</a>
+                &copy; 2026 <span>PCINU Taiwan</span> · <a href="https://github.com/ainulyaqinmhd" target="_blank"
+                    rel="noopener">@ainulyaqinmhd</a>
                 <br>Dilindungi doa dan niat baik.
             </div>
         </footer>
 
     </main>
 
+    <!-- SheetJS for Excel Export -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
     <script src="js/locations.js"></script>
     <script src="js/app.js"></script>
 </body>

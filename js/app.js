@@ -280,3 +280,27 @@ async function loadTable(lat, lng) {
 
 // --- Jalankan saat halaman dimuat ---
 window.onload = loadData;
+
+// --- Ekspor ke Excel ---
+function exportToExcel() {
+    if (typeof XLSX === 'undefined') {
+        alert("Library Excel sedang dimuat. Mohon tunggu sebentar lalu coba lagi.");
+        return;
+    }
+    
+    const table = document.getElementById("prayerTable");
+    const title = document.getElementById("sectionTitleText").innerText;
+    
+    // Dapatkan nama kota
+    const citySelect = document.getElementById("citySelect");
+    const city = citySelect.options[citySelect.selectedIndex].text;
+    
+    // Convert HTML table ke workbook SheetJS
+    const wb = XLSX.utils.table_to_book(table, {sheet: "Jadwal Salat"});
+    
+    // Nama file dinamis
+    const filename = `${title.replace(/ /g, '_')}_${city.replace(/ /g, '_')}.xlsx`;
+    
+    // Download file
+    XLSX.writeFile(wb, filename);
+}
