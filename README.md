@@ -1,17 +1,17 @@
 # 🌙 Jadwal Waktu Salat PCINU Taiwan
 
-Aplikasi jadwal waktu salat otomatis yang disupervisi oleh **Lembaga Falakiyah NU (LFNU) Taiwan** untuk umat Muslim Indonesia dan seluruh Muslim di Taiwan.
+Aplikasi jadwal waktu salat otomatis yang disupervisi oleh **Lembaga Falakiyah NU (LFNU) Taiwan** untuk umat Muslim Indonesia dan seluruh Muslim di Taiwan. Dirancang dengan antarmuka yang elegan, responsif, dan kaya fitur.
 
 ## ✨ Fitur Utama
 
-- **Jam Digital Real-Time**: Tampilan jam langsung yang diperbarui setiap detik dalam format 24 jam
-- **Hitung Mundur Salat Berikutnya**: Menampilkan sisa waktu menuju salat berikutnya secara otomatis
-- **Kartu Waktu Harian**: Menampilkan jadwal 7 waktu salat (Imsak, Subuh, Terbit, Dhuhur, Ashar, Maghrib, Isya) hari ini dengan tampilan kartu yang elegan
-- **Tabel Jadwal Bulanan**: Tabel lengkap seluruh jadwal salat dalam sebulan yang dipilih
-- **Pendeteksian Lokasi Otomatis**: Fitur GPS untuk mendeteksi lokasi pengguna secara real-time
-- **Pemilihan Wilayah**: Dropdown untuk memilih dari 21 wilayah di Taiwan
-- **Pemilihan Bulan & Tahun**: Kontrol untuk menampilkan jadwal salat pada bulan tertentu
-- **Tampilan Responsif**: Desain yang sempurna di perangkat desktop, tablet, dan mobile
+- **Jam Digital Real-Time & Hitung Mundur**: Tampilan jam langsung yang diperbarui setiap detik serta sisa waktu menuju waktu salat berikutnya secara otomatis.
+- **Kartu Waktu Harian**: Menampilkan jadwal 7 waktu salat (Imsak, Subuh, Terbit, Dhuhur, Ashar, Maghrib, Isya) hari ini dengan desain kartu interaktif yang menonjolkan waktu salat berikutnya.
+- **Kalender Ganda (Masehi & Hijriah)**: Pengguna dapat beralih antara tampilan jadwal bulanan berbasis kalender Masehi maupun kalender Hijriah secara mulus.
+- **Navigasi Bulan Hijriah**: Dilengkapi dengan pemilih bulan dan tahun khusus Hijriah menggunakan ejaan resmi Bahasa Indonesia (Muharam, Safar, dll).
+- **Pendeteksian Lokasi Otomatis**: Fitur fungsi GPS untuk mendeteksi koordinat perangkat secara real-time.
+- **Pemilihan Wilayah Lengkap**: Dropdown untuk memilih dari 21 wilayah/kota di seluruh Taiwan.
+- **Koreksi Tanggal Hijriah**: Mendukung penyesuaian kalender Hijriah lokal untuk memastikan keakuratan hari.
+- **Tampilan Premium & Responsif**: Mengusung tema khas Nahdlatul Ulama yang minimalis, modern, dengan sentuhan *glassmorphism* dan gradien halus, dioptimalkan sempurna untuk perangkat seluler.
 
 ## 📍 Cakupan Wilayah
 
@@ -34,52 +34,33 @@ Perhitungan jadwal salat merujuk pada standar otentik **Lembaga Falakiyah Pengur
 | **Waktu Imsak** | 10 menit sebelum Subuh |
 | **Metode Ashar** | Jumhur Ulama (Hambali, Maliki, Syafi'i) |
 
-## 🔧 Teknologi
+## 🔧 Teknologi & Arsitektur
 
-- **Frontend**: HTML5, CSS3, JavaScript Vanilla
-- **API**: Aladhan API v1 (data astronomi)
-- **Kalkulasi Astronomi**: Berbasis pada perhitungan Higonometri dan data satelit
-- **Real-time Update**: JavaScript interval untuk jam dan hitung mundur
-- **Responsif Design**: CSS Media Queries untuk mobile-first approach
-
-## 📄 Struktur Kode
-
-```html
-- Hero Header: Banner judul dengan jam digital dan hitung mundur
-- Kartu Jadwal Harian: 7 kartu waktu salat dengan highlight dinamis
-- Kontrol: Tombol GPS, dropdown wilayah, pemilih bulan
-- Tabel Jadwal: Tabel interaktif dengan baris hari ini disorot
-- Footer: Informasi teknis falakiyah dan catatan penting
-- Script: Logika JavaScript untuk kalkulasi waktu dan API calls
-```
-
-## 🌐 Sumber Data
-
-Data jadwal salat diperoleh dari **Aladhan REST API** yang menggunakan:
-- Koordinat geografis (latitude & longitude) setiap wilayah
-- Algoritma perhitungan astronomi terpercaya
-- Penyesuaian lokal (tune) sesuai kriteria LFNU
+Proyek ini dibangun menggunakan pendekatan arsitektur modular (*Vanilla Stack*):
+- **Frontend**: HTML5, CSS3, JavaScript murni.
+- **Sistem Modular**: Terbagi dalam `index.html`, `css/style.css`, `js/app.js`, dan `js/locations.js`.
+- **API Data**: Menggunakan [Aladhan REST API v1](https://aladhan.com/prayer-api) untuk pengambilan data astronomi real-time, baik endpoint kalender Masehi mapun kalender Hijriah.
+- **Desain Modern**: Memanfaatkan variabel CSS (*CSS Custom Properties*), *Flexbox/Grid*, dan *Media Queries* untuk menjamin konsistensi visual di berbagai ukuran layar.
 
 ## 📱 Pengalaman Pengguna
 
-**Interface yang User-Friendly**:
-- Tema warna NU (hijau zamrud + emas)
-- Animasi smooth untuk transisi dan highlight
-- Shadow & border yang elegan untuk depth
-- Typography yang nyaman dibaca dengan font Inter & Segoe UI
+**Antarmuka yang Elegan**:
+- Tema warna NU (hijau zamrud, putih bersih, dan aksen emas).
+- Efek kaca (*glassmorphism*) semi-transparan untuk menonjolkan elemen di atas latar belakang.
+- Transisi dan animasi halus untuk interaksi (*hover state*, *active schedule highlight*).
 
 **Indikator Visual**:
-- Salat aktif ditampilkan dengan latar hijau dan border emas
-- Hari ini dalam tabel disorot dengan background transparan hijau
-- Loading state untuk menunjukkan proses sinkronisasi data
+- Waktu salat yang sedang/akan tiba disorot dengan warna kontras.
+- Integrasi penanda hari ini ("Today") pada tabel bulanan dengan baris berwarna solid, baik pada mode Masehi maupun Hijriah.
+- Status pemuatan (*loading indicator*) yang komunikatif setiap penyelarasan API baru.
 
 ## 💡 Catatan Penting
 
-Jadwal salat ini disusun dengan teliti untuk:
-- ✅ Menemani ibadah para Nahdliyin
-- ✅ Mempermudah salat bagi Muslim Indonesia yang merantau di Taiwan
-- ✅ Menjaga standardisasi waktu sesuai ketentuan NU
+Jadwal salat ini disusun secara presisi untuk:
+- ✅ Menjadi panduan utama ibadah para Nahdliyin di luar negeri.
+- ✅ Mempermudah ibadah para pahlawan devisa, pelajar, dan ekspatriat Muslim di Taiwan.
+- ✅ Mempertahankan tradisi standardisasi waktu sesuai kebiasaan ulama Nusantara.
 
 ## 📅 Versi & Copyright
 
-© 2026 **PCINU Taiwan** - _Dilindungi doa dan niat baik._
+© 2026 **PCINU Taiwan** & **[@ainulyaqinmhd](https://github.com/ainulyaqinmhd)** - _Dilindungi doa dan niat baik._
