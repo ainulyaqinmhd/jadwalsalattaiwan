@@ -1,299 +1,691 @@
-/* --- PALET WARNA NU ELEGAN --- */
+/* =============================================
+   JADWAL SALAT PCINU TAIWAN
+   Theme: Nahdlatul Ulama — Minimalist & Elegant
+   ============================================= */
+
+/* --- PALET WARNA NU --- */
 :root {
-    --nu-green: #026336;       
-    --nu-green-dark: #014224;  
-    --nu-gold: #DCA715;        
-    --bg-light: #F4F9F6;       
-    --text-dark: #2C3E50;
-    --text-gray: #7F8C8D;
+    /* Hijau NU — lebih hangat & elegan */
+    --nu-green: #1A6B3C;
+    --nu-green-dark: #0E4427;
+    --nu-green-deep: #092E1A;
+    --nu-green-light: #E8F5EE;
+    --nu-green-muted: #2D8B55;
+
+    /* Emas NU — lebih refined */
+    --nu-gold: #C9982E;
+    --nu-gold-light: #F5EDD4;
+    --nu-gold-muted: rgba(201, 152, 46, 0.15);
+
+    /* Netral hangat */
+    --bg-primary: #FAFAF7;
+    --bg-card: #FFFFFF;
+    --bg-hover: #F5F5F0;
+
+    /* Teks */
+    --text-primary: #1C2B22;
+    --text-secondary: #5A6B60;
+    --text-muted: #8A9B90;
+    --text-on-green: #FFFFFF;
+    --text-on-green-muted: rgba(255, 255, 255, 0.7);
+
+    /* Bayangan & Border */
+    --shadow-sm: 0 1px 3px rgba(26, 107, 60, 0.06);
+    --shadow-md: 0 4px 12px rgba(26, 107, 60, 0.08);
+    --shadow-lg: 0 8px 30px rgba(26, 107, 60, 0.10);
+    --shadow-xl: 0 16px 50px rgba(26, 107, 60, 0.12);
+    --border-subtle: 1px solid rgba(26, 107, 60, 0.08);
+
+    /* Radius */
+    --radius-sm: 8px;
+    --radius-md: 12px;
+    --radius-lg: 16px;
+    --radius-xl: 20px;
+    --radius-pill: 50px;
+
+    /* Transisi */
+    --transition-fast: 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+    --transition-smooth: 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
 }
 
-/* --- GAYA DESAIN UMUM --- */
-body {
-    font-family: 'Inter', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    background-color: var(--bg-light);
-    color: var(--text-dark);
-    margin: 0;
-    padding: 20px;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-}
-
-/* --- HERO HEADER (KARTU ZAMRUD) --- */
-.hero-header {
-    background: linear-gradient(135deg, var(--nu-green-dark) 0%, var(--nu-green) 100%);
-    width: 100%;
-    max-width: 1200px;
-    border-radius: 20px;
-    padding: 40px 20px 50px 20px;
-    color: white;
-    text-align: center;
-    box-shadow: 0 15px 35px rgba(2, 99, 54, 0.15);
-    margin-bottom: 40px;
+/* --- RESET & BASE --- */
+*, *::before, *::after {
     box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    background-color: var(--bg-primary);
+    color: var(--text-primary);
+    line-height: 1.6;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    min-height: 100vh;
+    position: relative;
+    overflow-x: hidden;
+}
+
+/* --- DEKORASI LATAR BELAKANG --- */
+.bg-ornament {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    pointer-events: none;
+    z-index: 0;
+    background:
+        radial-gradient(ellipse at 0% 0%, rgba(26, 107, 60, 0.03) 0%, transparent 50%),
+        radial-gradient(ellipse at 100% 100%, rgba(201, 152, 46, 0.03) 0%, transparent 50%);
+}
+
+/* --- KONTAINER UTAMA --- */
+.main-container {
+    position: relative;
+    z-index: 1;
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: 24px 20px 60px;
+}
+
+/* =============================================
+   HERO HEADER
+   ============================================= */
+.hero-header {
+    background: linear-gradient(160deg, var(--nu-green-deep) 0%, var(--nu-green-dark) 35%, var(--nu-green) 100%);
+    border-radius: var(--radius-xl);
+    padding: 44px 28px 56px;
+    color: var(--text-on-green);
+    text-align: center;
+    box-shadow: var(--shadow-xl);
+    margin-bottom: 24px;
     position: relative;
     overflow: hidden;
-    border-bottom: 5px solid var(--nu-gold);
 }
 
-.hero-header::before {
-    content: '';
+/* Ornamen header — lingkaran halus */
+.hero-ornament-left,
+.hero-ornament-right {
     position: absolute;
-    top: -50px; left: -50px;
-    width: 250px; height: 250px;
     border-radius: 50%;
-    background: rgba(255, 255, 255, 0.03);
-}
-.hero-header::after {
-    content: '';
-    position: absolute;
-    bottom: -80px; right: -50px;
-    width: 200px; height: 200px;
-    border-radius: 50%;
-    background: rgba(220, 167, 21, 0.08); 
+    pointer-events: none;
 }
 
-.hero-title {
-    font-size: 14px;
+.hero-ornament-left {
+    top: -60px;
+    left: -40px;
+    width: 200px;
+    height: 200px;
+    background: radial-gradient(circle, rgba(255, 255, 255, 0.04) 0%, transparent 70%);
+}
+
+.hero-ornament-right {
+    bottom: -50px;
+    right: -30px;
+    width: 180px;
+    height: 180px;
+    background: radial-gradient(circle, rgba(201, 152, 46, 0.08) 0%, transparent 70%);
+}
+
+/* Badge judul */
+.hero-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    background: var(--nu-gold-muted);
     color: var(--nu-gold);
-    text-transform: uppercase;
-    letter-spacing: 4px;
-    margin-bottom: 8px;
+    font-size: 11px;
     font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 3px;
+    padding: 6px 18px;
+    border-radius: var(--radius-pill);
+    border: 1px solid rgba(201, 152, 46, 0.2);
+    margin-bottom: 16px;
     position: relative;
     z-index: 2;
 }
+
 .hero-org {
-    font-size: 32px;
+    font-size: 34px;
     font-weight: 800;
-    margin: 0 0 5px 0;
-    letter-spacing: 1px;
+    margin: 0 0 6px 0;
+    letter-spacing: 0.5px;
     position: relative;
     z-index: 2;
-    color: white; /* Memastikan h1 di header tetap putih */
+    color: var(--text-on-green);
 }
+
 .hero-supervised {
     font-size: 13px;
-    color: rgba(255, 255, 255, 0.7);
-    margin-bottom: 35px;
+    color: var(--text-on-green-muted);
+    margin-bottom: 32px;
     font-weight: 500;
     font-style: italic;
     position: relative;
     z-index: 2;
 }
 
-.hero-date {
-    font-size: 18px;
-    color: rgba(255, 255, 255, 0.9);
-    margin-bottom: 5px;
-    font-weight: 500;
-    letter-spacing: 1px;
+/* Wrapper jam */
+.hero-clock-wrapper {
     position: relative;
     z-index: 2;
+    margin-bottom: 8px;
 }
+
+.hero-date {
+    font-size: 15px;
+    color: var(--text-on-green-muted);
+    margin-bottom: 4px;
+    font-weight: 500;
+    letter-spacing: 0.5px;
+}
+
 .hero-clock {
-    font-size: 72px;
+    font-size: 68px;
     font-weight: 800;
-    color: white;
-    margin-bottom: 10px;
+    color: var(--text-on-green);
     letter-spacing: 2px;
-    text-shadow: 0 4px 15px rgba(0,0,0,0.2);
-    font-variant-numeric: tabular-nums; 
-    position: relative;
-    z-index: 2;
+    text-shadow: 0 3px 12px rgba(0, 0, 0, 0.15);
+    font-variant-numeric: tabular-nums;
     line-height: 1;
 }
 
+/* Countdown pill */
 .hero-countdown {
-    background: white;
     display: inline-flex;
     align-items: center;
-    gap: 12px;
-    padding: 12px 30px;
-    border-radius: 50px;
-    box-shadow: 0 10px 25px rgba(0,0,0,0.2);
-    color: var(--text-dark);
+    gap: 10px;
+    background: rgba(255, 255, 255, 0.95);
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+    padding: 10px 24px;
+    border-radius: var(--radius-pill);
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15);
+    color: var(--text-primary);
     font-weight: 600;
-    font-size: 16px;
+    font-size: 14px;
     position: relative;
     z-index: 2;
-    transform: translateY(20px); 
+    transform: translateY(24px);
 }
+
 .hero-countdown .badge-current {
     background: var(--nu-gold);
     color: white;
-    padding: 5px 12px;
-    border-radius: 20px;
-    font-size: 13px;
+    padding: 4px 12px;
+    border-radius: var(--radius-pill);
+    font-size: 11px;
+    font-weight: 700;
     text-transform: uppercase;
     letter-spacing: 1px;
 }
+
 .hero-countdown strong {
     color: var(--nu-green-dark);
-    font-size: 20px;
+    font-size: 18px;
+    font-variant-numeric: tabular-nums;
 }
 
-/* --- KARTU JADWAL HARI INI --- */
+/* =============================================
+   KARTU WAKTU SALAT
+   ============================================= */
 .today-prayers {
     display: flex;
     flex-wrap: wrap;
-    gap: 12px;
+    gap: 10px;
     justify-content: center;
-    margin-bottom: 35px;
+    margin-bottom: 24px;
     width: 100%;
-    max-width: 950px;
+    max-width: 880px;
+    margin-left: auto;
+    margin-right: auto;
 }
+
 .prayer-card {
-    background: white;
-    padding: 15px 10px;
-    border-radius: 12px;
-    box-shadow: 0 4px 6px rgba(0,0,0,0.04);
+    background: var(--bg-card);
+    padding: 16px 12px;
+    border-radius: var(--radius-md);
+    box-shadow: var(--shadow-sm);
     text-align: center;
     flex: 1;
-    min-width: 100px;
-    border-bottom: 3px solid transparent;
-    transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
-}
-.prayer-name {
-    font-size: 14px;
-    font-weight: 700;
-    color: var(--text-gray);
-    text-transform: uppercase;
-    margin-bottom: 8px;
-    letter-spacing: 1px;
-}
-.prayer-time {
-    font-size: 26px;
-    font-weight: bold;
-    color: var(--text-dark);
+    min-width: 95px;
+    border: var(--border-subtle);
+    transition: all var(--transition-smooth);
+    position: relative;
+    overflow: hidden;
 }
 
+.prayer-card::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 3px;
+    background: var(--nu-green-light);
+    transition: all var(--transition-smooth);
+}
+
+.prayer-card:hover {
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-md);
+}
+
+.prayer-name {
+    font-size: 11px;
+    font-weight: 700;
+    color: var(--text-muted);
+    text-transform: uppercase;
+    margin-bottom: 6px;
+    letter-spacing: 1.5px;
+}
+
+.prayer-time {
+    font-size: 24px;
+    font-weight: 700;
+    color: var(--text-primary);
+    font-variant-numeric: tabular-nums;
+}
+
+/* Kartu aktif */
 .prayer-card.active {
     background: var(--nu-green);
-    border-bottom: 4px solid var(--nu-gold);
-    transform: translateY(-8px) scale(1.05);
-    box-shadow: 0 12px 20px rgba(2, 99, 54, 0.2);
+    border-color: var(--nu-green);
+    transform: translateY(-6px) scale(1.03);
+    box-shadow: 0 8px 24px rgba(26, 107, 60, 0.25);
 }
-.prayer-card.active .prayer-name { color: rgba(255, 255, 255, 0.8); }
-.prayer-card.active .prayer-time { color: white; }
 
-/* --- KONTROL & TABEL --- */
+.prayer-card.active::after {
+    background: var(--nu-gold);
+    height: 4px;
+}
+
+.prayer-card.active .prayer-name {
+    color: var(--text-on-green-muted);
+}
+
+.prayer-card.active .prayer-time {
+    color: var(--text-on-green);
+}
+
+/* =============================================
+   KONTROL FILTER
+   ============================================= */
 .controls {
-    background: white;
-    padding: 15px 25px;
-    border-radius: 12px;
-    box-shadow: 0 4px 15px rgba(0,0,0,0.05);
-    margin-bottom: 25px;
+    background: var(--bg-card);
+    padding: 16px 20px;
+    border-radius: var(--radius-lg);
+    box-shadow: var(--shadow-sm);
+    margin-bottom: 24px;
     display: flex;
-    gap: 15px;
-    align-items: center;
+    gap: 12px;
+    align-items: flex-end;
     flex-wrap: wrap;
     justify-content: center;
-    border: 1px solid rgba(0,0,0,0.03);
+    border: var(--border-subtle);
 }
-select, input, button {
-    padding: 10px 15px;
-    font-size: 15px;
-    border: 1px solid #ddd;
-    border-radius: 8px;
+
+.control-group {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+
+.control-group label {
+    font-size: 11px;
+    font-weight: 700;
+    color: var(--text-muted);
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+select, input[type="month"] {
+    padding: 9px 14px;
+    font-size: 14px;
+    font-family: inherit;
+    border: 1px solid rgba(26, 107, 60, 0.15);
+    border-radius: var(--radius-sm);
     outline: none;
+    color: var(--text-primary);
+    background: var(--bg-primary);
+    transition: border-color var(--transition-fast), box-shadow var(--transition-fast);
+    cursor: pointer;
 }
+
+select:focus, input[type="month"]:focus {
+    border-color: var(--nu-green);
+    box-shadow: 0 0 0 3px rgba(26, 107, 60, 0.1);
+}
+
 button {
-    background-color: var(--nu-green);
+    font-family: inherit;
+    cursor: pointer;
+}
+
+.btn-location {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 9px 18px;
+    font-size: 13px;
+    font-weight: 600;
+    background: var(--nu-green-dark);
     color: white;
     border: none;
-    cursor: pointer;
-    font-weight: 600;
+    border-radius: var(--radius-sm);
+    transition: all var(--transition-fast);
 }
-.btn-location { background-color: var(--text-dark); display: flex; align-items: center; gap: 6px; }
+
+.btn-location:hover {
+    background: var(--nu-green);
+    box-shadow: var(--shadow-md);
+}
+
+.btn-location svg {
+    flex-shrink: 0;
+}
+
+/* =============================================
+   SECTION TITLE
+   ============================================= */
+.section-title {
+    font-size: 16px;
+    font-weight: 700;
+    color: var(--text-secondary);
+    margin-bottom: 12px;
+    padding-left: 4px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.section-title::before {
+    content: '';
+    display: inline-block;
+    width: 4px;
+    height: 18px;
+    background: var(--nu-gold);
+    border-radius: 2px;
+}
+
+/* =============================================
+   TABEL JADWAL
+   ============================================= */
+.table-section {
+    margin-bottom: 28px;
+}
 
 .table-container {
     width: 100%;
-    max-width: 1200px;
     overflow-x: auto;
-    background: white;
-    border-radius: 12px;
-    box-shadow: 0 5px 20px rgba(0,0,0,0.05);
-    margin-bottom: 30px;
-}
-table { width: 100%; border-collapse: collapse; text-align: center; white-space: nowrap; }
-th, td { padding: 14px 15px; border-bottom: 1px solid #eee; }
-th { background-color: var(--nu-green); color: white; position: sticky; top: 0; z-index: 10;}
-tbody tr:nth-child(even) { background-color: #F8FBF9; }
-
-/* --- STYLE BARU: HIGHLIGHT BARIS TABEL HARI INI (High Contrast) --- */
-.current-day-row {
-    background-color: var(--nu-green) !important; /* Hijau Solid */
-    border-left: 5px solid var(--nu-gold);
-    box-shadow: 0 2px 10px rgba(2, 99, 54, 0.3);
-}
-.current-day-row td {
-    font-weight: bold;
-    color: white !important; /* Teks Putih untuk kontras maksimal */
-}
-/* Memastikan elemen strong di dalam baris ini juga menjadi putih */
-.current-day-row td strong {
-    color: white !important;
-}
-/* Menyesuaikan warna border bawah agar serasi */
-.current-day-row td {
-    border-bottom: 1px solid rgba(255,255,255,0.1);
+    background: var(--bg-card);
+    border-radius: var(--radius-lg);
+    box-shadow: var(--shadow-md);
+    border: var(--border-subtle);
+    -webkit-overflow-scrolling: touch;
 }
 
-/* --- FOOTER & COPYRIGHT ELEGAN --- */
-.footer-wrapper {
+table {
     width: 100%;
-    max-width: 1200px;
-    background: white;
-    padding: 30px;
-    border-radius: 12px;
-    border-top: 5px solid var(--nu-gold);
-    box-shadow: 0 4px 10px rgba(0,0,0,0.03);
-    margin-bottom: 50px;
-    box-sizing: border-box;
+    border-collapse: collapse;
+    text-align: center;
+    white-space: nowrap;
+}
+
+th {
+    background: var(--nu-green);
+    color: var(--text-on-green);
+    font-size: 11px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    padding: 14px 12px;
+    position: sticky;
+    top: 0;
+    z-index: 10;
+}
+
+th:first-child {
+    border-radius: var(--radius-lg) 0 0 0;
+}
+
+th:last-child {
+    border-radius: 0 var(--radius-lg) 0 0;
+}
+
+td {
+    padding: 12px;
+    border-bottom: 1px solid rgba(26, 107, 60, 0.06);
+    font-size: 14px;
+    color: var(--text-primary);
+    font-variant-numeric: tabular-nums;
+}
+
+tbody tr {
+    transition: background-color var(--transition-fast);
+}
+
+tbody tr:hover {
+    background-color: var(--nu-green-light);
+}
+
+tbody tr:nth-child(even) {
+    background-color: var(--bg-primary);
+}
+
+tbody tr:nth-child(even):hover {
+    background-color: var(--nu-green-light);
+}
+
+/* Baris hari ini */
+.current-day-row {
+    background: linear-gradient(90deg, var(--nu-green-dark), var(--nu-green)) !important;
+    position: relative;
+}
+
+.current-day-row td {
+    font-weight: 600;
+    color: var(--text-on-green) !important;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.current-day-row td strong {
+    color: var(--text-on-green) !important;
+}
+
+.current-day-row td:first-child {
+    border-left: 4px solid var(--nu-gold);
+}
+
+/* =============================================
+   LOADING
+   ============================================= */
+.loading {
+    text-align: center;
+    font-size: 14px;
+    color: var(--nu-green);
+    padding: 20px;
+    display: none;
+    font-weight: 600;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+}
+
+.loading-spinner {
+    width: 20px;
+    height: 20px;
+    border: 2px solid var(--nu-green-light);
+    border-top-color: var(--nu-green);
+    border-radius: 50%;
+    animation: spin 0.7s linear infinite;
+    display: inline-block;
+}
+
+@keyframes spin {
+    to { transform: rotate(360deg); }
+}
+
+/* =============================================
+   FOOTER
+   ============================================= */
+.footer-wrapper {
+    background: var(--bg-card);
+    padding: 32px 28px;
+    border-radius: var(--radius-xl);
+    border: var(--border-subtle);
+    box-shadow: var(--shadow-sm);
+    position: relative;
+    overflow: hidden;
+}
+
+.footer-wrapper::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 4px;
+    background: linear-gradient(90deg, var(--nu-green), var(--nu-gold), var(--nu-green));
 }
 
 .friendly-greeting {
     display: flex;
-    align-items: center;
-    gap: 20px;
-    margin-bottom: 20px;
+    align-items: flex-start;
+    gap: 18px;
+    margin-bottom: 24px;
 }
-.friendly-greeting .icon { font-size: 42px; }
-.friendly-greeting h3 { margin: 0 0 5px 0; color: var(--nu-green); font-size: 20px; }
-.friendly-greeting p { margin: 0; color: var(--text-gray); line-height: 1.5; font-size: 15px; }
-.footer-divider { border: 0; border-top: 1px dashed #ddd; margin: 25px 0; }
-.technical-info h4 { margin-top: 0; color: var(--text-dark); font-size: 15px; margin-bottom: 10px; }
-.technical-info ul { margin: 0; padding-left: 20px; color: var(--text-gray); line-height: 1.7; font-size: 14px; }
-.technical-info li { margin-bottom: 5px; }
-.copyright { margin-top: 30px; text-align: center; font-size: 13px; color: #95a5a6; font-weight: 500; }
-.copyright span { color: var(--nu-green); font-weight: 700; }
-.loading { text-align: center; font-size: 16px; color: var(--nu-green); padding: 20px; display: none; font-weight: 600; }
+
+.greeting-icon {
+    font-size: 28px;
+    width: 52px;
+    height: 52px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: var(--nu-green-light);
+    border-radius: var(--radius-md);
+    flex-shrink: 0;
+    color: var(--nu-green);
+}
+
+.friendly-greeting h3 {
+    margin: 0 0 6px 0;
+    color: var(--nu-green-dark);
+    font-size: 18px;
+    font-weight: 700;
+}
+
+.friendly-greeting p {
+    margin: 0;
+    color: var(--text-secondary);
+    line-height: 1.65;
+    font-size: 14px;
+}
+
+.footer-divider {
+    border: 0;
+    border-top: 1px solid rgba(26, 107, 60, 0.08);
+    margin: 24px 0;
+}
+
+/* Info teknis — grid layout */
+.technical-info h4 {
+    margin-top: 0;
+    color: var(--text-primary);
+    font-size: 15px;
+    margin-bottom: 14px;
+    font-weight: 700;
+}
+
+.info-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+    gap: 12px;
+}
+
+.info-item {
+    background: var(--bg-primary);
+    padding: 14px 16px;
+    border-radius: var(--radius-sm);
+    border-left: 3px solid var(--nu-gold);
+}
+
+.info-item strong {
+    display: block;
+    font-size: 12px;
+    font-weight: 700;
+    color: var(--nu-green-dark);
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    margin-bottom: 4px;
+}
+
+.info-item span {
+    font-size: 13px;
+    color: var(--text-secondary);
+    line-height: 1.5;
+}
+
+.info-item span strong {
+    display: inline;
+    font-size: inherit;
+    color: var(--nu-green-dark);
+    text-transform: none;
+    letter-spacing: 0;
+    margin-bottom: 0;
+}
+
+.copyright {
+    margin-top: 28px;
+    text-align: center;
+    font-size: 12px;
+    color: var(--text-muted);
+    font-weight: 500;
+    line-height: 1.8;
+}
+
+.copyright span {
+    color: var(--nu-green);
+    font-weight: 700;
+}
+
+.copyright a {
+    color: var(--text-muted);
+    text-decoration: none;
+    transition: color var(--transition-fast);
+}
+
+.copyright a:hover {
+    color: var(--nu-green);
+}
 
 /* =============================================
-   PENYESUAIAN RESPONSIF (Mobile-friendly)
+   PENYESUAIAN RESPONSIF
    ============================================= */
 
-/* --- Tablet & Small Laptop (≤ 768px) --- */
+/* --- Tablet (≤ 768px) --- */
 @media (max-width: 768px) {
-    body {
-        padding: 12px;
+    .main-container {
+        padding: 16px 14px 40px;
     }
 
     .hero-header {
-        padding: 30px 15px 45px 15px;
-        border-radius: 16px;
-        margin-bottom: 30px;
+        padding: 32px 18px 48px;
+        border-radius: var(--radius-lg);
     }
 
-    .hero-title {
-        font-size: 12px;
-        letter-spacing: 3px;
+    .hero-badge {
+        font-size: 10px;
+        letter-spacing: 2px;
+        padding: 5px 14px;
     }
 
     .hero-org {
-        font-size: 26px;
+        font-size: 28px;
     }
 
     .hero-clock {
@@ -303,23 +695,15 @@ tbody tr:nth-child(even) { background-color: #F8FBF9; }
     .hero-countdown {
         flex-direction: column;
         text-align: center;
-        gap: 5px;
-        padding: 12px 20px;
-        transform: translateY(22px);
-        font-size: 14px;
+        gap: 6px;
+        padding: 10px 20px;
+        font-size: 13px;
     }
 
     .today-prayers {
         display: grid;
         grid-template-columns: repeat(4, 1fr);
         gap: 8px;
-        margin-bottom: 25px;
-        max-width: 100%;
-    }
-
-    /* Baris terakhir (3 kartu) di-center-kan */
-    .prayer-card:nth-child(5) {
-        grid-column: 1 / 2;
     }
 
     .prayer-card {
@@ -329,17 +713,16 @@ tbody tr:nth-child(even) { background-color: #F8FBF9; }
     }
 
     .prayer-name {
-        font-size: 11px;
-        letter-spacing: 0.5px;
-        margin-bottom: 5px;
+        font-size: 10px;
+        letter-spacing: 0.8px;
     }
 
     .prayer-time {
-        font-size: 20px;
+        font-size: 19px;
     }
 
     .controls {
-        padding: 12px 15px;
+        padding: 14px;
         gap: 10px;
     }
 
@@ -348,27 +731,36 @@ tbody tr:nth-child(even) { background-color: #F8FBF9; }
         font-size: 13px;
     }
 
+    th {
+        font-size: 10px;
+    }
+
     .footer-wrapper {
-        padding: 20px;
+        padding: 24px 20px;
+    }
+
+    .info-grid {
+        grid-template-columns: 1fr;
     }
 }
 
 /* --- Mobile (≤ 480px) --- */
 @media (max-width: 480px) {
-    body {
-        padding: 8px;
+    .main-container {
+        padding: 10px 8px 30px;
     }
 
     .hero-header {
-        padding: 25px 12px 40px 12px;
-        border-radius: 14px;
-        margin-bottom: 25px;
+        padding: 24px 14px 42px;
+        border-radius: var(--radius-md);
+        margin-bottom: 20px;
     }
 
-    .hero-title {
-        font-size: 11px;
-        letter-spacing: 2px;
-        margin-bottom: 5px;
+    .hero-badge {
+        font-size: 9px;
+        letter-spacing: 1.5px;
+        padding: 4px 12px;
+        margin-bottom: 12px;
     }
 
     .hero-org {
@@ -377,70 +769,59 @@ tbody tr:nth-child(even) { background-color: #F8FBF9; }
 
     .hero-supervised {
         font-size: 11px;
-        margin-bottom: 25px;
+        margin-bottom: 22px;
     }
 
     .hero-date {
-        font-size: 14px;
+        font-size: 13px;
     }
 
     .hero-clock {
-        font-size: 44px;
-        letter-spacing: 1px;
+        font-size: 42px;
     }
 
     .hero-countdown {
-        padding: 10px 18px;
-        font-size: 13px;
+        padding: 8px 16px;
+        font-size: 12px;
         transform: translateY(20px);
-        border-radius: 30px;
     }
 
     .hero-countdown .badge-current {
-        font-size: 11px;
-        padding: 4px 10px;
+        font-size: 10px;
+        padding: 3px 10px;
     }
 
     .hero-countdown strong {
-        font-size: 16px;
+        font-size: 15px;
     }
 
-    /* Grid kartu salat: 4 kolom, baris terakhir 3 kartu centered */
     .today-prayers {
         display: grid;
         grid-template-columns: repeat(4, 1fr);
         gap: 6px;
-        margin-bottom: 20px;
-        padding: 0 2px;
-    }
-
-    /* Baris ke-2 mulai dari kolom 1 */
-    .prayer-card:nth-child(5) {
-        grid-column: 1 / 2;
+        margin-bottom: 18px;
     }
 
     .prayer-card {
-        min-width: unset;
-        flex: unset;
         padding: 10px 4px;
-        border-radius: 10px;
+        border-radius: var(--radius-sm);
     }
 
     .prayer-name {
-        font-size: 9px;
-        letter-spacing: 0.3px;
-        margin-bottom: 4px;
+        font-size: 8px;
+        letter-spacing: 0.5px;
+        margin-bottom: 3px;
     }
 
     .prayer-time {
-        font-size: 17px;
+        font-size: 16px;
     }
 
     .prayer-card.active {
-        transform: translateY(-4px) scale(1.03);
+        transform: translateY(-3px) scale(1.02);
     }
 
-    /* Kontrol full-width & stacking */
+    /* Kontrol stacking */
     .controls {
         flex-direction: column;
         padding: 12px;
@@ -448,72 +829,77 @@ tbody tr:nth-child(even) { background-color: #F8FBF9; }
         align-items: stretch;
     }
 
-    .controls label {
-        text-align: center;
-        font-size: 13px;
+    .control-group {
+        width: 100%;
     }
 
-    .controls select,
-    .controls input,
-    .controls button {
+    .control-group label {
+        font-size: 10px;
+    }
+
+    select, input[type="month"] {
         width: 100%;
-        box-sizing: border-box;
         font-size: 14px;
-        padding: 10px 12px;
     }
 
     .btn-location {
+        width: 100%;
         justify-content: center;
+        padding: 10px;
     }
 
-    /* Tabel lebih compact */
+    .section-title {
+        font-size: 14px;
+    }
+
+    /* Tabel compact */
     .table-container {
-        border-radius: 10px;
-        margin-bottom: 20px;
+        border-radius: var(--radius-md);
     }
 
-    th, td {
+    th {
+        padding: 10px 5px;
+        font-size: 9px;
+        letter-spacing: 0.3px;
+    }
+
+    th:first-child { border-radius: var(--radius-md) 0 0 0; }
+    th:last-child { border-radius: 0 var(--radius-md) 0 0; }
+
+    td {
         padding: 8px 5px;
         font-size: 12px;
     }
 
-    th {
-        font-size: 10px;
-        letter-spacing: 0.3px;
-    }
-
     /* Footer */
     .footer-wrapper {
-        padding: 18px 14px;
-        border-radius: 10px;
-        margin-bottom: 30px;
+        padding: 20px 14px;
+        border-radius: var(--radius-md);
     }
 
     .friendly-greeting {
         flex-direction: column;
         text-align: center;
-        gap: 10px;
+        align-items: center;
+        gap: 12px;
     }
 
-    .friendly-greeting .icon {
-        font-size: 36px;
+    .greeting-icon {
+        width: 44px;
+        height: 44px;
+        font-size: 22px;
     }
 
     .friendly-greeting h3 {
-        font-size: 17px;
+        font-size: 16px;
     }
 
     .friendly-greeting p {
         font-size: 13px;
     }
 
-    .technical-info h4 {
-        font-size: 14px;
-    }
-
-    .technical-info ul {
-        font-size: 12px;
-        padding-left: 16px;
+    .info-item {
+        padding: 12px 14px;
     }
 
     .copyright {
@@ -521,36 +907,31 @@ tbody tr:nth-child(even) { background-color: #F8FBF9; }
     }
 }
 
-/* --- Small Mobile (≤ 360px, e.g. iPhone SE) --- */
+/* --- Small Mobile (≤ 360px) --- */
 @media (max-width: 360px) {
     .hero-clock {
-        font-size: 38px;
+        font-size: 36px;
     }
 
     .hero-org {
         font-size: 20px;
     }
 
-    .prayer-card {
-        min-width: calc(25% - 5px);
-        flex: 0 0 calc(25% - 5px);
-        padding: 8px 3px;
-    }
-
     .prayer-name {
-        font-size: 8px;
+        font-size: 7px;
     }
 
     .prayer-time {
-        font-size: 15px;
-    }
-
-    th, td {
-        padding: 7px 4px;
-        font-size: 11px;
+        font-size: 14px;
     }
 
     th {
-        font-size: 9px;
+        font-size: 8px;
+        padding: 8px 3px;
+    }
+
+    td {
+        padding: 7px 3px;
+        font-size: 11px;
     }
 }

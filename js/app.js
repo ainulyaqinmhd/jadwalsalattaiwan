@@ -82,7 +82,7 @@ function calculateCountdownAndHighlight(now) {
 // --- Lokasi GPS ---
 function useCurrentLocation() {
     if (navigator.geolocation) {
-        document.getElementById("loadingMessage").style.display = "block";
+        document.getElementById("loadingMessage").style.display = "flex";
         navigator.geolocation.getCurrentPosition((position) => {
             customLat = position.coords.latitude;
             customLng = position.coords.longitude;
@@ -134,7 +134,7 @@ async function loadMonthlyTable(lat, lng) {
     const [y, m] = document.getElementById("monthSelect").value.split("-");
     const tableBody = document.getElementById("tableBody");
     tableBody.innerHTML = "";
-    document.getElementById("loadingMessage").style.display = "block";
+    document.getElementById("loadingMessage").style.display = "flex";
 
     const nowForTable = new Date();
     const todayMatch = `${String(nowForTable.getDate()).padStart(2, '0')}-${String(nowForTable.getMonth() + 1).padStart(2, '0')}-${nowForTable.getFullYear()}`;

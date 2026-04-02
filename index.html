@@ -5,93 +5,137 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Jadwal Salat Otomatis - PCINU Taiwan</title>
+    <meta name="description" content="Jadwal waktu salat untuk umat Muslim Indonesia di Taiwan, disupervisi oleh Lembaga Falakiyah NU (LFNU) Taiwan.">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:ital,wght@0,400;0,500;0,600;0,700;0,800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="css/style.css">
 </head>
 
 <body>
 
-    <div class="hero-header">
-        <div class="hero-title">Jadwal Waktu Salat</div>
-        <h1 class="hero-org">PCINU TAIWAN</h1>
-        <div class="hero-supervised">Disupervisi oleh Lembaga Falakiyah NU (LFNU) Taiwan</div>
+    <!-- Dekorasi latar belakang -->
+    <div class="bg-ornament"></div>
 
-        <div class="hero-date" id="todayDate">Memuat tanggal...</div>
-        <div class="hero-clock" id="liveClock">00:00:00</div>
+    <main class="main-container">
 
-        <div class="hero-countdown" id="countdownBox">
-            Mengkalkulasi waktu astronomi...
-        </div>
-    </div>
+        <!-- Hero Header -->
+        <header class="hero-header">
+            <div class="hero-ornament-left"></div>
+            <div class="hero-ornament-right"></div>
 
-    <div class="today-prayers" id="todayPrayers">
-        <div class="prayer-card">
-            <div class="prayer-name">Memuat...</div>
-            <div class="prayer-time">--:--</div>
-        </div>
-    </div>
+            <div class="hero-badge">☪ Jadwal Waktu Salat</div>
+            <h1 class="hero-org">PCINU Taiwan</h1>
+            <p class="hero-supervised">Disupervisi oleh Lembaga Falakiyah NU (LFNU) Taiwan</p>
 
-    <div class="controls">
-        <button class="btn-location" onclick="useCurrentLocation()">📍 Gunakan GPS</button>
-        <label for="citySelect" style="color: var(--text-gray); font-weight:600;">Wilayah:</label>
-        <select id="citySelect" onchange="loadData()"></select>
-
-        <label for="monthSelect" style="color: var(--text-gray); font-weight:600;">Bulan & Tahun:</label>
-        <input type="month" id="monthSelect" onchange="loadData()">
-    </div>
-
-    <div id="loadingMessage" class="loading">Menyelaraskan data satelit...</div>
-
-    <div class="table-container">
-        <table id="prayerTable">
-            <thead>
-                <tr>
-                    <th>MASEHI</th>
-                    <th>HARI</th>
-                    <th>IMSAK</th>
-                    <th>SUBUH</th>
-                    <th>TERBIT</th>
-                    <th>DHUHUR</th>
-                    <th>ASHAR</th>
-                    <th>MAGHRIB</th>
-                    <th>ISYA</th>
-                </tr>
-            </thead>
-            <tbody id="tableBody"></tbody>
-        </table>
-    </div>
-
-    <div class="footer-wrapper">
-        <div class="friendly-greeting">
-            <div class="icon">🌙</div>
-            <div>
-                <h3>Semoga Membawa Keberkahan</h3>
-                <p>Jadwal salat ini disusun dengan teliti untuk menemani dan mempermudah ibadah para Nahdliyin serta
-                    seluruh umat Muslim Indonesia yang sedang merantau di penjuru Formosa.</p>
+            <div class="hero-clock-wrapper">
+                <div class="hero-date" id="todayDate">Memuat tanggal...</div>
+                <div class="hero-clock" id="liveClock">00:00:00</div>
             </div>
+
+            <div class="hero-countdown" id="countdownBox">
+                Mengkalkulasi waktu astronomi...
+            </div>
+        </header>
+
+        <!-- Kartu Waktu Salat Hari Ini -->
+        <section class="today-prayers" id="todayPrayers" aria-label="Waktu salat hari ini">
+            <div class="prayer-card">
+                <div class="prayer-name">Memuat...</div>
+                <div class="prayer-time">--:--</div>
+            </div>
+        </section>
+
+        <!-- Kontrol Filter -->
+        <section class="controls" aria-label="Filter lokasi dan bulan">
+            <button class="btn-location" onclick="useCurrentLocation()">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path><circle cx="12" cy="10" r="3"></circle></svg>
+                Gunakan GPS
+            </button>
+            <div class="control-group">
+                <label for="citySelect">Wilayah</label>
+                <select id="citySelect" onchange="loadData()"></select>
+            </div>
+            <div class="control-group">
+                <label for="monthSelect">Bulan & Tahun</label>
+                <input type="month" id="monthSelect" onchange="loadData()">
+            </div>
+        </section>
+
+        <div id="loadingMessage" class="loading">
+            <div class="loading-spinner"></div>
+            Menyelaraskan data...
         </div>
 
-        <hr class="footer-divider">
+        <!-- Tabel Jadwal Bulanan -->
+        <section class="table-section" aria-label="Jadwal salat bulanan">
+            <h2 class="section-title">Jadwal Bulanan</h2>
+            <div class="table-container">
+                <table id="prayerTable">
+                    <thead>
+                        <tr>
+                            <th>Tgl</th>
+                            <th>Hari</th>
+                            <th>Imsak</th>
+                            <th>Subuh</th>
+                            <th>Terbit</th>
+                            <th>Dhuhur</th>
+                            <th>Ashar</th>
+                            <th>Maghrib</th>
+                            <th>Isya</th>
+                        </tr>
+                    </thead>
+                    <tbody id="tableBody"></tbody>
+                </table>
+            </div>
+        </section>
 
-        <div class="technical-info">
-            <h4>Catatan Falakiyah & Panduan Jadwal:</h4>
-            <ul>
-                <li><strong>Kriteria LF-PBNU:</strong> Perhitungan merujuk pada standar otentik Lembaga Falakiyah
-                    Pengurus Besar Nahdlatul Ulama.</li>
-                <li><strong>Sudut Matahari:</strong> Kedalaman matahari saat Subuh ditetapkan pada <strong>-20°</strong>
-                    dan Isya' pada <strong>-18°</strong> di bawah ufuk.</li>
-                <li><strong>Ikhtiyat (Kehati-hatian):</strong> Terdapat penambahan pengaman waktu (Ikhtiyat) selama
-                    <strong>2 menit</strong> pada waktu Subuh, Dhuhur, Asar, Maghrib, dan Isya'.</li>
-                <li><strong>Waktu Imsak:</strong> Ditetapkan <strong>10 menit sebelum Subuh</strong> sebagai rambu
-                    persiapan ibadah puasa.</li>
-                <li><strong>Metode Ashar:</strong> Mengikuti kriteria Jumhur Ulama (Madzhab Imam Hambali, Maliki, dan
-                    Syafi'i).</li>
-            </ul>
-        </div>
+        <!-- Footer -->
+        <footer class="footer-wrapper">
+            <div class="friendly-greeting">
+                <div class="greeting-icon">☪</div>
+                <div>
+                    <h3>Semoga Membawa Keberkahan</h3>
+                    <p>Jadwal salat ini disusun dengan teliti untuk menemani dan mempermudah ibadah para Nahdliyin serta
+                        seluruh umat Muslim Indonesia yang sedang merantau di penjuru Formosa.</p>
+                </div>
+            </div>
 
-        <div class="copyright">
-            &copy; 2026 <span>PCINU Taiwan - @ainulyaqinmhd</span>. Dilindungi doa dan niat baik.
-        </div>
-    </div>
+            <hr class="footer-divider">
+
+            <div class="technical-info">
+                <h4>Catatan Falakiyah & Panduan Jadwal</h4>
+                <div class="info-grid">
+                    <div class="info-item">
+                        <strong>Kriteria LF-PBNU</strong>
+                        <span>Perhitungan merujuk pada standar otentik Lembaga Falakiyah PBNU.</span>
+                    </div>
+                    <div class="info-item">
+                        <strong>Sudut Matahari</strong>
+                        <span>Subuh: <strong>-20°</strong> · Isya: <strong>-18°</strong> di bawah ufuk.</span>
+                    </div>
+                    <div class="info-item">
+                        <strong>Ikhtiyat</strong>
+                        <span>Penambahan <strong>2 menit</strong> pada Subuh, Dhuhur, Asar, Maghrib, dan Isya'.</span>
+                    </div>
+                    <div class="info-item">
+                        <strong>Waktu Imsak</strong>
+                        <span><strong>10 menit sebelum Subuh</strong> sebagai rambu persiapan puasa.</span>
+                    </div>
+                    <div class="info-item">
+                        <strong>Metode Ashar</strong>
+                        <span>Kriteria Jumhur Ulama (Madzhab Hambali, Maliki, dan Syafi'i).</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="copyright">
+                &copy; 2026 <span>PCINU Taiwan</span> · <a href="https://github.com/ainulyaqinmhd" target="_blank" rel="noopener">@ainulyaqinmhd</a>
+                <br>Dilindungi doa dan niat baik.
+            </div>
+        </footer>
+
+    </main>
 
     <script src="js/locations.js"></script>
     <script src="js/app.js"></script>
