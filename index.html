@@ -21,15 +21,46 @@
 
         <!-- Hero Header -->
         <header class="hero-header">
+            <!-- Ornamen dekoratif -->
             <div class="hero-ornament-left"></div>
             <div class="hero-ornament-right"></div>
+            <div class="hero-geo-pattern"></div>
 
-            <div class="hero-badge">☪ Jadwal Waktu Salat</div>
+            <!-- Bintang NU — 9 bintang bercahaya -->
+            <div class="hero-stars">
+                <div class="star" style="top:12%;left:8%"></div>
+                <div class="star" style="top:18%;left:15%"></div>
+                <div class="star" style="top:8%;left:22%"></div>
+                <div class="star" style="top:25%;right:18%"></div>
+                <div class="star" style="top:10%;right:10%"></div>
+                <div class="star" style="top:35%;left:5%"></div>
+                <div class="star" style="bottom:30%;right:8%"></div>
+                <div class="star" style="bottom:20%;left:12%"></div>
+                <div class="star" style="top:15%;right:25%"></div>
+            </div>
+
+            <!-- Bulan sabit dekoratif -->
+            <div class="hero-crescent">☽</div>
+
+            <!-- Konten utama -->
+            <div class="hero-badge">
+                <span class="hero-badge-icon">✦</span>
+                Jadwal Waktu Salat
+            </div>
             <h1 class="hero-org">PCINU Taiwan</h1>
+
+            <!-- Garis emas pemisah -->
+            <div class="hero-gold-line">
+                <span class="gold-diamond">◆</span>
+            </div>
+
             <p class="hero-supervised">Disupervisi oleh Lembaga Falakiyah NU (LFNU) Taiwan</p>
 
             <div class="hero-clock-wrapper">
-                <div class="hero-date" id="todayDate">Memuat tanggal...</div>
+                <div class="hero-dates">
+                    <div class="hero-date" id="todayDate">Memuat tanggal...</div>
+                    <div class="hero-hijri" id="hijriDate"></div>
+                </div>
                 <div class="hero-clock" id="liveClock">00:00:00</div>
             </div>
 
@@ -56,9 +87,29 @@
                 <label for="citySelect">Wilayah</label>
                 <select id="citySelect" onchange="loadData()"></select>
             </div>
-            <div class="control-group">
-                <label for="monthSelect">Bulan & Tahun</label>
+            <div class="control-group" id="masehiMonthPicker">
+                <label for="monthSelect">Bulan & Tahun Masehi</label>
                 <input type="month" id="monthSelect" onchange="loadData()">
+            </div>
+            <div class="control-group" id="hijriMonthPicker" style="display: none;">
+                <label>Bulan Hijriah</label>
+                <div style="display: flex; gap: 8px;">
+                    <select id="hijriMonthSelect" onchange="loadData()">
+                        <option value="1">Muharam</option>
+                        <option value="2">Safar</option>
+                        <option value="3">Rabiul Awal</option>
+                        <option value="4">Rabiul Akhir</option>
+                        <option value="5">Jumadil Awal</option>
+                        <option value="6">Jumadil Akhir</option>
+                        <option value="7">Rajab</option>
+                        <option value="8">Syakban</option>
+                        <option value="9">Ramadan</option>
+                        <option value="10">Syawal</option>
+                        <option value="11">Zulkaidah</option>
+                        <option value="12">Zulhijah</option>
+                    </select>
+                    <input type="number" id="hijriYearSelect" onchange="loadData()" min="1400" max="1500" style="width: 80px;">
+                </div>
             </div>
         </section>
 
@@ -69,10 +120,16 @@
 
         <!-- Tabel Jadwal Bulanan -->
         <section class="table-section" aria-label="Jadwal salat bulanan">
-            <h2 class="section-title">Jadwal Bulanan</h2>
+            <div class="section-header">
+                <h2 class="section-title"><span id="sectionTitleText">Jadwal Bulanan</span></h2>
+                <div class="calendar-toggle" id="calendarToggle">
+                    <button class="toggle-btn active" data-mode="masehi" onclick="switchCalendarMode('masehi')">Masehi</button>
+                    <button class="toggle-btn" data-mode="hijriah" onclick="switchCalendarMode('hijriah')">Hijriah</button>
+                </div>
+            </div>
             <div class="table-container">
                 <table id="prayerTable">
-                    <thead>
+                    <thead id="tableHead">
                         <tr>
                             <th>Tgl</th>
                             <th>Hari</th>

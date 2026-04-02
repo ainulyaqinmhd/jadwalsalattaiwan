@@ -95,17 +95,27 @@ body {
    ============================================= */
 .hero-header {
     background: linear-gradient(160deg, var(--nu-green-deep) 0%, var(--nu-green-dark) 35%, var(--nu-green) 100%);
+    background-size: 200% 200%;
+    animation: gradientShift 12s ease-in-out infinite;
     border-radius: var(--radius-xl);
-    padding: 44px 28px 56px;
+    padding: 48px 28px 58px;
     color: var(--text-on-green);
     text-align: center;
-    box-shadow: var(--shadow-xl);
+    box-shadow:
+        var(--shadow-xl),
+        0 0 60px rgba(26, 107, 60, 0.08),
+        inset 0 1px 0 rgba(255, 255, 255, 0.05);
     margin-bottom: 24px;
     position: relative;
     overflow: hidden;
 }
 
-/* Ornamen header — lingkaran halus */
+@keyframes gradientShift {
+    0%, 100% { background-position: 0% 50%; }
+    50% { background-position: 100% 50%; }
+}
+
+/* --- Ornamen lingkaran halus --- */
 .hero-ornament-left,
 .hero-ornament-right {
     position: absolute;
@@ -114,73 +124,209 @@ body {
 }
 
 .hero-ornament-left {
-    top: -60px;
-    left: -40px;
-    width: 200px;
-    height: 200px;
-    background: radial-gradient(circle, rgba(255, 255, 255, 0.04) 0%, transparent 70%);
+    top: -80px;
+    left: -60px;
+    width: 280px;
+    height: 280px;
+    background: radial-gradient(circle, rgba(255, 255, 255, 0.05) 0%, transparent 65%);
+    animation: floatOrb 8s ease-in-out infinite;
 }
 
 .hero-ornament-right {
-    bottom: -50px;
-    right: -30px;
-    width: 180px;
-    height: 180px;
-    background: radial-gradient(circle, rgba(201, 152, 46, 0.08) 0%, transparent 70%);
+    bottom: -60px;
+    right: -40px;
+    width: 220px;
+    height: 220px;
+    background: radial-gradient(circle, rgba(201, 152, 46, 0.1) 0%, transparent 65%);
+    animation: floatOrb 10s ease-in-out infinite reverse;
 }
 
-/* Badge judul */
+@keyframes floatOrb {
+    0%, 100% { transform: translate(0, 0) scale(1); }
+    50% { transform: translate(8px, -8px) scale(1.05); }
+}
+
+/* --- Pola geometris Islami (overlay halus) --- */
+.hero-geo-pattern {
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    opacity: 0.025;
+    background-image:
+        /* Pola bintang segi-8 sederhana */
+        repeating-conic-gradient(
+            from 0deg at 50% 50%,
+            transparent 0deg 40deg,
+            rgba(255, 255, 255, 0.8) 40deg 45deg,
+            transparent 45deg 90deg
+        );
+    background-size: 60px 60px;
+    z-index: 1;
+}
+
+/* --- Bintang NU (9 bintang) --- */
+.hero-stars {
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    z-index: 1;
+}
+
+.star {
+    position: absolute;
+    width: 4px;
+    height: 4px;
+    background: var(--nu-gold);
+    border-radius: 50%;
+    box-shadow:
+        0 0 6px 1px rgba(201, 152, 46, 0.5),
+        0 0 12px 2px rgba(201, 152, 46, 0.2);
+    animation: twinkle 3s ease-in-out infinite;
+}
+
+/* Stagger twinkling per bintang */
+.star:nth-child(1) { animation-delay: 0s; width: 3px; height: 3px; }
+.star:nth-child(2) { animation-delay: 0.4s; width: 4px; height: 4px; }
+.star:nth-child(3) { animation-delay: 0.8s; width: 3px; height: 3px; }
+.star:nth-child(4) { animation-delay: 1.2s; width: 5px; height: 5px; }
+.star:nth-child(5) { animation-delay: 1.6s; width: 3px; height: 3px; }
+.star:nth-child(6) { animation-delay: 2.0s; width: 4px; height: 4px; }
+.star:nth-child(7) { animation-delay: 2.4s; width: 3px; height: 3px; }
+.star:nth-child(8) { animation-delay: 0.6s; width: 4px; height: 4px; }
+.star:nth-child(9) { animation-delay: 1.8s; width: 5px; height: 5px; }
+
+@keyframes twinkle {
+    0%, 100% { opacity: 0.3; transform: scale(1); }
+    50% { opacity: 1; transform: scale(1.4); }
+}
+
+/* --- Bulan sabit dekoratif --- */
+.hero-crescent {
+    position: absolute;
+    top: 14%;
+    right: 6%;
+    font-size: 38px;
+    color: rgba(201, 152, 46, 0.18);
+    z-index: 1;
+    pointer-events: none;
+    animation: crescentGlow 6s ease-in-out infinite;
+    filter: drop-shadow(0 0 8px rgba(201, 152, 46, 0.15));
+}
+
+@keyframes crescentGlow {
+    0%, 100% { opacity: 0.15; transform: rotate(-5deg) scale(1); }
+    50% { opacity: 0.35; transform: rotate(0deg) scale(1.08); }
+}
+
+/* --- Badge judul --- */
 .hero-badge {
     display: inline-flex;
     align-items: center;
-    gap: 6px;
+    gap: 8px;
     background: var(--nu-gold-muted);
     color: var(--nu-gold);
     font-size: 11px;
     font-weight: 700;
     text-transform: uppercase;
     letter-spacing: 3px;
-    padding: 6px 18px;
+    padding: 7px 20px;
     border-radius: var(--radius-pill);
-    border: 1px solid rgba(201, 152, 46, 0.2);
-    margin-bottom: 16px;
+    border: 1px solid rgba(201, 152, 46, 0.25);
+    margin-bottom: 18px;
     position: relative;
     z-index: 2;
+    backdrop-filter: blur(4px);
+    -webkit-backdrop-filter: blur(4px);
 }
 
+.hero-badge-icon {
+    display: inline-block;
+    animation: starPulse 2s ease-in-out infinite;
+    font-size: 10px;
+}
+
+@keyframes starPulse {
+    0%, 100% { opacity: 0.6; transform: scale(1) rotate(0deg); }
+    50% { opacity: 1; transform: scale(1.3) rotate(72deg); }
+}
+
+/* --- Judul organisasi --- */
 .hero-org {
-    font-size: 34px;
+    font-size: 36px;
     font-weight: 800;
-    margin: 0 0 6px 0;
+    margin: 0 0 0 0;
     letter-spacing: 0.5px;
     position: relative;
     z-index: 2;
     color: var(--text-on-green);
+    text-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
 }
 
+/* --- Garis emas pemisah --- */
+.hero-gold-line {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0;
+    margin: 14px auto;
+    width: 180px;
+    position: relative;
+    z-index: 2;
+}
+
+.hero-gold-line::before,
+.hero-gold-line::after {
+    content: '';
+    flex: 1;
+    height: 1px;
+    background: linear-gradient(90deg, transparent, var(--nu-gold), transparent);
+    opacity: 0.5;
+}
+
+.gold-diamond {
+    color: var(--nu-gold);
+    font-size: 8px;
+    padding: 0 10px;
+    opacity: 0.6;
+}
+
+/* --- Teks supervisi --- */
 .hero-supervised {
     font-size: 13px;
     color: var(--text-on-green-muted);
-    margin-bottom: 32px;
+    margin-bottom: 28px;
     font-weight: 500;
     font-style: italic;
     position: relative;
     z-index: 2;
 }
 
-/* Wrapper jam */
+/* --- Wrapper jam & tanggal --- */
 .hero-clock-wrapper {
     position: relative;
     z-index: 2;
     margin-bottom: 8px;
 }
 
+.hero-dates {
+    margin-bottom: 6px;
+}
+
 .hero-date {
     font-size: 15px;
     color: var(--text-on-green-muted);
-    margin-bottom: 4px;
+    margin-bottom: 2px;
     font-weight: 500;
     letter-spacing: 0.5px;
+}
+
+.hero-hijri {
+    font-size: 12px;
+    color: var(--nu-gold);
+    font-weight: 600;
+    letter-spacing: 0.8px;
+    opacity: 0.85;
+    min-height: 16px;
 }
 
 .hero-clock {
@@ -193,17 +339,19 @@ body {
     line-height: 1;
 }
 
-/* Countdown pill */
+/* --- Countdown pill --- */
 .hero-countdown {
     display: inline-flex;
     align-items: center;
     gap: 10px;
     background: rgba(255, 255, 255, 0.95);
-    backdrop-filter: blur(8px);
-    -webkit-backdrop-filter: blur(8px);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
     padding: 10px 24px;
     border-radius: var(--radius-pill);
-    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15);
+    box-shadow:
+        0 8px 24px rgba(0, 0, 0, 0.15),
+        0 0 0 1px rgba(255, 255, 255, 0.1);
     color: var(--text-primary);
     font-weight: 600;
     font-size: 14px;
@@ -389,13 +537,22 @@ button {
 }
 
 /* =============================================
-   SECTION TITLE
+   SECTION HEADER & TITLE
    ============================================= */
+.section-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 12px;
+    gap: 12px;
+    flex-wrap: wrap;
+}
+
 .section-title {
     font-size: 16px;
     font-weight: 700;
     color: var(--text-secondary);
-    margin-bottom: 12px;
+    margin-bottom: 0;
     padding-left: 4px;
     display: flex;
     align-items: center;
@@ -411,11 +568,60 @@ button {
     border-radius: 2px;
 }
 
+/* --- Toggle Masehi / Hijriah --- */
+.calendar-toggle {
+    display: flex;
+    background: var(--bg-primary);
+    border-radius: var(--radius-pill);
+    padding: 3px;
+    border: var(--border-subtle);
+    box-shadow: var(--shadow-sm);
+}
+
+.toggle-btn {
+    padding: 6px 16px;
+    font-size: 12px;
+    font-weight: 600;
+    font-family: inherit;
+    border: none;
+    background: transparent;
+    color: var(--text-muted);
+    border-radius: var(--radius-pill);
+    cursor: pointer;
+    transition: all var(--transition-fast);
+    letter-spacing: 0.3px;
+}
+
+.toggle-btn:hover {
+    color: var(--text-primary);
+}
+
+.toggle-btn.active {
+    background: var(--nu-green);
+    color: white;
+    box-shadow: 0 2px 8px rgba(26, 107, 60, 0.25);
+}
+
 /* =============================================
    TABEL JADWAL
    ============================================= */
 .table-section {
     margin-bottom: 28px;
+}
+
+/* Label bulan Hijri di dalam sel tabel */
+.hijri-month-label {
+    font-size: 9px;
+    font-weight: 500;
+    color: var(--text-muted);
+    text-transform: uppercase;
+    letter-spacing: 0.3px;
+    margin-top: 2px;
+    line-height: 1;
+}
+
+.current-day-row .hijri-month-label {
+    color: var(--text-on-green-muted);
 }
 
 .table-container {
@@ -678,6 +884,17 @@ tbody tr:nth-child(even):hover {
         border-radius: var(--radius-lg);
     }
 
+    .hero-crescent {
+        font-size: 28px;
+        top: 10%;
+        right: 4%;
+    }
+
+    .hero-gold-line {
+        width: 140px;
+        margin: 10px auto;
+    }
+
     .hero-badge {
         font-size: 10px;
         letter-spacing: 2px;
@@ -686,6 +903,10 @@ tbody tr:nth-child(even):hover {
 
     .hero-org {
         font-size: 28px;
+    }
+
+    .hero-hijri {
+        font-size: 11px;
     }
 
     .hero-clock {
@@ -756,6 +977,23 @@ tbody tr:nth-child(even):hover {
         margin-bottom: 20px;
     }
 
+    .hero-crescent {
+        font-size: 22px;
+        top: 8%;
+        right: 3%;
+        opacity: 0.12;
+    }
+
+    .hero-gold-line {
+        width: 120px;
+        margin: 8px auto;
+    }
+
+    .star {
+        width: 3px !important;
+        height: 3px !important;
+    }
+
     .hero-badge {
         font-size: 9px;
         letter-spacing: 1.5px;
@@ -769,11 +1007,15 @@ tbody tr:nth-child(even):hover {
 
     .hero-supervised {
         font-size: 11px;
-        margin-bottom: 22px;
+        margin-bottom: 18px;
     }
 
     .hero-date {
         font-size: 13px;
+    }
+
+    .hero-hijri {
+        font-size: 10px;
     }
 
     .hero-clock {
