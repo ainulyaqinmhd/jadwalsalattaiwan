@@ -115,6 +115,27 @@ body {
     50% { background-position: 100% 50%; }
 }
 
+/* --- Silhouette Background --- */
+.hero-bg-image {
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    z-index: 0;
+    background-image: url('../images/kabah_bg.png');
+    background-size: cover;
+    background-position: center center;
+    background-repeat: no-repeat;
+    opacity: 0.6;
+    mix-blend-mode: soft-light;
+}
+
+.hero-bg-image::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(to bottom, rgba(26, 107, 60, 0.2) 0%, var(--nu-green-dark) 90%);
+}
+
 /* --- Ornamen lingkaran halus --- */
 .hero-ornament-left,
 .hero-ornament-right {
@@ -144,24 +165,6 @@ body {
 @keyframes floatOrb {
     0%, 100% { transform: translate(0, 0) scale(1); }
     50% { transform: translate(8px, -8px) scale(1.05); }
-}
-
-/* --- Pola geometris Islami (overlay halus) --- */
-.hero-geo-pattern {
-    position: absolute;
-    inset: 0;
-    pointer-events: none;
-    opacity: 0.025;
-    background-image:
-        /* Pola bintang segi-8 sederhana */
-        repeating-conic-gradient(
-            from 0deg at 50% 50%,
-            transparent 0deg 40deg,
-            rgba(255, 255, 255, 0.8) 40deg 45deg,
-            transparent 45deg 90deg
-        );
-    background-size: 60px 60px;
-    z-index: 1;
 }
 
 /* --- Bintang NU (9 bintang) --- */
