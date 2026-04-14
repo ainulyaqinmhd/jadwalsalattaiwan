@@ -314,3 +314,214 @@ function exportToExcel() {
     // Download file
     XLSX.writeFile(wb, filename);
 }
+
+// --- Ekspor ke Poster PNG ---
+async function exportToPoster() {
+    if (typeof html2canvas === 'undefined') {
+        alert("Library sedang dimuat. Mohon tunggu sebentar lalu coba lagi.");
+        return;
+    }
+
+    const btn = document.querySelector('.btn-poster');
+    const origText = btn.innerHTML;
+    btn.innerHTML = `<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><path d="M12 6v6l4 2"></path></svg> Memproses...`;
+    btn.disabled = true;
+
+    const title = document.getElementById("sectionTitleText").innerText;
+    const cityEl = document.getElementById("citySelect");
+    const city = cityEl.options[cityEl.selectedIndex].text;
+
+    // Ambil data dari tabel yang sudah di-render
+    const table = document.getElementById("prayerTable");
+    const headerRow = table.querySelector("thead tr");
+    const bodyRows = table.querySelectorAll("tbody tr");
+
+    // Bangun header kolom
+    const headers = [];
+    headerRow.querySelectorAll("th").forEach(th => headers.push(th.innerText));
+
+    // Bangun baris data
+    const rows = [];
+    bodyRows.forEach(tr => {
+        const cells = [];
+        tr.querySelectorAll("td").forEach(td => cells.push(td.innerText));
+        rows.push({ cells, isToday: tr.classList.contains("current-day-row") });
+    });
+
+    // Buat elemen poster
+    const poster = document.createElement("div");
+    poster.id = "posterCanvas";
+    poster.style.cssText = `
+        position: fixed; left: -9999px; top: 0;
+        width: 1080px; height: 1527px; /* A4 Aspect Ratio */
+        font-family: 'Plus Jakarta Sans', 'Segoe UI', sans-serif;
+        background: #FAFAF7;
+        color: #1C2B22;
+        display: flex;
+        flex-direction: column;
+        box-sizing: border-box;
+    `;
+
+    // Hitung tinggi tabel secara dinamis
+    const rowHeight = 34;
+    const tableContentHeight = (rows.length + 1) * rowHeight + 20;
+
+    poster.innerHTML = `
+        <!-- Header Poster -->
+        <div style="
+            flex: 0 0 auto;
+            background: linear-gradient(160deg, #092E1A 0%, #0E4427 35%, #1A6B3C 100%);
+            padding: 40px 50px 30px;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        ">
+            <!-- Dekorasi latar -->
+            <div style="
+                position: absolute; inset: 0;
+                background-image: url('images/kabah_bg.png');
+                background-size: cover; background-position: center;
+                opacity: 0.15; mix-blend-mode: soft-light;
+            "></div>
+            <div style="
+                position: absolute; inset: 0;
+                background: linear-gradient(to bottom, rgba(9,46,26,0.3) 0%, rgba(14,68,39,0.9) 100%);
+            "></div>
+            
+            <!-- Badge -->
+            <div style="
+                display: inline-flex; align-items: center; gap: 8px;
+                background: rgba(201,152,46,0.15); color: #C9982E;
+                font-size: 13px; font-weight: 700; text-transform: uppercase;
+                letter-spacing: 3px; padding: 8px 24px; border-radius: 50px;
+                border: 1px solid rgba(201,152,46,0.25); margin-bottom: 18px;
+                position: relative; z-index: 2;
+            ">✦ Jadwal & Waktu Salat</div>
+            
+            <!-- Judul -->
+            <div style="
+                font-size: 40px; font-weight: 800; color: white;
+                position: relative; z-index: 2; margin-bottom: 6px;
+                text-shadow: 0 2px 8px rgba(0,0,0,0.15);
+            ">LFNU Taiwan</div>
+
+            <!-- Garis emas -->
+            <div style="
+                width: 180px; height: 1px; margin: 14px auto;
+                background: linear-gradient(90deg, transparent, #C9982E, transparent);
+                opacity: 0.6; position: relative; z-index: 2;
+            "></div>
+
+            <!-- Supervisi -->
+            <div style="
+                font-size: 14px; color: rgba(255,255,255,0.7);
+                font-style: italic; font-weight: 500;
+                position: relative; z-index: 2; margin-bottom: 20px;
+            ">Disupervisi oleh Lembaga Falakiyah NU (LFNU) Taiwan</div>
+
+            <!-- Judul jadwal -->
+            <div style="
+                display: inline-block;
+                background: rgba(255,255,255,0.15); /* Removed backdrop-filter for html2canvas compatibility */
+                padding: 12px 32px; border-radius: 12px;
+                border: 1px solid rgba(255,255,255,0.2);
+                position: relative; z-index: 2;
+            ">
+                <div style="font-size: 24px; font-weight: 700; color: white;">${title}</div>
+                <div style="font-size: 14px; color: #C9982E; font-weight: 600; margin-top: 6px;">📍 ${city}</div>
+            </div>
+        </div>
+
+        <!-- Tabel Container -->
+        <div style="
+            flex: 1 1 auto; padding: 20px 48px;
+            display: flex; flex-direction: column; justify-content: center;
+        ">
+            <table style="
+                width: 100%; border-collapse: collapse;
+                font-size: 13px; font-family: 'Plus Jakarta Sans', sans-serif;
+            ">
+                <thead style="background: #1A6B3C; color: #FFFFFF;">
+                    <tr>
+                        ${headers.map(h => `
+                            <th style="
+                                padding: 10px 8px; font-weight: 700; font-size: 12px;
+                                color: #FFFFFF !important; text-transform: uppercase;
+                                letter-spacing: 1px; text-align: center;
+                            ">${h}</th>
+                        `).join('')}
+                    </tr>
+                </thead>
+                <tbody>
+                    ${rows.map((r, i) => `
+                        <tr style="
+                            background: ${r.isToday ? '#E8F5EE' : (i % 2 === 0 ? '#FFFFFF' : '#FAFAF7')};
+                            ${r.isToday ? 'font-weight: 700;' : ''}
+                        ">
+                            ${r.cells.map((c, ci) => `
+                                <td style="
+                                    padding: 5.5px 8px; text-align: center;
+                                    border-bottom: 1px solid rgba(26,107,60,0.08);
+                                    font-size: 13px;
+                                    ${r.isToday ? 'color: #1A6B3C;' : 'color: #1C2B22;'}
+                                    ${ci === 0 ? 'font-weight: 700;' : ''}
+                                ">${c}</td>
+                            `).join('')}
+                        </tr>
+                    `).join('')}
+                </tbody>
+            </table>
+        </div>
+
+        <!-- Catatan kaki -->
+        <div style="
+            flex: 0 0 auto;
+            padding: 24px 48px 16px; margin: 0 48px;
+            border-top: 1px solid rgba(26,107,60,0.15);
+            display: flex; justify-content: space-between; align-items: flex-start;
+            gap: 24px; font-size: 12px; color: #8A9B90;
+        ">
+            <div style="flex: 1;">
+                <div style="font-weight: 700; color: #5A6B60; margin-bottom: 6px;">Catatan Falakiyah</div>
+                <div>Metode LF-PBNU · Subuh -20° · Isya -18° · Ikhtiyat +2 menit</div>
+            </div>
+            <div style="text-align: right;">
+                <div style="font-weight: 700; color: #5A6B60; margin-bottom: 6px;">Madzhab Ashar</div>
+                <div>Jumhur Ulama (Hambali, Maliki, Syafi'i)</div>
+            </div>
+        </div>
+
+        <!-- Footer -->
+        <div style="
+            flex: 0 0 auto;
+            padding: 16px 48px 32px;
+            text-align: center; font-size: 12px; color: #8A9B90;
+        ">
+            © 2026 LFNU Taiwan · @ainulyaqinmhd — Dilindungi doa dan niat baik.
+        </div>
+    `;
+
+    document.body.appendChild(poster);
+
+    try {
+        const canvas = await html2canvas(poster, {
+            scale: 2,
+            useCORS: true,
+            backgroundColor: '#FAFAF7',
+            logging: false,
+        });
+
+        // Kembali ke keadaan semula
+        const link = document.createElement('a');
+        link.download = `${title.replace(/ /g, '_')}_${city.replace(/ /g, '_')}.png`;
+        link.href = canvas.toDataURL('image/png');
+        link.click();
+    } catch (err) {
+        console.error('Gagal membuat poster:', err);
+        alert('Gagal membuat poster. Silakan coba lagi.');
+    } finally {
+        document.body.removeChild(poster);
+        btn.innerHTML = origText;
+        btn.disabled = false;
+    }
+}
