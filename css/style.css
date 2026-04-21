@@ -90,6 +90,49 @@ body {
     padding: 24px 20px 60px;
 }
 
+/* --- LANGUAGE SELECTOR --- */
+.lang-selector-hero {
+    position: absolute;
+    top: 24px;
+    right: 24px;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    background: rgba(255, 255, 255, 0.12);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    padding: 6px 14px;
+    border-radius: var(--radius-pill);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    z-index: 10;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+}
+
+.lang-selector-hero .lang-btn {
+    background: none;
+    border: none;
+    font-size: 11px;
+    font-weight: 700;
+    color: rgba(255, 255, 255, 0.6);
+    cursor: pointer;
+    padding: 4px;
+    transition: color var(--transition-fast);
+}
+
+.lang-selector-hero .lang-btn:hover {
+    color: #FFFFFF;
+}
+
+.lang-selector-hero .lang-btn.active {
+    color: var(--nu-gold);
+    text-shadow: 0 0 8px rgba(201, 152, 46, 0.4);
+}
+
+.lang-selector-hero .lang-divider {
+    color: rgba(255, 255, 255, 0.2);
+    font-size: 12px;
+}
+
 /* =============================================
    HERO HEADER
    ============================================= */
@@ -346,6 +389,8 @@ body {
 .hero-countdown {
     display: inline-flex;
     align-items: center;
+    justify-content: center;
+    text-align: center;
     gap: 10px;
     background: rgba(255, 255, 255, 0.95);
     backdrop-filter: blur(10px);
@@ -884,11 +929,13 @@ tbody tr:nth-child(even):hover {
     font-size: 15px;
     margin-bottom: 14px;
     font-weight: 700;
+    text-align: center;
 }
 
 .info-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
     gap: 12px;
 }
 
@@ -896,7 +943,9 @@ tbody tr:nth-child(even):hover {
     background: var(--bg-primary);
     padding: 14px 16px;
     border-radius: var(--radius-sm);
-    border-left: 3px solid var(--nu-gold);
+    border-top: 3px solid var(--nu-gold);
+    text-align: center;
+    width: calc(33.333% - 8px);
 }
 
 .info-item strong {
@@ -959,8 +1008,14 @@ tbody tr:nth-child(even):hover {
     }
 
     .hero-header {
-        padding: 32px 18px 48px;
+        padding: 48px 18px 48px;
         border-radius: var(--radius-lg);
+    }
+
+    .lang-selector-hero {
+        top: 16px;
+        right: 16px;
+        padding: 5px 12px;
     }
 
     .hero-crescent {
@@ -1001,12 +1056,14 @@ tbody tr:nth-child(even):hover {
     }
 
     .today-prayers {
-        display: grid;
-        grid-template-columns: repeat(4, 1fr);
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center;
         gap: 8px;
     }
 
     .prayer-card {
+        width: calc(25% - 6px);
         min-width: unset;
         flex: unset;
         padding: 12px 6px;
@@ -1040,7 +1097,11 @@ tbody tr:nth-child(even):hover {
     }
 
     .info-grid {
-        grid-template-columns: 1fr;
+        /* Overridden by info-item width */
+    }
+
+    .info-item {
+        width: calc(50% - 6px);
     }
 }
 
@@ -1051,9 +1112,21 @@ tbody tr:nth-child(even):hover {
     }
 
     .hero-header {
-        padding: 24px 14px 42px;
+        padding: 48px 14px 42px;
         border-radius: var(--radius-md);
         margin-bottom: 20px;
+    }
+
+    .lang-selector-hero {
+        top: 10px;
+        right: 10px;
+        padding: 4px 10px;
+        gap: 6px;
+    }
+
+    .lang-selector-hero .lang-btn {
+        font-size: 9px;
+        padding: 2px;
     }
 
     .hero-crescent {
@@ -1117,13 +1190,15 @@ tbody tr:nth-child(even):hover {
     }
 
     .today-prayers {
-        display: grid;
-        grid-template-columns: repeat(4, 1fr);
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center;
         gap: 6px;
         margin-bottom: 18px;
     }
 
     .prayer-card {
+        width: calc(25% - 4.5px);
         padding: 10px 4px;
         border-radius: var(--radius-sm);
     }
@@ -1221,6 +1296,7 @@ tbody tr:nth-child(even):hover {
 
     .info-item {
         padding: 12px 14px;
+        width: 100%;
     }
 
     .copyright {

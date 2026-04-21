@@ -6,9 +6,7 @@
 
 let todayTimingsData = null;
 
-const namaHari = ["Ahad", "Senin", "Selasa", "Rabu", "Kamis", "Jumat", "Sabtu"];
-const namaBulan = ["Januari", "Februari", "Maret", "April", "Mei", "Juni", "Juli", "Agustus", "September", "Oktober", "November", "Desember"];
-const namaBulanHijri = ["Muharam", "Safar", "Rabiul Awal", "Rabiul Akhir", "Jumadil Awal", "Jumadil Akhir", "Rajab", "Syakban", "Ramadan", "Syawal", "Zulkaidah", "Zulhijah"];
+// Removed old manual arrays, they are now dynamically fetched from arrays in translations.js
 
 const prayerIcons = {
     Imsak: `<svg class="prayer-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path></svg>`,
@@ -47,7 +45,7 @@ document.getElementById("monthSelect").value = `${nowSetup.getFullYear()}-${Stri
 function updateLiveClock() {
     const now = new Date();
     document.getElementById('liveClock').innerText = now.toLocaleTimeString('id-ID', { hour12: false });
-    document.getElementById('todayDate').innerText = `${namaHari[now.getDay()]}, ${now.getDate()} ${namaBulan[now.getMonth()]} ${now.getFullYear()}`;
+    document.getElementById('todayDate').innerText = `${arrays.namaHari[currentLang][now.getDay()]}, ${now.getDate()} ${arrays.namaBulan[currentLang][now.getMonth()]} ${now.getFullYear()}`;
     calculateCountdownAndHighlight(now);
 }
 setInterval(updateLiveClock, 1000);
@@ -56,13 +54,13 @@ setInterval(updateLiveClock, 1000);
 function calculateCountdownAndHighlight(now) {
     if (!todayTimingsData) return;
     const prayers = [
-        { id: 'Imsak', name: 'Imsak', time: todayTimingsData.Imsak },
-        { id: 'Fajr', name: 'Subuh', time: todayTimingsData.Fajr },
-        { id: 'Sunrise', name: 'Terbit', time: todayTimingsData.Sunrise },
-        { id: 'Dhuhr', name: 'Dhuhur', time: todayTimingsData.Dhuhr },
-        { id: 'Asr', name: 'Ashar', time: todayTimingsData.Asr },
-        { id: 'Maghrib', name: 'Maghrib', time: todayTimingsData.Maghrib },
-        { id: 'Isha', name: 'Isya', time: todayTimingsData.Isha }
+        { id: 'Imsak', name: translations.prayer_imsak[currentLang], time: todayTimingsData.Imsak },
+        { id: 'Fajr', name: translations.prayer_fajr[currentLang], time: todayTimingsData.Fajr },
+        { id: 'Sunrise', name: translations.prayer_sunrise[currentLang], time: todayTimingsData.Sunrise },
+        { id: 'Dhuhr', name: translations.prayer_dhuhr[currentLang], time: todayTimingsData.Dhuhr },
+        { id: 'Asr', name: translations.prayer_asr[currentLang], time: todayTimingsData.Asr },
+        { id: 'Maghrib', name: translations.prayer_maghrib[currentLang], time: todayTimingsData.Maghrib },
+        { id: 'Isha', name: translations.prayer_isha[currentLang], time: todayTimingsData.Isha }
     ];
     let currentPrayer = null;
     let nextPrayer = null;
@@ -84,7 +82,7 @@ function calculateCountdownAndHighlight(now) {
     let m = String(Math.floor((diff % 3600000) / 60000)).padStart(2, '0');
     let s = String(Math.floor((diff % 60000) / 1000)).padStart(2, '0');
 
-    document.getElementById('countdownBox').innerHTML = `<span class="badge-current">Saat ini: ${currentPrayer.name}</span><span> <strong>${h}:${m}:${s}</strong> menuju ${nextPrayer.name}</span>`;
+    document.getElementById('countdownBox').innerHTML = `<span class="badge-current">${translations.countdown_current[currentLang]} ${currentPrayer.name}</span><span> <strong>${h}:${m}:${s}</strong> ${translations.countdown_until[currentLang]} ${nextPrayer.name}</span>`;
     const allCards = document.querySelectorAll('.prayer-card');
     allCards.forEach(card => card.classList.remove('active'));
     const activeCard = document.getElementById(`card-${currentPrayer.id}`);
@@ -101,12 +99,12 @@ function useCurrentLocation() {
             let autoOpt = document.getElementById("autoOption") || document.createElement("option");
             autoOpt.id = "autoOption";
             autoOpt.value = "auto";
-            autoOpt.text = "📍 Koordinat GPS Anda";
+            autoOpt.text = translations.gps_option[currentLang];
             if (!document.getElementById("autoOption")) citySelect.insertBefore(autoOpt, citySelect.firstChild);
             citySelect.value = "auto";
             loadData();
         }, () => {
-            alert("Gagal mendeteksi lokasi.");
+            alert(translations.alert_gps[currentLang]);
             document.getElementById("loadingMessage").style.display = "none";
         });
     }
@@ -136,19 +134,19 @@ async function loadTodayPrayers(lat, lng) {
         const hijriEl = document.getElementById('hijriDate');
         if (hijriEl) {
             const adjustedDay = parseInt(hijri.day) + HIJRI_ADJUSTMENT;
-            const targetMonthIndo = namaBulanHijri[hijri.month.number - 1];
+            const targetMonthIndo = arrays.namaBulanHijri[currentLang][hijri.month.number - 1];
             hijriEl.innerText = `${adjustedDay} ${targetMonthIndo} ${hijri.year} H`;
         }
     }
 
     document.getElementById("todayPrayers").innerHTML = `
-        <div class="prayer-card" id="card-Imsak">${prayerIcons.Imsak}<div class="prayer-name">Imsak</div><div class="prayer-time">${t.Imsak.substring(0,5)}</div></div>
-        <div class="prayer-card" id="card-Fajr">${prayerIcons.Fajr}<div class="prayer-name">Subuh</div><div class="prayer-time">${t.Fajr.substring(0,5)}</div></div>
-        <div class="prayer-card" id="card-Sunrise">${prayerIcons.Sunrise}<div class="prayer-name">Terbit</div><div class="prayer-time">${t.Sunrise.substring(0,5)}</div></div>
-        <div class="prayer-card" id="card-Dhuhr">${prayerIcons.Dhuhr}<div class="prayer-name">Dhuhur</div><div class="prayer-time">${t.Dhuhr.substring(0,5)}</div></div>
-        <div class="prayer-card" id="card-Asr">${prayerIcons.Asr}<div class="prayer-name">Ashar</div><div class="prayer-time">${t.Asr.substring(0,5)}</div></div>
-        <div class="prayer-card" id="card-Maghrib">${prayerIcons.Maghrib}<div class="prayer-name">Maghrib</div><div class="prayer-time">${t.Maghrib.substring(0,5)}</div></div>
-        <div class="prayer-card" id="card-Isha">${prayerIcons.Isha}<div class="prayer-name">Isya</div><div class="prayer-time">${t.Isha.substring(0,5)}</div></div>
+        <div class="prayer-card" id="card-Imsak">${prayerIcons.Imsak}<div class="prayer-name">${translations.prayer_imsak[currentLang]}</div><div class="prayer-time">${t.Imsak.substring(0,5)}</div></div>
+        <div class="prayer-card" id="card-Fajr">${prayerIcons.Fajr}<div class="prayer-name">${translations.prayer_fajr[currentLang]}</div><div class="prayer-time">${t.Fajr.substring(0,5)}</div></div>
+        <div class="prayer-card" id="card-Sunrise">${prayerIcons.Sunrise}<div class="prayer-name">${translations.prayer_sunrise[currentLang]}</div><div class="prayer-time">${t.Sunrise.substring(0,5)}</div></div>
+        <div class="prayer-card" id="card-Dhuhr">${prayerIcons.Dhuhr}<div class="prayer-name">${translations.prayer_dhuhr[currentLang]}</div><div class="prayer-time">${t.Dhuhr.substring(0,5)}</div></div>
+        <div class="prayer-card" id="card-Asr">${prayerIcons.Asr}<div class="prayer-name">${translations.prayer_asr[currentLang]}</div><div class="prayer-time">${t.Asr.substring(0,5)}</div></div>
+        <div class="prayer-card" id="card-Maghrib">${prayerIcons.Maghrib}<div class="prayer-name">${translations.prayer_maghrib[currentLang]}</div><div class="prayer-time">${t.Maghrib.substring(0,5)}</div></div>
+        <div class="prayer-card" id="card-Isha">${prayerIcons.Isha}<div class="prayer-name">${translations.prayer_isha[currentLang]}</div><div class="prayer-time">${t.Isha.substring(0,5)}</div></div>
     `;
     updateLiveClock();
 }
@@ -211,14 +209,14 @@ async function loadTable(lat, lng) {
         // Ambil data kalender Hijriah
         url = `https://api.aladhan.com/v1/hijriCalendar/${hYear}/${hMonth}?latitude=${lat}&longitude=${lng}&method=${METHOD}&tune=${TUNE}&adjustment=${ADJUSTMENT}&calendarMethod=MATHEMATICAL`;
         // Update judul section
-        document.getElementById("sectionTitleText").innerText = `Jadwal ${monthName} ${hYear} H`;
+        document.getElementById("sectionTitleText").innerText = `${translations.schedule_title[currentLang]} ${monthName} ${hYear} H`;
     } else {
         // Ambil data kalender Masehi
         const [y, m] = document.getElementById("monthSelect").value.split("-");
         url = `https://api.aladhan.com/v1/calendar?latitude=${lat}&longitude=${lng}&method=${METHOD}&tune=${TUNE}&month=${m}&year=${y}&adjustment=${ADJUSTMENT}&calendarMethod=MATHEMATICAL`;
         // Update judul section
         const monthIdx = parseInt(m) - 1;
-        document.getElementById("sectionTitleText").innerText = `Jadwal ${namaBulan[monthIdx]} ${y}`;
+        document.getElementById("sectionTitleText").innerText = `${translations.schedule_title[currentLang]} ${arrays.namaBulan[currentLang][monthIdx]} ${y}`;
     }
 
     const res = await fetch(url);
@@ -228,28 +226,28 @@ async function loadTable(lat, lng) {
     // Render header
     if (calendarMode === 'hijriah') {
         tableHead.innerHTML = `<tr>
-            <th>Hijri</th>
-            <th>Masehi</th>
-            <th>Hari</th>
-            <th>Imsak</th>
-            <th>Subuh</th>
-            <th>Terbit</th>
-            <th>Dhuhur</th>
-            <th>Ashar</th>
-            <th>Maghrib</th>
-            <th>Isya</th>
+            <th data-i18n="th_date_h">${translations.th_date_h[currentLang]}</th>
+            <th data-i18n="btn_masehi">${translations.btn_masehi[currentLang]}</th>
+            <th data-i18n="th_day">${translations.th_day[currentLang]}</th>
+            <th data-i18n="th_imsak">${translations.th_imsak[currentLang]}</th>
+            <th data-i18n="th_fajr">${translations.th_fajr[currentLang]}</th>
+            <th data-i18n="th_sunrise">${translations.th_sunrise[currentLang]}</th>
+            <th data-i18n="th_dhuhr">${translations.th_dhuhr[currentLang]}</th>
+            <th data-i18n="th_asr">${translations.th_asr[currentLang]}</th>
+            <th data-i18n="th_maghrib">${translations.th_maghrib[currentLang]}</th>
+            <th data-i18n="th_isha">${translations.th_isha[currentLang]}</th>
         </tr>`;
     } else {
         tableHead.innerHTML = `<tr>
-            <th>Tgl</th>
-            <th>Hari</th>
-            <th>Imsak</th>
-            <th>Subuh</th>
-            <th>Terbit</th>
-            <th>Dhuhur</th>
-            <th>Ashar</th>
-            <th>Maghrib</th>
-            <th>Isya</th>
+            <th data-i18n="th_date_m">${translations.th_date_m[currentLang]}</th>
+            <th data-i18n="th_day">${translations.th_day[currentLang]}</th>
+            <th data-i18n="th_imsak">${translations.th_imsak[currentLang]}</th>
+            <th data-i18n="th_fajr">${translations.th_fajr[currentLang]}</th>
+            <th data-i18n="th_sunrise">${translations.th_sunrise[currentLang]}</th>
+            <th data-i18n="th_dhuhr">${translations.th_dhuhr[currentLang]}</th>
+            <th data-i18n="th_asr">${translations.th_asr[currentLang]}</th>
+            <th data-i18n="th_maghrib">${translations.th_maghrib[currentLang]}</th>
+            <th data-i18n="th_isha">${translations.th_isha[currentLang]}</th>
         </tr>`;
     }
 
@@ -266,10 +264,10 @@ async function loadTable(lat, lng) {
             const gregMonth = gregorian.getMonth() + 1;
             dateCol = `<td><strong>${hijriDay}</strong></td>
                        <td>${gregDay}/${gregMonth}</td>
-                       <td><strong>${namaHari[gregorian.getDay()]}</strong></td>`;
+                       <td><strong>${arrays.namaHari[currentLang][gregorian.getDay()]}</strong></td>`;
         } else {
             dateCol = `<td><strong>${day.date.gregorian.day.replace(/^0+/, '')}</strong></td>
-                       <td><strong>${namaHari[gregorian.getDay()]}</strong></td>`;
+                       <td><strong>${arrays.namaHari[currentLang][gregorian.getDay()]}</strong></td>`;
         }
 
         const row = `<tr${rowClass}>
@@ -294,7 +292,7 @@ window.onload = loadData;
 // --- Ekspor ke Excel ---
 function exportToExcel() {
     if (typeof XLSX === 'undefined') {
-        alert("Library Excel sedang dimuat. Mohon tunggu sebentar lalu coba lagi.");
+        alert(translations.alert_excel[currentLang]);
         return;
     }
     
@@ -306,7 +304,7 @@ function exportToExcel() {
     const city = citySelect.options[citySelect.selectedIndex].text;
     
     // Convert HTML table ke workbook SheetJS
-    const wb = XLSX.utils.table_to_book(table, {sheet: "Jadwal Salat"});
+    const wb = XLSX.utils.table_to_book(table, {sheet: "Jadwal Sholat"});
     
     // Nama file dinamis
     const filename = `${title.replace(/ /g, '_')}_${city.replace(/ /g, '_')}.xlsx`;
@@ -318,13 +316,13 @@ function exportToExcel() {
 // --- Ekspor ke Poster PNG ---
 async function exportToPoster() {
     if (typeof html2canvas === 'undefined') {
-        alert("Library sedang dimuat. Mohon tunggu sebentar lalu coba lagi.");
+        alert(translations.alert_poster_load[currentLang]);
         return;
     }
 
     const btn = document.querySelector('.btn-poster');
     const origText = btn.innerHTML;
-    btn.innerHTML = `<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><path d="M12 6v6l4 2"></path></svg> Memproses...`;
+    btn.innerHTML = `<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><path d="M12 6v6l4 2"></path></svg> ${translations.btn_processing[currentLang]}`;
     btn.disabled = true;
 
     const title = document.getElementById("sectionTitleText").innerText;
@@ -396,7 +394,7 @@ async function exportToPoster() {
                 letter-spacing: 3px; padding: 8px 24px; border-radius: 50px;
                 border: 1px solid rgba(201,152,46,0.25); margin-bottom: 18px;
                 position: relative; z-index: 2;
-            ">✦ Jadwal & Waktu Salat</div>
+            ">✦ Jadwal & Waktu Sholat</div>
             
             <!-- Judul -->
             <div style="
@@ -417,7 +415,7 @@ async function exportToPoster() {
                 font-size: 14px; color: rgba(255,255,255,0.7);
                 font-style: italic; font-weight: 500;
                 position: relative; z-index: 2; margin-bottom: 20px;
-            ">Disupervisi oleh Lembaga Falakiyah NU (LFNU) Taiwan</div>
+            ">${translations.poster_supervised[currentLang]}</div>
 
             <!-- Judul jadwal -->
             <div style="
@@ -482,12 +480,12 @@ async function exportToPoster() {
             gap: 24px; font-size: 12px; color: #8A9B90;
         ">
             <div style="flex: 1;">
-                <div style="font-weight: 700; color: #5A6B60; margin-bottom: 6px;">Catatan Falakiyah</div>
-                <div>Metode LF-PBNU · Subuh -20° · Isya -18° · Ikhtiyat +2 menit</div>
+                <div style="font-weight: 700; color: #5A6B60; margin-bottom: 6px;">${translations.poster_note_title_1[currentLang]}</div>
+                <div>${translations.poster_note_desc_1[currentLang]}</div>
             </div>
             <div style="text-align: right;">
-                <div style="font-weight: 700; color: #5A6B60; margin-bottom: 6px;">Madzhab Ashar</div>
-                <div>Jumhur Ulama (Hambali, Maliki, Syafi'i)</div>
+                <div style="font-weight: 700; color: #5A6B60; margin-bottom: 6px;">${translations.poster_note_title_2[currentLang]}</div>
+                <div>${translations.poster_note_desc_2[currentLang]}</div>
             </div>
         </div>
 
@@ -497,7 +495,7 @@ async function exportToPoster() {
             padding: 16px 48px 32px;
             text-align: center; font-size: 12px; color: #8A9B90;
         ">
-            © 2026 LFNU Taiwan · @ainulyaqinmhd — Dilindungi doa dan niat baik.
+            ${translations.poster_footer[currentLang]}
         </div>
     `;
 
@@ -518,7 +516,7 @@ async function exportToPoster() {
         link.click();
     } catch (err) {
         console.error('Gagal membuat poster:', err);
-        alert('Gagal membuat poster. Silakan coba lagi.');
+        alert(translations.alert_poster_fail[currentLang]);
     } finally {
         document.body.removeChild(poster);
         btn.innerHTML = origText;

@@ -4,9 +4,9 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Jadwal Salat Otomatis - PCINU Taiwan</title>
-    <meta name="description"
-        content="Jadwal & waktu salat untuk umat Muslim Indonesia di Taiwan, disupervisi oleh Lembaga Falakiyah NU (LFNU) Taiwan.">
+    <title data-i18n="page_title">Jadwal Sholat Otomatis - PCINU Taiwan</title>
+    <meta name="description" data-i18n="page_desc"
+        content="Jadwal & waktu sholat untuk umat Muslim Indonesia di Taiwan, disupervisi oleh Lembaga Falakiyah NU (LFNU) Taiwan.">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link
@@ -24,6 +24,12 @@
 
         <!-- Hero Header -->
         <header class="hero-header">
+            <!-- Language Selector -->
+            <div class="lang-selector-hero">
+                <button class="lang-btn" data-lang="id" onclick="setLang('id')">ID</button>
+                <span class="lang-divider">|</span>
+                <button class="lang-btn" data-lang="en" onclick="setLang('en')">EN</button>
+            </div>
             <!-- Gambar Silhouette Kabah -->
             <div class="hero-bg-image"></div>
 
@@ -50,7 +56,7 @@
             <!-- Konten utama -->
             <div class="hero-badge">
                 <span class="hero-badge-icon">✦</span>
-                Jadwal & waktu salat
+                <span data-i18n="hero_badge">Jadwal & waktu sholat</span>
             </div>
             <h1 class="hero-org">PCINU Taiwan</h1>
 
@@ -59,25 +65,26 @@
                 <span class="gold-diamond">◆</span>
             </div>
 
-            <p class="hero-supervised">Disupervisi oleh Lembaga Falakiyah NU (LFNU) Taiwan</p>
+            <p class="hero-supervised" data-i18n="hero_supervised">Disupervisi oleh Lembaga Falakiyah NU (LFNU) Taiwan
+            </p>
 
             <div class="hero-clock-wrapper">
                 <div class="hero-dates">
-                    <div class="hero-date" id="todayDate">Memuat tanggal...</div>
+                    <div class="hero-date" id="todayDate" data-i18n="hero_loading">Memuat tanggal...</div>
                     <div class="hero-hijri" id="hijriDate"></div>
                 </div>
                 <div class="hero-clock" id="liveClock">00:00:00</div>
             </div>
 
-            <div class="hero-countdown" id="countdownBox">
+            <div class="hero-countdown" id="countdownBox" data-i18n="hero_calc">
                 Mengkalkulasi waktu astronomi...
             </div>
         </header>
 
-        <!-- Kartu Waktu Salat Hari Ini -->
-        <section class="today-prayers" id="todayPrayers" aria-label="Waktu salat hari ini">
+        <!-- Kartu Waktu Sholat Hari Ini -->
+        <section class="today-prayers" id="todayPrayers" aria-label="Waktu sholat hari ini">
             <div class="prayer-card">
-                <div class="prayer-name">Memuat...</div>
+                <div class="prayer-name" data-i18n="hero_loading">Memuat...</div>
                 <div class="prayer-time">--:--</div>
             </div>
         </section>
@@ -90,18 +97,18 @@
                     <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path>
                     <circle cx="12" cy="10" r="3"></circle>
                 </svg>
-                Gunakan GPS
+                <span data-i18n="btn_gps">Gunakan GPS</span>
             </button>
             <div class="control-group">
-                <label for="citySelect">Wilayah</label>
+                <label for="citySelect" data-i18n="label_city">Wilayah</label>
                 <select id="citySelect" onchange="loadData()"></select>
             </div>
             <div class="control-group" id="masehiMonthPicker">
-                <label for="monthSelect">Bulan & Tahun Masehi</label>
+                <label for="monthSelect" data-i18n="label_masehi">Bulan & Tahun Masehi</label>
                 <input type="month" id="monthSelect" onchange="loadData()">
             </div>
             <div class="control-group" id="hijriMonthPicker" style="display: none;">
-                <label>Bulan Hijriah</label>
+                <label data-i18n="label_hijri">Bulan Hijriah</label>
                 <div style="display: flex; gap: 8px;">
                     <select id="hijriMonthSelect" onchange="loadData()">
                         <option value="1">Muharram</option>
@@ -125,19 +132,20 @@
 
         <div id="loadingMessage" class="loading">
             <div class="loading-spinner"></div>
-            Menyelaraskan data...
+            <span data-i18n="msg_sync">Menyelaraskan data...</span>
         </div>
 
         <!-- Tabel Jadwal Bulanan -->
-        <section class="table-section" aria-label="Jadwal salat bulanan">
+        <section class="table-section" aria-label="Jadwal sholat bulanan">
             <div class="section-header">
-                <h2 class="section-title"><span id="sectionTitleText">Jadwal Bulanan</span></h2>
+                <h2 class="section-title"><span id="sectionTitleText" data-i18n="section_table">Jadwal Bulanan</span>
+                </h2>
                 <div class="calendar-actions">
                     <div class="calendar-toggle" id="calendarToggle">
-                        <button class="toggle-btn active" data-mode="masehi"
-                            onclick="switchCalendarMode('masehi')">Masehi</button>
-                        <button class="toggle-btn" data-mode="hijriah"
-                            onclick="switchCalendarMode('hijriah')">Hijriah</button>
+                        <button class="toggle-btn active" data-mode="masehi" onclick="switchCalendarMode('masehi')"
+                            data-i18n="btn_masehi">Masehi</button>
+                        <button class="toggle-btn" data-mode="hijriah" onclick="switchCalendarMode('hijriah')"
+                            data-i18n="btn_hijriah">Hijriah</button>
                     </div>
                     <button class="btn-export" onclick="exportToExcel()" aria-label="Export ke Excel">
                         <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor"
@@ -146,7 +154,7 @@
                             <polyline points="7 10 12 15 17 10"></polyline>
                             <line x1="12" y1="15" x2="12" y2="3"></line>
                         </svg>
-                        Excel
+                        <span data-i18n="btn_excel">Excel</span>
                     </button>
                     <button class="btn-export btn-poster" onclick="exportToPoster()" aria-label="Download Poster">
                         <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor"
@@ -155,7 +163,7 @@
                             <circle cx="8.5" cy="8.5" r="1.5"></circle>
                             <polyline points="21 15 16 10 5 21"></polyline>
                         </svg>
-                        Poster
+                        <span data-i18n="btn_poster">Poster</span>
                     </button>
                 </div>
             </div>
@@ -163,15 +171,15 @@
                 <table id="prayerTable">
                     <thead id="tableHead">
                         <tr>
-                            <th>Tgl</th>
-                            <th>Hari</th>
-                            <th>Imsak</th>
-                            <th>Subuh</th>
-                            <th>Terbit</th>
-                            <th>Dhuhur</th>
-                            <th>Ashar</th>
-                            <th>Maghrib</th>
-                            <th>Isya</th>
+                            <th data-i18n="th_date_m">Tgl</th>
+                            <th data-i18n="th_day">Hari</th>
+                            <th data-i18n="th_imsak">Imsak</th>
+                            <th data-i18n="th_fajr">Subuh</th>
+                            <th data-i18n="th_sunrise">Terbit</th>
+                            <th data-i18n="th_dhuhr">Dhuhur</th>
+                            <th data-i18n="th_asr">Ashar</th>
+                            <th data-i18n="th_maghrib">Maghrib</th>
+                            <th data-i18n="th_isha">Isya</th>
                         </tr>
                     </thead>
                     <tbody id="tableBody"></tbody>
@@ -184,8 +192,9 @@
             <div class="friendly-greeting">
                 <div class="greeting-icon">☪</div>
                 <div>
-                    <h3>Semoga Membawa Keberkahan</h3>
-                    <p>Jadwal salat ini disusun dengan teliti untuk menemani dan mempermudah ibadah para Nahdliyin serta
+                    <h3 data-i18n="footer_greeting_title">Semoga Membawa Keberkahan</h3>
+                    <p data-i18n="footer_greeting_desc">Jadwal sholat ini disusun dengan teliti untuk menemani dan
+                        mempermudah ibadah para Nahdliyin serta
                         seluruh umat Muslim Indonesia yang sedang merantau di penjuru Formosa.</p>
                 </div>
             </div>
@@ -193,27 +202,32 @@
             <hr class="footer-divider">
 
             <div class="technical-info">
-                <h4>Catatan Falakiyah & Panduan Jadwal</h4>
+                <h4 data-i18n="footer_note_title">Catatan Falakiyah & Panduan Jadwal</h4>
                 <div class="info-grid">
                     <div class="info-item">
-                        <strong>Kriteria LF-PBNU</strong>
-                        <span>Perhitungan merujuk pada standar otentik Lembaga Falakiyah PBNU.</span>
+                        <strong data-i18n="note_1_title">Kriteria LF-PBNU</strong>
+                        <span data-i18n="note_1_desc">Perhitungan merujuk pada standar otentik Lembaga Falakiyah
+                            PBNU.</span>
                     </div>
                     <div class="info-item">
-                        <strong>Sudut Matahari</strong>
-                        <span>Subuh: <strong>-20°</strong> · Isya: <strong>-18°</strong> di bawah ufuk.</span>
+                        <strong data-i18n="note_2_title">Sudut Matahari</strong>
+                        <span data-i18n="note_2_desc">Subuh: <strong>-20°</strong> · Isya: <strong>-18°</strong> di
+                            bawah ufuk.</span>
                     </div>
                     <div class="info-item">
-                        <strong>Ikhtiyat</strong>
-                        <span>Penambahan <strong>2 menit</strong> pada Subuh, Dhuhur, Asar, Maghrib, dan Isya'.</span>
+                        <strong data-i18n="note_3_title">Ikhtiyat</strong>
+                        <span data-i18n="note_3_desc">Penambahan <strong>2 menit</strong> pada Subuh, Dhuhur, Asar,
+                            Maghrib, dan Isya'.</span>
                     </div>
                     <div class="info-item">
-                        <strong>Waktu Imsak</strong>
-                        <span><strong>10 menit sebelum Subuh</strong> sebagai rambu persiapan puasa.</span>
+                        <strong data-i18n="note_4_title">Waktu Imsak</strong>
+                        <span data-i18n="note_4_desc"><strong>10 menit sebelum Subuh</strong> sebagai rambu persiapan
+                            puasa.</span>
                     </div>
                     <div class="info-item">
-                        <strong>Metode Ashar</strong>
-                        <span>Kriteria Jumhur Ulama (Madzhab Hambali, Maliki, dan Syafi'i).</span>
+                        <strong data-i18n="note_5_title">Metode Ashar</strong>
+                        <span data-i18n="note_5_desc">Kriteria Jumhur Ulama (Madzhab Hambali, Maliki, dan
+                            Syafi'i).</span>
                     </div>
                 </div>
             </div>
@@ -222,7 +236,7 @@
                 &copy; 2026 <span>LFNU Taiwan</span> · <a href="https://ainulyaqinmhd.github.io/" target="_blank"
                     rel="noopener">@ainulyaqinmhd</a> & <a href="https://github.com/mthudaa"
                     target="_blank">@mthudaa</a>
-                <br>Dilindungi doa dan niat baik.
+                <br><span data-i18n="copyright_protected">Dilindungi doa dan niat baik.</span>
             </div>
         </footer>
 
@@ -232,6 +246,7 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
     <!-- html2canvas for Poster Export -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+    <script src="js/translations.js"></script>
     <script src="js/locations.js"></script>
     <script src="js/app.js"></script>
 </body>
