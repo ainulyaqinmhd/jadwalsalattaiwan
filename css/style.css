@@ -1055,6 +1055,13 @@ tbody tr:nth-child(even):hover {
         font-size: 13px;
     }
 
+    .hero-countdown .countdown-info {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 2px;
+    }
+
     .today-prayers {
         display: flex;
         flex-wrap: wrap;
@@ -1187,6 +1194,13 @@ tbody tr:nth-child(even):hover {
 
     .hero-countdown strong {
         font-size: 15px;
+    }
+
+    .hero-countdown .countdown-info {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 2px;
     }
 
     .today-prayers {
@@ -1325,6 +1339,13 @@ tbody tr:nth-child(even):hover {
     th {
         font-size: 8px;
         padding: 8px 3px;
+    }
+
+    td {
+        padding: 7px 3px;
+        font-size: 11px;
+    }
+}
     }
 
     td {

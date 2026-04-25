@@ -82,7 +82,7 @@ function calculateCountdownAndHighlight(now) {
     let m = String(Math.floor((diff % 3600000) / 60000)).padStart(2, '0');
     let s = String(Math.floor((diff % 60000) / 1000)).padStart(2, '0');
 
-    document.getElementById('countdownBox').innerHTML = `<span class="badge-current">${translations.countdown_current[currentLang]} ${currentPrayer.name}</span><span> <strong>${h}:${m}:${s}</strong> ${translations.countdown_until[currentLang]} ${nextPrayer.name}</span>`;
+    document.getElementById('countdownBox').innerHTML = `<span class="badge-current">${translations.countdown_current[currentLang]} ${currentPrayer.name}</span><span class="countdown-info"> <strong>${h}:${m}:${s}</strong> <span class="countdown-target">${translations.countdown_until[currentLang]} ${nextPrayer.name}</span></span>`;
     const allCards = document.querySelectorAll('.prayer-card');
     allCards.forEach(card => card.classList.remove('active'));
     const activeCard = document.getElementById(`card-${currentPrayer.id}`);
@@ -115,6 +115,7 @@ async function loadTodayPrayers(lat, lng) {
     const url = `https://api.aladhan.com/v1/timings?latitude=${lat}&longitude=${lng}&method=${METHOD}&tune=${TUNE}&adjustment=${ADJUSTMENT}&hijriDateAdjustment=${HIJRI_ADJUSTMENT}&calendarMethod=MATHEMATICAL`;
     const res = await fetch(url);
     const result = await res.json();
+    
     todayTimingsData = result.data.timings;
     const t = todayTimingsData;
 

@@ -127,6 +127,14 @@ function setLang(lang) {
         }
     });
 
+    // Update hijriMonthSelect options
+    const hijriSelect = document.getElementById('hijriMonthSelect');
+    if (hijriSelect) {
+        Array.from(hijriSelect.options).forEach((opt, idx) => {
+            opt.text = arrays.namaBulanHijri[lang][idx];
+        });
+    }
+
     // Re-render JS dynamic parts
     if (typeof updateLiveClock === 'function') updateLiveClock();
     if (typeof loadData === 'function') loadData(); // Reload table and specific texts
