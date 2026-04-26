@@ -159,6 +159,7 @@ let currentHijriYear = null;
 let isHijriPickerInitialized = false;
 let lastLat = null;
 let lastLng = null;
+let currentTableRequestId = 0;
 
 // --- Switch Masehi/Hijriah ---
 function switchCalendarMode(mode) {
@@ -198,6 +199,7 @@ async function loadTable(lat, lng) {
     tableBody.innerHTML = "";
     document.getElementById("loadingMessage").style.display = "flex";
 
+    const requestId = ++currentTableRequestId;
     const nowForTable = new Date();
     const todayGregorian = `${String(nowForTable.getDate()).padStart(2, '0')}-${String(nowForTable.getMonth() + 1).padStart(2, '0')}-${nowForTable.getFullYear()}`;
 
@@ -222,6 +224,9 @@ async function loadTable(lat, lng) {
 
     const res = await fetch(url);
     const result = await res.json();
+    
+    if (requestId !== currentTableRequestId) return;
+    
     const data = result.data;
 
     // Render header
@@ -253,6 +258,7 @@ async function loadTable(lat, lng) {
     }
 
     // Render baris
+    let rowsHtml = "";
     data.forEach(day => {
         const gregorian = new Date(day.date.gregorian.date.split("-").reverse().join("-"));
         const isToday = (day.date.gregorian.date === todayGregorian);
@@ -281,9 +287,10 @@ async function loadTable(lat, lng) {
             <td>${day.timings.Maghrib.substring(0,5)}</td>
             <td>${day.timings.Isha.substring(0,5)}</td>
         </tr>`;
-        tableBody.innerHTML += row;
+        rowsHtml += row;
     });
 
+    tableBody.innerHTML = rowsHtml;
     document.getElementById("loadingMessage").style.display = "none";
 }
 
