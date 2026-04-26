@@ -501,8 +501,8 @@ body {
 .prayer-card.active {
     background: var(--nu-green);
     border-color: var(--nu-green);
-    transform: translateY(-6px) scale(1.03);
-    box-shadow: 0 8px 24px rgba(26, 107, 60, 0.25);
+    transform: translateY(-12px) scale(1.05);
+    box-shadow: 0 12px 30px rgba(26, 107, 60, 0.35);
 }
 
 .prayer-card.active::after {
@@ -1391,7 +1391,6 @@ body.screensaver-active .controls,
 body.screensaver-active .table-section,
 body.screensaver-active .footer-wrapper,
 body.screensaver-active .bg-ornament,
-body.screensaver-active .btn-screensaver-hero,
 body.screensaver-active .lang-selector-hero {
     display: none !important;
 }
@@ -1441,14 +1440,8 @@ body.screensaver-active .hero-bg-image {
     100% { transform: translate(0, 0); }
 }
 
-@keyframes screenSaverPulse {
-    0% { opacity: 0.85; filter: brightness(0.95); }
-    50% { opacity: 1; filter: brightness(1); }
-    100% { opacity: 0.85; filter: brightness(0.95); }
-}
-
 body.screensaver-active .main-container {
-    animation: screenSaverDrift 60s linear infinite, screenSaverPulse 8s ease-in-out infinite;
+    animation: screenSaverDrift 60s linear infinite;
 }
 
 /* Let today-prayers sit at the bottom naturally */
@@ -1461,4 +1454,83 @@ body.screensaver-active .today-prayers {
     margin: 0;
     padding: 0 20px;
     flex-shrink: 0; /* Keep its natural height */
+}
+
+/* Apply Gestalt: Make prayer cards subtle "ground" elements to not compete with the "figure" clock */
+body.screensaver-active .prayer-card {
+    background: rgba(255, 255, 255, 0.08);
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    box-shadow: none;
+    color: rgba(255, 255, 255, 0.8);
+}
+body.screensaver-active .prayer-card::after {
+    display: none;
+}
+body.screensaver-active .prayer-name {
+    color: rgba(255, 255, 255, 0.6);
+}
+body.screensaver-active .prayer-time {
+    color: #FFFFFF;
+}
+body.screensaver-active .prayer-card.active {
+    background: rgba(255, 255, 255, 0.15);
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    color: #FFFFFF;
+    transform: translateY(-16px) scale(1.05);
+    box-shadow: 0 12px 30px rgba(0, 0, 0, 0.15);
+}
+body.screensaver-active .prayer-card.active .prayer-name {
+    color: rgba(255, 255, 255, 0.9);
+}
+
+/* Scale up sizes for Screensaver Mode on larger screens (Tablets/Monitors) */
+@media (min-width: 768px) {
+    body.screensaver-active .hero-clock {
+        font-size: 120px;
+        text-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+    }
+    body.screensaver-active .hero-dates {
+        gap: 16px;
+        margin-bottom: 30px;
+    }
+    body.screensaver-active .hero-date, 
+    body.screensaver-active .hero-hijri {
+        font-size: 22px;
+    }
+    body.screensaver-active .hero-countdown {
+        font-size: 20px;
+        padding: 16px 40px;
+        transform: translateY(40px);
+    }
+    body.screensaver-active .hero-countdown strong {
+        font-size: 24px;
+    }
+    body.screensaver-active .btn-screensaver-hero {
+        padding: 12px;
+        top: 32px;
+        left: 32px;
+    }
+    body.screensaver-active .btn-screensaver-hero svg {
+        width: 24px;
+        height: 24px;
+    }
+    body.screensaver-active .today-prayers {
+        max-width: 900px;
+        gap: 12px;
+    }
+    body.screensaver-active .prayer-card {
+        padding: 16px 12px;
+    }
+    body.screensaver-active .prayer-name {
+        font-size: 12px;
+    }
+    body.screensaver-active .prayer-time {
+        font-size: 22px;
+    }
+    body.screensaver-active .prayer-card svg {
+        width: 24px;
+        height: 24px;
+    }
 }

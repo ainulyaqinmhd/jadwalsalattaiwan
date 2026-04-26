@@ -532,23 +532,53 @@ async function exportToPoster() {
     }
 }
 
-// --- Screensaver Mode ---
+// --- Screensaver & Wake Lock ---
+let wakeLock = null;
+
+async function requestWakeLock() {
+    if ('wakeLock' in navigator) {
+        try {
+            wakeLock = await navigator.wakeLock.request('screen');
+        } catch (err) {
+            console.error(`Wake Lock error: ${err.name}, ${err.message}`);
+        }
+    }
+}
+
+function releaseWakeLock() {
+    if (wakeLock !== null) {
+        wakeLock.release()
+            .then(() => { wakeLock = null; })
+            .catch(err => console.error(err));
+    }
+}
+
 function toggleScreensaver() {
     if (!document.fullscreenElement) {
         document.documentElement.requestFullscreen().catch(err => {
             console.warn(`Error attempting to enable fullscreen: ${err.message}`);
         });
         document.body.classList.add('screensaver-active');
+        requestWakeLock();
     } else {
         if (document.exitFullscreen) {
             document.exitFullscreen();
         }
         document.body.classList.remove('screensaver-active');
+        releaseWakeLock();
     }
 }
 
 document.addEventListener('fullscreenchange', () => {
     if (!document.fullscreenElement) {
         document.body.classList.remove('screensaver-active');
+        releaseWakeLock();
+    }
+});
+
+// Re-acquire wake lock if tab becomes visible again while in screensaver
+document.addEventListener('visibilitychange', () => {
+    if (document.visibilityState === 'visible' && document.body.classList.contains('screensaver-active')) {
+        requestWakeLock();
     }
 });
