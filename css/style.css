@@ -1358,7 +1358,7 @@ tbody tr:nth-child(even):hover {
     position: absolute;
     top: 24px;
     left: 24px;
-    display: inline-flex;
+    display: none; /* Hidden on mobile by default */
     align-items: center;
     justify-content: center;
     background: rgba(255, 255, 255, 0.12);
@@ -1506,6 +1506,9 @@ body.screensaver-active .prayer-card.active .prayer-name {
     }
     body.screensaver-active .hero-countdown strong {
         font-size: 24px;
+    }
+    .btn-screensaver-hero {
+        display: inline-flex; /* Show on computer view */
     }
     body.screensaver-active .btn-screensaver-hero {
         padding: 12px;
