@@ -531,3 +531,24 @@ async function exportToPoster() {
         btn.disabled = false;
     }
 }
+
+// --- Screensaver Mode ---
+function toggleScreensaver() {
+    if (!document.fullscreenElement) {
+        document.documentElement.requestFullscreen().catch(err => {
+            console.warn(`Error attempting to enable fullscreen: ${err.message}`);
+        });
+        document.body.classList.add('screensaver-active');
+    } else {
+        if (document.exitFullscreen) {
+            document.exitFullscreen();
+        }
+        document.body.classList.remove('screensaver-active');
+    }
+}
+
+document.addEventListener('fullscreenchange', () => {
+    if (!document.fullscreenElement) {
+        document.body.classList.remove('screensaver-active');
+    }
+});

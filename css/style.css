@@ -1349,10 +1349,116 @@ tbody tr:nth-child(even):hover {
         font-size: 11px;
     }
 }
-    }
 
-    td {
-        padding: 7px 3px;
-        font-size: 11px;
-    }
+/* =============================================
+   SCREENSAVER MODE
+   ============================================= */
+/* --- SCREENSAVER BUTTON --- */
+.btn-screensaver-hero {
+    position: absolute;
+    top: 24px;
+    left: 24px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    background: rgba(255, 255, 255, 0.12);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    padding: 8px;
+    border-radius: var(--radius-pill);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    z-index: 10;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+    color: white;
+    cursor: pointer;
+    transition: all var(--transition-fast);
+}
+
+.btn-screensaver-hero:hover {
+    background: rgba(255, 255, 255, 0.25);
+    transform: translateY(-1px);
+}
+
+body.screensaver-active {
+    background: var(--nu-green-deep);
+    overflow: hidden;
+    margin: 0;
+    padding: 0;
+    height: 100vh;
+}
+
+body.screensaver-active .controls,
+body.screensaver-active .table-section,
+body.screensaver-active .footer-wrapper,
+body.screensaver-active .bg-ornament,
+body.screensaver-active .btn-screensaver-hero,
+body.screensaver-active .lang-selector-hero {
+    display: none !important;
+}
+
+body.screensaver-active .main-container {
+    padding: 20px 0 40px 0;
+    max-width: none;
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    background: linear-gradient(160deg, var(--nu-green-deep) 0%, var(--nu-green-dark) 35%, var(--nu-green) 100%);
+    overflow: hidden;
+}
+
+body.screensaver-active .hero-header {
+    margin: 0;
+    width: 100%;
+    flex: 1;
+    border-radius: 0;
+    box-shadow: none;
+    background: none;
+    padding: 0 20px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    position: relative; /* So stars position relative to this large flex area */
+    z-index: 1;
+}
+
+body.screensaver-active .hero-crescent,
+body.screensaver-active .hero-stars,
+body.screensaver-active .hero-ornament-left,
+body.screensaver-active .hero-ornament-right,
+body.screensaver-active .hero-bg-image {
+    opacity: 0.15;
+}
+
+/* Screen Burn-in Protection Animations */
+@keyframes screenSaverDrift {
+    0% { transform: translate(0, 0); }
+    25% { transform: translate(10px, 8px); }
+    50% { transform: translate(-8px, 12px); }
+    75% { transform: translate(-12px, -8px); }
+    100% { transform: translate(0, 0); }
+}
+
+@keyframes screenSaverPulse {
+    0% { opacity: 0.85; filter: brightness(0.95); }
+    50% { opacity: 1; filter: brightness(1); }
+    100% { opacity: 0.85; filter: brightness(0.95); }
+}
+
+body.screensaver-active .main-container {
+    animation: screenSaverDrift 60s linear infinite, screenSaverPulse 8s ease-in-out infinite;
+}
+
+/* Let today-prayers sit at the bottom naturally */
+body.screensaver-active .today-prayers {
+    position: relative;
+    transform: none;
+    width: 100%;
+    max-width: 800px;
+    z-index: 10;
+    margin: 0;
+    padding: 0 20px;
+    flex-shrink: 0; /* Keep its natural height */
 }

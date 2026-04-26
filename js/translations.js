@@ -23,6 +23,7 @@ const translations = {
     "btn_hijriah": { id: "Hijriah", en: "Hijri" },
     "btn_excel": { id: "Excel", en: "Excel" },
     "btn_poster": { id: "Poster", en: "Poster" },
+    "btn_screensaver": { id: "Layar Penuh", en: "Fullscreen" },
     
     // --- Table Headers ---
     "th_date_m": { id: "Tgl", en: "Date" },
