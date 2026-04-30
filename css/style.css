@@ -1354,17 +1354,14 @@ tbody tr:nth-child(even):hover {
    SCREENSAVER MODE
    ============================================= */
 /* --- SCREENSAVER BUTTON --- */
-.btn-screensaver-hero {
+.btn-screensaver-hero, .btn-home-hero {
     position: absolute;
     top: 24px;
-    left: 24px;
-    display: none; /* Hidden on mobile by default */
     align-items: center;
     justify-content: center;
     background: rgba(255, 255, 255, 0.12);
     backdrop-filter: blur(12px);
     -webkit-backdrop-filter: blur(12px);
-    padding: 8px;
     border-radius: var(--radius-pill);
     border: 1px solid rgba(255, 255, 255, 0.2);
     z-index: 10;
@@ -1374,7 +1371,23 @@ tbody tr:nth-child(even):hover {
     transition: all var(--transition-fast);
 }
 
-.btn-screensaver-hero:hover {
+.btn-home-hero {
+    left: 24px;
+    display: inline-flex;
+    text-decoration: none;
+    padding: 6px 14px;
+    gap: 6px;
+    font-size: 11px;
+    font-weight: 700;
+}
+
+.btn-screensaver-hero {
+    left: 160px; /* Accommodate the wider home button */
+    padding: 8px; /* Original padding for square button */
+    display: none; /* Hidden on mobile by default */
+}
+
+.btn-screensaver-hero:hover, .btn-home-hero:hover {
     background: rgba(255, 255, 255, 0.25);
     transform: translateY(-1px);
 }
@@ -1391,6 +1404,7 @@ body.screensaver-active .controls,
 body.screensaver-active .table-section,
 body.screensaver-active .footer-wrapper,
 body.screensaver-active .bg-ornament,
+body.screensaver-active .btn-home-hero,
 body.screensaver-active .lang-selector-hero {
     display: none !important;
 }
