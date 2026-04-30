@@ -1356,7 +1356,6 @@ tbody tr:nth-child(even):hover {
 /* --- SCREENSAVER BUTTON --- */
 .btn-screensaver-hero, .btn-home-hero {
     position: absolute;
-    top: 24px;
     align-items: center;
     justify-content: center;
     background: rgba(255, 255, 255, 0.12);
@@ -1372,6 +1371,7 @@ tbody tr:nth-child(even):hover {
 }
 
 .btn-home-hero {
+    top: 24px;
     left: 24px;
     display: inline-flex;
     text-decoration: none;
@@ -1382,7 +1382,8 @@ tbody tr:nth-child(even):hover {
 }
 
 .btn-screensaver-hero {
-    left: 160px; /* Accommodate the wider home button */
+    bottom: 24px;
+    right: 24px;
     padding: 8px; /* Original padding for square button */
     display: none; /* Hidden on mobile by default */
 }
@@ -1526,8 +1527,10 @@ body.screensaver-active .prayer-card.active .prayer-name {
     }
     body.screensaver-active .btn-screensaver-hero {
         padding: 12px;
-        top: 32px;
-        left: 32px;
+        bottom: 32px;
+        right: 32px;
+        top: auto;
+        left: auto;
     }
     body.screensaver-active .btn-screensaver-hero svg {
         width: 24px;
