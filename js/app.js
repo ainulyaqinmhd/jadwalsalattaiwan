@@ -22,7 +22,8 @@ const METHOD = 20;
 const IHTIYATH = 2;
 const TUNE = `${IHTIYATH},${IHTIYATH},0,${IHTIYATH},${IHTIYATH},${IHTIYATH},0,${IHTIYATH},0`;
 const ADJUSTMENT = 1;
-const HIJRI_ADJUSTMENT = -2; // Koreksi tanggal Hijriyah: -2, -1, 0, +1, +2
+// Tanggal Hijriah dihitung dengan kriteria IRNU di js/hijri.js.
+// Koreksi manual: lihat HIJRI_CONFIG (globalOffset / overrides) di js/hijri.js.
 
 let customLat = null;
 let customLng = null;
@@ -44,8 +45,20 @@ document.getElementById("monthSelect").value = `${nowSetup.getFullYear()}-${Stri
 // --- Jam Langsung (Live Clock) ---
 function updateLiveClock() {
     const now = new Date();
-    document.getElementById('liveClock').innerText = now.toLocaleTimeString('id-ID', { hour12: false });
+    const clockEl = document.getElementById('liveClock');
+    const pad = (n) => String(n).padStart(2, '0');
+    clockEl.innerHTML = `${pad(now.getHours())}:${pad(now.getMinutes())}<span class="clock-sec">${pad(now.getSeconds())}</span>`;
     document.getElementById('todayDate').innerText = `${arrays.namaHari[currentLang][now.getDay()]}, ${now.getDate()} ${arrays.namaBulan[currentLang][now.getMonth()]} ${now.getFullYear()}`;
+
+    // Ganti hari (lewat tengah malam): muat ulang jadwal agar layar yang terus menyala tetap benar
+    const key = dayKey(now);
+    if (loadedDayKey && key !== loadedDayKey) {
+        const monthInput = document.getElementById("monthSelect");
+        if (monthInput.value === loadedDayKey.slice(0, 7)) monthInput.value = key.slice(0, 7);
+        loadData();
+    }
+
+    renderHeroHijri(now);
     calculateCountdownAndHighlight(now);
 }
 setInterval(updateLiveClock, 1000);
@@ -82,7 +95,7 @@ function calculateCountdownAndHighlight(now) {
     let m = String(Math.floor((diff % 3600000) / 60000)).padStart(2, '0');
     let s = String(Math.floor((diff % 60000) / 1000)).padStart(2, '0');
 
-    document.getElementById('countdownBox').innerHTML = `<span class="badge-current">${translations.countdown_current[currentLang]} ${currentPrayer.name}</span><span class="countdown-info"> <strong>${h}:${m}:${s}</strong> <span class="countdown-target">${translations.countdown_until[currentLang]} ${nextPrayer.name}</span></span>`;
+    document.getElementById('countdownBox').innerHTML = `<span class="badge-current">${translations.countdown_current[currentLang]} ${currentPrayer.name}</span><span class="countdown-info"><span class="countdown-target">${nextPrayer.name} ${translations.countdown_until[currentLang]}</span> <strong>${h}:${m}:${s}</strong></span>`;
     const allCards = document.querySelectorAll('.prayer-card');
     allCards.forEach(card => card.classList.remove('active'));
     const activeCard = document.getElementById(`card-${currentPrayer.id}`);
@@ -110,35 +123,86 @@ function useCurrentLocation() {
     }
 }
 
-// --- Muat Jadwal Salat Hari Ini ---
-async function loadTodayPrayers(lat, lng) {
-    const url = `https://api.aladhan.com/v1/timings?latitude=${lat}&longitude=${lng}&method=${METHOD}&tune=${TUNE}&adjustment=${ADJUSTMENT}&hijriDateAdjustment=${HIJRI_ADJUSTMENT}&calendarMethod=MATHEMATICAL`;
+// --- Helper umum ---
+const pad2 = (n) => String(n).padStart(2, '0');
+const dayKey = (d) => `${d.getFullYear()}-${pad2(d.getMonth() + 1)}-${pad2(d.getDate())}`;
+const apiParams = (lat, lng) => `latitude=${lat}&longitude=${lng}&method=${METHOD}&tune=${TUNE}&adjustment=${ADJUSTMENT}`;
+
+// "HH:MM" pada tanggal `now`
+function timeOnDay(now, hhmm) {
+    const [h, m] = hhmm.substring(0, 5).split(':').map(Number);
+    return new Date(now.getFullYear(), now.getMonth(), now.getDate(), h, m, 0);
+}
+
+async function fetchApi(url) {
     const res = await fetch(url);
-    const result = await res.json();
-    
-    todayTimingsData = result.data.timings;
-    const t = todayTimingsData;
+    if (!res.ok) throw new Error(`HTTP ${res.status}`);
+    const json = await res.json();
+    if (json.code !== 200 || !json.data) throw new Error(`API: ${json.status || 'respons tidak valid'}`);
+    return json.data;
+}
 
-    // Simpan info Hijriyah untuk kalender
-    const hijri = result.data.date.hijri;
-    if (hijri) {
-        currentHijriMonth = hijri.month;
-        currentHijriYear = hijri.year;
-        
-        // Inisialisasi picker hijriah pertama kali
-        if (!isHijriPickerInitialized) {
-            document.getElementById('hijriMonthSelect').value = hijri.month.number;
-            document.getElementById('hijriYearSelect').value = hijri.year;
-            isHijriPickerInitialized = true;
-        }
+function hijriEventName(month, day) {
+    const ev = Hijri.specialDay(month, day);
+    return ev ? translations[ev.key][currentLang] : '';
+}
 
-        const hijriEl = document.getElementById('hijriDate');
-        if (hijriEl) {
-            const adjustedDay = parseInt(hijri.day) + HIJRI_ADJUSTMENT;
-            const targetMonthIndo = arrays.namaBulanHijri[currentLang][hijri.month.number - 1];
-            hijriEl.innerText = `${adjustedDay} ${targetMonthIndo} ${hijri.year} H`;
+// --- Tanggal Hijriah di header (berganti saat Maghrib) ---
+let lastHeroHijriText = null;
+let heroHijriErrorLogged = false;
+function renderHeroHijri(now) {
+    const el = document.getElementById('hijriDate');
+    if (!el) return;
+    let text = '';
+    try {
+        let n = Hijri.dayNumFromDate(now);
+        let isEve = false;
+        if (todayTimingsData && now >= timeOnDay(now, todayTimingsData.Maghrib)) {
+            n += 1; // hari Hijriah baru dimulai saat Maghrib
+            isEve = true;
         }
+        const h = Hijri.fromDayNum(n);
+        const ev = hijriEventName(h.month, h.day);
+        const prefix = isEve ? `${translations.hijri_eve[currentLang]} ` : '';
+        text = `${prefix}${h.day} ${arrays.namaBulanHijri[currentLang][h.month - 1]} ${h.year} H`;
+        if (ev) text += `<span class="hero-hijri-event">${ev}</span>`;
+    } catch (err) {
+        if (!heroHijriErrorLogged) console.error('Gagal menghitung tanggal Hijriah:', err);
+        heroHijriErrorLogged = true;
     }
+    if (text !== lastHeroHijriText) {
+        el.innerHTML = text;
+        lastHeroHijriText = text;
+    }
+}
+
+// --- Muat Jadwal Salat Hari Ini ---
+let todayRequestId = 0;
+let todayRetryTimer = null;
+async function loadTodayPrayers(lat, lng) {
+    clearTimeout(todayRetryTimer);
+    const requestId = ++todayRequestId;
+    const now = new Date();
+    const dateStr = `${pad2(now.getDate())}-${pad2(now.getMonth() + 1)}-${now.getFullYear()}`;
+
+    let data;
+    try {
+        data = await fetchApi(`https://api.aladhan.com/v1/timings/${dateStr}?${apiParams(lat, lng)}`);
+    } catch (err) {
+        if (requestId !== todayRequestId) return;
+        console.error('Gagal memuat jadwal hari ini:', err);
+        todayTimingsData = null;
+        document.getElementById('countdownBox').innerHTML =
+            `<span class="countdown-error">${translations.error_load[currentLang]}</span>`;
+        renderHeroHijri(new Date());
+        // Coba lagi otomatis (penting untuk layar masjid / mode layar penuh)
+        todayRetryTimer = setTimeout(() => loadTodayPrayers(lat, lng), 60000);
+        return;
+    }
+    if (requestId !== todayRequestId) return;
+
+    todayTimingsData = data.timings;
+    const t = todayTimingsData;
 
     document.getElementById("todayPrayers").innerHTML = `
         <div class="prayer-card" id="card-Imsak">${prayerIcons.Imsak}<div class="prayer-name">${translations.prayer_imsak[currentLang]}</div><div class="prayer-time">${t.Imsak.substring(0,5)}</div></div>
@@ -154,12 +218,16 @@ async function loadTodayPrayers(lat, lng) {
 
 // --- State Tabel ---
 let calendarMode = 'masehi'; // 'masehi' atau 'hijriah'
-let currentHijriMonth = null; // { number, en, ar }
+let currentHijriMonth = null; // nomor bulan 1–12
 let currentHijriYear = null;
 let isHijriPickerInitialized = false;
 let lastLat = null;
 let lastLng = null;
 let currentTableRequestId = 0;
+let loadedDayKey = null; // tanggal saat data terakhir dimuat (untuk ganti hari otomatis)
+
+const HIJRI_YEAR_MIN = 1400;
+const HIJRI_YEAR_MAX = 1500;
 
 // --- Switch Masehi/Hijriah ---
 function switchCalendarMode(mode) {
@@ -171,12 +239,33 @@ function switchCalendarMode(mode) {
     const isMasehi = mode === 'masehi';
     const masehiPicker = document.getElementById('masehiMonthPicker');
     if (masehiPicker) masehiPicker.style.display = isMasehi ? 'flex' : 'none';
-    
+
     const hijriPicker = document.getElementById('hijriMonthPicker');
     if (hijriPicker) hijriPicker.style.display = isMasehi ? 'none' : 'flex';
     // Fetch data baru sesuai mode
     if (lastLat && lastLng) {
         loadTable(lastLat, lastLng);
+    }
+}
+
+// --- Bulan Hijriah berjalan & picker ---
+function updateHijriState() {
+    try {
+        const h = Hijri.fromDate(new Date());
+        const monthSel = document.getElementById('hijriMonthSelect');
+        const yearInput = document.getElementById('hijriYearSelect');
+        // Picker ikut pindah jika sebelumnya menunjuk bulan berjalan
+        const followsCurrent = !isHijriPickerInitialized ||
+            (parseInt(monthSel.value) === currentHijriMonth && parseInt(yearInput.value) === currentHijriYear);
+        currentHijriMonth = h.month;
+        currentHijriYear = h.year;
+        if (followsCurrent) {
+            monthSel.value = h.month;
+            yearInput.value = h.year;
+        }
+        isHijriPickerInitialized = true;
+    } catch (err) {
+        console.error('Gagal menghitung bulan Hijriah:', err);
     }
 }
 
@@ -186,8 +275,13 @@ function loadData() {
     let lat, lng;
     if (city === "auto") { lat = customLat; lng = customLng; }
     else { lat = locations[city].lat; lng = locations[city].lng; }
+    if (lat == null || lng == null) return;
     lastLat = lat;
     lastLng = lng;
+    loadedDayKey = dayKey(new Date());
+    updateHijriState();
+    renderHilalCard();
+    try { renderCalendar(); } catch (err) { console.error('Gagal menampilkan kalender:', err); }
     loadTodayPrayers(lat, lng);
     loadTable(lat, lng);
 }
@@ -196,102 +290,320 @@ function loadData() {
 async function loadTable(lat, lng) {
     const tableHead = document.getElementById("tableHead");
     const tableBody = document.getElementById("tableBody");
+    const statusEl = document.getElementById("hijriStatus");
     tableBody.innerHTML = "";
+    statusEl.textContent = "";
+    statusEl.className = "hijri-status";
     document.getElementById("loadingMessage").style.display = "flex";
 
     const requestId = ++currentTableRequestId;
     const nowForTable = new Date();
-    const todayGregorian = `${String(nowForTable.getDate()).padStart(2, '0')}-${String(nowForTable.getMonth() + 1).padStart(2, '0')}-${nowForTable.getFullYear()}`;
+    const todayGregorian = `${pad2(nowForTable.getDate())}-${pad2(nowForTable.getMonth() + 1)}-${nowForTable.getFullYear()}`;
 
-    let url;
-    if (calendarMode === 'hijriah') {
-        const hMonth = document.getElementById("hijriMonthSelect").value;
-        const hYear = document.getElementById("hijriYearSelect").value;
-        const monthName = document.getElementById("hijriMonthSelect").options[hMonth - 1].text;
-        
-        // Ambil data kalender Hijriah
-        url = `https://api.aladhan.com/v1/hijriCalendar/${hYear}/${hMonth}?latitude=${lat}&longitude=${lng}&method=${METHOD}&tune=${TUNE}&adjustment=${ADJUSTMENT}&calendarMethod=MATHEMATICAL`;
-        // Update judul section
-        document.getElementById("sectionTitleText").innerText = `${translations.schedule_title[currentLang]} ${monthName} ${hYear} H`;
-    } else {
-        // Ambil data kalender Masehi
-        const [y, m] = document.getElementById("monthSelect").value.split("-");
-        url = `https://api.aladhan.com/v1/calendar?latitude=${lat}&longitude=${lng}&method=${METHOD}&tune=${TUNE}&month=${m}&year=${y}&adjustment=${ADJUSTMENT}&calendarMethod=MATHEMATICAL`;
-        // Update judul section
-        const monthIdx = parseInt(m) - 1;
-        document.getElementById("sectionTitleText").innerText = `${translations.schedule_title[currentLang]} ${arrays.namaBulan[currentLang][monthIdx]} ${y}`;
-    }
+    const fetchMonth = (y, m) => fetchApi(`https://api.aladhan.com/v1/calendar?${apiParams(lat, lng)}&month=${m}&year=${y}`);
+    // "DD-MM-YYYY" → nomor hari
+    const rowDayNum = (day) => {
+        const [d, m, y] = day.date.gregorian.date.split("-").map(Number);
+        return Hijri.dayNum(y, m, d);
+    };
 
-    const res = await fetch(url);
-    const result = await res.json();
-    
-    if (requestId !== currentTableRequestId) return;
-    
-    const data = result.data;
-
-    // Render header
-    if (calendarMode === 'hijriah') {
-        tableHead.innerHTML = `<tr>
-            <th data-i18n="th_date_h">${translations.th_date_h[currentLang]}</th>
-            <th data-i18n="btn_masehi">${translations.btn_masehi[currentLang]}</th>
-            <th data-i18n="th_day">${translations.th_day[currentLang]}</th>
-            <th data-i18n="th_imsak">${translations.th_imsak[currentLang]}</th>
-            <th data-i18n="th_fajr">${translations.th_fajr[currentLang]}</th>
-            <th data-i18n="th_sunrise">${translations.th_sunrise[currentLang]}</th>
-            <th data-i18n="th_dhuhr">${translations.th_dhuhr[currentLang]}</th>
-            <th data-i18n="th_asr">${translations.th_asr[currentLang]}</th>
-            <th data-i18n="th_maghrib">${translations.th_maghrib[currentLang]}</th>
-            <th data-i18n="th_isha">${translations.th_isha[currentLang]}</th>
-        </tr>`;
-    } else {
-        tableHead.innerHTML = `<tr>
-            <th data-i18n="th_date_m">${translations.th_date_m[currentLang]}</th>
-            <th data-i18n="th_day">${translations.th_day[currentLang]}</th>
-            <th data-i18n="th_imsak">${translations.th_imsak[currentLang]}</th>
-            <th data-i18n="th_fajr">${translations.th_fajr[currentLang]}</th>
-            <th data-i18n="th_sunrise">${translations.th_sunrise[currentLang]}</th>
-            <th data-i18n="th_dhuhr">${translations.th_dhuhr[currentLang]}</th>
-            <th data-i18n="th_asr">${translations.th_asr[currentLang]}</th>
-            <th data-i18n="th_maghrib">${translations.th_maghrib[currentLang]}</th>
-            <th data-i18n="th_isha">${translations.th_isha[currentLang]}</th>
-        </tr>`;
-    }
-
-    // Render baris
-    let rowsHtml = "";
-    data.forEach(day => {
-        const gregorian = new Date(day.date.gregorian.date.split("-").reverse().join("-"));
-        const isToday = (day.date.gregorian.date === todayGregorian);
-        const rowClass = isToday ? ' class="current-day-row"' : '';
-
-        let dateCol;
+    try {
+        let data;
+        let hMonth = null, hYear = null, hijriStart = null;
         if (calendarMode === 'hijriah') {
-            const hijriDay = parseInt(day.date.hijri.day); // Tampilkan tgl real sesuai bulan (tanpa offset manual)
-            const gregDay = day.date.gregorian.day.replace(/^0+/, '');
-            const gregMonth = gregorian.getMonth() + 1;
-            dateCol = `<td><strong>${hijriDay}</strong></td>
-                       <td>${gregDay}/${gregMonth}</td>
-                       <td><strong>${arrays.namaHari[currentLang][gregorian.getDay()]}</strong></td>`;
+            const monthSel = document.getElementById("hijriMonthSelect");
+            const yearInput = document.getElementById("hijriYearSelect");
+            hMonth = parseInt(monthSel.value);
+            hYear = parseInt(yearInput.value);
+            if (!Number.isInteger(hYear)) hYear = currentHijriYear || HIJRI_YEAR_MIN;
+            hYear = Math.min(HIJRI_YEAR_MAX, Math.max(HIJRI_YEAR_MIN, hYear));
+            yearInput.value = hYear;
+
+            const monthName = monthSel.options[hMonth - 1].text;
+            document.getElementById("sectionTitleText").innerText = `${translations.schedule_title[currentLang]} ${monthName} ${hYear} H`;
+
+            // Rentang bulan Hijriah (IRNU) → ambil bulan Masehi yang tercakup, lalu saring
+            const range = Hijri.monthRange(hYear, hMonth);
+            hijriStart = range.start;
+            statusEl.textContent = translations[range.fixed ? 'hijri_status_fixed' : 'hijri_status_hisab'][currentLang];
+            statusEl.classList.toggle('fixed', range.fixed);
+
+            const first = Hijri.dayNumToDate(range.start);
+            const last = Hijri.dayNumToDate(range.end - 1);
+            const months = [[first.getFullYear(), first.getMonth() + 1]];
+            if (last.getMonth() !== first.getMonth() || last.getFullYear() !== first.getFullYear()) {
+                months.push([last.getFullYear(), last.getMonth() + 1]);
+            }
+            const results = await Promise.all(months.map(([y, m]) => fetchMonth(y, m)));
+            data = results.flat().filter(day => {
+                const n = rowDayNum(day);
+                return n >= range.start && n < range.end;
+            });
         } else {
-            dateCol = `<td><strong>${day.date.gregorian.day.replace(/^0+/, '')}</strong></td>
-                       <td><strong>${arrays.namaHari[currentLang][gregorian.getDay()]}</strong></td>`;
+            const [y, m] = document.getElementById("monthSelect").value.split("-");
+            const monthIdx = parseInt(m) - 1;
+            document.getElementById("sectionTitleText").innerText = `${translations.schedule_title[currentLang]} ${arrays.namaBulan[currentLang][monthIdx]} ${y}`;
+            data = await fetchMonth(y, m);
         }
 
-        const row = `<tr${rowClass}>
-            ${dateCol}
-            <td>${day.timings.Imsak.substring(0,5)}</td>
-            <td>${day.timings.Fajr.substring(0,5)}</td>
-            <td>${day.timings.Sunrise.substring(0,5)}</td>
-            <td>${day.timings.Dhuhr.substring(0,5)}</td>
-            <td>${day.timings.Asr.substring(0,5)}</td>
-            <td>${day.timings.Maghrib.substring(0,5)}</td>
-            <td>${day.timings.Isha.substring(0,5)}</td>
-        </tr>`;
-        rowsHtml += row;
-    });
+        if (requestId !== currentTableRequestId) return;
 
-    tableBody.innerHTML = rowsHtml;
-    document.getElementById("loadingMessage").style.display = "none";
+        // Render header
+        const th = (key) => `<th data-i18n="${key}">${translations[key][currentLang]}</th>`;
+        const timeHeaders = ['th_imsak', 'th_fajr', 'th_sunrise', 'th_dhuhr', 'th_asr', 'th_maghrib', 'th_isha'].map(th).join('');
+        tableHead.innerHTML = calendarMode === 'hijriah'
+            ? `<tr>${th('th_date_h')}${th('btn_masehi')}${th('th_day')}${timeHeaders}</tr>`
+            : `<tr>${th('th_date_m')}${th('th_date_h')}${th('th_day')}${timeHeaders}</tr>`;
+
+        // Render baris
+        let rowsHtml = "";
+        data.forEach((day, i) => {
+            const n = rowDayNum(day);
+            const gregorian = Hijri.dayNumToDate(n);
+            const isToday = (day.date.gregorian.date === todayGregorian);
+
+            let h = null;
+            if (calendarMode === 'hijriah') {
+                h = { year: hYear, month: hMonth, day: n - hijriStart + 1 };
+            } else {
+                try { h = Hijri.fromDayNum(n); } catch (err) { h = null; }
+            }
+
+            const ev = h ? Hijri.specialDay(h.month, h.day) : null;
+            const classes = [];
+            if (isToday) classes.push('current-day-row');
+            if (ev) classes.push(ev.kind === 'fasting' ? 'row-fasting' : 'row-event');
+            if (ev && ev.kind === 'holiday') classes.push('row-holiday');
+            const rowClass = classes.length ? ` class="${classes.join(' ')}"` : '';
+            const evLabel = ev ? ` <span class="hijri-event">${translations[ev.key][currentLang]}</span>` : '';
+            const dayName = `<td><strong>${arrays.namaHari[currentLang][gregorian.getDay()]}</strong></td>`;
+
+            let dateCol;
+            if (calendarMode === 'hijriah') {
+                dateCol = `<td><strong>${h.day}</strong>${evLabel}</td>
+                           <td>${gregorian.getDate()}/${gregorian.getMonth() + 1}</td>
+                           ${dayName}`;
+            } else {
+                // Nama bulan Hijriah hanya di baris pertama dan saat tanggal 1
+                const monthLabel = h && (i === 0 || h.day === 1)
+                    ? ` <span class="hijri-month-label">${arrays.namaBulanHijri[currentLang][h.month - 1]}</span>` : '';
+                const hijriCell = h ? `<td><strong>${h.day}</strong>${monthLabel}${evLabel}</td>` : `<td>-</td>`;
+                dateCol = `<td><strong>${gregorian.getDate()}</strong></td>
+                           ${hijriCell}
+                           ${dayName}`;
+            }
+
+            rowsHtml += `<tr${rowClass}>
+                ${dateCol}
+                <td>${day.timings.Imsak.substring(0,5)}</td>
+                <td>${day.timings.Fajr.substring(0,5)}</td>
+                <td>${day.timings.Sunrise.substring(0,5)}</td>
+                <td>${day.timings.Dhuhr.substring(0,5)}</td>
+                <td>${day.timings.Asr.substring(0,5)}</td>
+                <td>${day.timings.Maghrib.substring(0,5)}</td>
+                <td>${day.timings.Isha.substring(0,5)}</td>
+            </tr>`;
+        });
+
+        tableBody.innerHTML = rowsHtml;
+    } catch (err) {
+        if (requestId !== currentTableRequestId) return;
+        console.error('Gagal memuat tabel jadwal:', err);
+        const msgKey = err.name === 'HijriError' ? 'error_hijri' : 'error_load';
+        tableBody.innerHTML = `<tr><td colspan="10" class="table-error">
+            ${translations[msgKey][currentLang]}
+            <button class="btn-retry" onclick="loadData()">${translations.btn_retry[currentLang]}</button>
+        </td></tr>`;
+    } finally {
+        if (requestId === currentTableRequestId) {
+            document.getElementById("loadingMessage").style.display = "none";
+        }
+    }
+}
+
+// --- Kartu Data Hilal (awal bulan Hijriah berikutnya) ---
+function formatDeg(x) {
+    const totalMin = Math.round(Math.abs(x) * 60);
+    return `${x < 0 ? '−' : ''}${Math.floor(totalMin / 60)}° ${pad2(totalMin % 60)}′`;
+}
+
+// Tanggal & jam di zona waktu markaz (HIJRI_CONFIG.utcOffset)
+function formatMarkazTime(date) {
+    const d = new Date(date.getTime() + HIJRI_CONFIG.utcOffset * 3600000);
+    return {
+        date: `${d.getUTCDate()} ${arrays.namaBulan[currentLang][d.getUTCMonth()]} ${d.getUTCFullYear()}`,
+        time: `${pad2(d.getUTCHours())}:${pad2(d.getUTCMinutes())}`
+    };
+}
+
+function renderHilalCard() {
+    const section = document.getElementById('hilalSection');
+    if (!section) return;
+    try {
+        const today = Hijri.fromDate(new Date());
+        const year = today.month === 12 ? today.year + 1 : today.year;
+        const month = today.month === 12 ? 1 : today.month + 1;
+        const monthName = arrays.namaBulanHijri[currentLang][month - 1];
+        const ev = Hijri.evaluate(year, month);
+        const range = Hijri.monthRange(year, month);
+        const tr = (key) => translations[key][currentLang];
+        const tz = `UTC+${HIJRI_CONFIG.utcOffset}`;
+        const check = (ok) => `<span class="hilal-check ${ok ? 'ok' : 'no'}">${ok ? '✓' : '✗'}</span>`;
+
+        document.getElementById('hilalTitle').innerText = `${tr('hilal_title')} ${monthName} ${year} H`;
+
+        const status = document.getElementById('hilalStatus');
+        status.textContent = tr(range.fixed ? 'hijri_status_fixed' : 'hijri_status_hisab');
+        status.className = `hijri-status${range.fixed ? ' fixed' : ''}`;
+
+        const conj = formatMarkazTime(ev.conjunction);
+        const items = [[tr('hilal_conj'), `${conj.date}, ${conj.time} <small>${tz}</small>`]];
+        if (ev.hilal) {
+            items.push(
+                [tr('hilal_markaz'), ev.hilal.name],
+                [tr('hilal_sunset'), `${formatMarkazTime(ev.hilal.sunset).time} <small>${tz}</small>`],
+                [tr('hilal_alt'), `${formatDeg(ev.hilal.altitude)} ${check(ev.hilal.altitude >= HIJRI_CONFIG.minAltitude)}`],
+                [tr('hilal_elong'), `${formatDeg(ev.hilal.elongation)} ${check(ev.hilal.elongation >= HIJRI_CONFIG.minElongation)}`]
+            );
+        }
+        const verdict = !ev.hilal ? tr('hilal_after_sunset') : (ev.fulfilled ? tr('hilal_met') : tr('hilal_not_met'));
+        items.push([tr('hilal_verdict'), verdict]);
+
+        document.getElementById('hilalGrid').innerHTML = items.map(([k, v]) =>
+            `<div class="hilal-item"><span class="hilal-label">${k}</span><span class="hilal-value">${v}</span></div>`
+        ).join('');
+
+        const start = Hijri.dayNumToDate(range.start);
+        document.getElementById('hilalResult').innerHTML =
+            `1 ${monthName} ${year} H: <strong>${arrays.namaHari[currentLang][start.getDay()]}, ${start.getDate()} ${arrays.namaBulan[currentLang][start.getMonth()]} ${start.getFullYear()}</strong>`;
+        document.getElementById('hilalNote').innerText = tr('hilal_note');
+        section.hidden = false;
+    } catch (err) {
+        console.error('Gagal menghitung data hilal:', err);
+        section.hidden = true;
+    }
+}
+
+// --- Kalender Masehi & Hijriah (IRNU) ---
+let calYear = null;
+let calMonth = null;     // 0–11
+let calSelected = null;  // nomor hari yang dipilih
+
+function calendarToday() {
+    const now = new Date();
+    calYear = now.getFullYear();
+    calMonth = now.getMonth();
+    calSelected = Hijri.dayNumFromDate(now);
+    renderCalendar();
+}
+
+function shiftCalendar(delta) {
+    const d = new Date(calYear, calMonth + delta, 1);
+    calYear = d.getFullYear();
+    calMonth = d.getMonth();
+    calSelected = null;
+    renderCalendar();
+}
+
+function selectCalendarDay(n) {
+    calSelected = n;
+    renderCalendar();
+    const btn = document.querySelector(`.cal-day[data-day="${n}"]`);
+    if (btn) btn.focus();
+}
+
+function hijriSafe(n) {
+    try { return Hijri.fromDayNum(n); } catch (err) { return null; }
+}
+
+function renderCalendar() {
+    const grid = document.getElementById('calGrid');
+    if (!grid) return;
+    if (calYear === null) {
+        const now = new Date();
+        calYear = now.getFullYear();
+        calMonth = now.getMonth();
+        calSelected = Hijri.dayNumFromDate(now);
+    }
+    const tr = (key) => translations[key][currentLang];
+    const hName = (m) => arrays.namaBulanHijri[currentLang][m - 1];
+
+    document.getElementById('calPrev').setAttribute('aria-label', tr('cal_prev'));
+    document.getElementById('calNext').setAttribute('aria-label', tr('cal_next'));
+    document.getElementById('calMonth').innerText = `${arrays.namaBulan[currentLang][calMonth]} ${calYear}`;
+
+    const first = Hijri.dayNum(calYear, calMonth + 1, 1);
+    const daysInMonth = new Date(calYear, calMonth + 1, 0).getDate();
+    const last = first + daysInMonth - 1;
+    const startDow = new Date(calYear, calMonth, 1).getDay();
+    const todayN = Hijri.dayNumFromDate(new Date());
+
+    // Rentang bulan Hijriah yang tercakup & status penetapan
+    const hFirst = hijriSafe(first);
+    const hLast = hijriSafe(last);
+    const rangeEl = document.getElementById('calHijriRange');
+    const statusEl = document.getElementById('calStatus');
+    if (hFirst && hLast) {
+        const sameYear = hFirst.year === hLast.year;
+        rangeEl.innerText = hFirst.month === hLast.month && sameYear
+            ? `${hName(hFirst.month)} ${hFirst.year} H`
+            : `${hName(hFirst.month)}${sameYear ? '' : ` ${hFirst.year}`} – ${hName(hLast.month)} ${hLast.year} H`;
+        const fixed = Hijri.isFixed(hFirst.year, hFirst.month) && Hijri.isFixed(hLast.year, hLast.month);
+        statusEl.textContent = tr(fixed ? 'hijri_status_fixed' : 'hijri_status_hisab');
+        statusEl.className = `hijri-status${fixed ? ' fixed' : ''}`;
+    } else {
+        rangeEl.innerText = '';
+        statusEl.textContent = '';
+    }
+
+    let html = arrays.namaHariPendek[currentLang]
+        .map((d, i) => `<div class="cal-dow${i === 0 ? ' is-sun' : ''}${i === 5 ? ' is-fri' : ''}">${d}</div>`)
+        .join('');
+    for (let i = 0; i < startDow; i++) html += '<div class="cal-blank" aria-hidden="true"></div>';
+
+    for (let d = 1; d <= daysInMonth; d++) {
+        const n = first + d - 1;
+        const dow = (startDow + d - 1) % 7;
+        const h = hijriSafe(n);
+        const ev = h ? Hijri.specialDay(h.month, h.day) : null;
+        const classes = ['cal-day'];
+        if (dow === 0) classes.push('is-sun');
+        if (dow === 5) classes.push('is-fri');
+        if (n === todayN) classes.push('is-today');
+        if (n === calSelected) classes.push('is-selected');
+        if (ev) classes.push(`ev-${ev.kind}`);
+
+        // Label bawah: nama hari penting, atau nama bulan Hijriah pada tanggal 1 / awal bulan Masehi
+        const bottom = ev ? `<span class="cal-ev">${tr(ev.key)}</span>`
+            : (h && (h.day === 1 || d === 1) ? `<span class="cal-hm">${hName(h.month)}</span>` : '');
+        const label = `${arrays.namaHari[currentLang][dow]} ${Hijri.pasaran(n)}, ${d} ${arrays.namaBulan[currentLang][calMonth]} ${calYear}` +
+            (h ? `, ${h.day} ${hName(h.month)} ${h.year} H` : '') + (ev ? `, ${tr(ev.key)}` : '');
+
+        html += `<button type="button" class="${classes.join(' ')}" data-day="${n}" onclick="selectCalendarDay(${n})"
+            aria-label="${label.replace(/"/g, '&quot;')}"${n === calSelected ? ' aria-pressed="true"' : ''}>
+            <span class="cal-top"><span class="cal-g">${d}</span><span class="cal-h">${h ? h.day : ''}</span></span>
+            <span class="cal-p">${Hijri.pasaran(n)}</span>
+            ${bottom}
+        </button>`;
+    }
+    grid.innerHTML = html;
+
+    // Rincian hari terpilih
+    const detail = document.getElementById('calDetail');
+    if (calSelected !== null && calSelected >= first && calSelected <= last) {
+        const g = Hijri.dayNumToDate(calSelected);
+        const h = hijriSafe(calSelected);
+        const ev = h ? Hijri.specialDay(h.month, h.day) : null;
+        const provisional = h && !Hijri.isFixed(h.year, h.month) ? ` <small>(${tr('cal_provisional')})</small>` : '';
+        detail.innerHTML =
+            `<strong>${arrays.namaHari[currentLang][g.getDay()]} ${Hijri.pasaran(calSelected)}, ${g.getDate()} ${arrays.namaBulan[currentLang][g.getMonth()]} ${g.getFullYear()}</strong>` +
+            (h ? `<span class="cal-detail-hijri">${h.day} ${hName(h.month)} ${h.year} H${provisional}</span>` : '') +
+            (ev ? `<span class="cal-detail-ev ev-${ev.kind}">${tr(ev.key)}</span>` : '');
+        detail.hidden = false;
+    } else {
+        detail.innerHTML = '';
+        detail.hidden = true;
+    }
 }
 
 // --- Jalankan saat halaman dimuat ---
@@ -339,170 +651,103 @@ async function exportToPoster() {
 
     // Ambil data dari tabel yang sudah di-render
     const table = document.getElementById("prayerTable");
-    const headerRow = table.querySelector("thead tr");
-    const bodyRows = table.querySelectorAll("tbody tr");
+    const headers = [...table.querySelectorAll("thead th")].map(th => th.innerText);
+    const rows = [...table.querySelectorAll("tbody tr")].map(tr => ({
+        cells: [...tr.querySelectorAll("td")].map(td => {
+            const strong = td.querySelector("strong");
+            const sub = [...td.querySelectorAll(".hijri-month-label, .hijri-event")].map(e => e.innerText).join(", ");
+            return { main: strong ? strong.innerText : td.innerText.trim(), sub };
+        }),
+        isToday: tr.classList.contains("current-day-row"),
+        isEvent: tr.classList.contains("row-event"),
+        isHoliday: tr.classList.contains("row-holiday"),
+        isFasting: tr.classList.contains("row-fasting")
+    }));
 
-    // Bangun header kolom
-    const headers = [];
-    headerRow.querySelectorAll("th").forEach(th => headers.push(th.innerText));
+    // Palet (sama dengan css/style.css)
+    const C = {
+        pine: '#0F3B24', green: '#1A6B3C', leaf: '#E4EFE6', gold: '#C9982E', goldInk: '#8A6516',
+        goldWash: '#FBF5E6', goldWashStrong: '#F5E8C8', ink: '#15241B', ink2: '#4D5E53', ink3: '#6F7F74',
+        line: 'rgba(21,36,27,0.10)'
+    };
+    const rowH = Math.min(44, Math.floor(1120 / (rows.length + 1)));
 
-    // Bangun baris data
-    const rows = [];
-    bodyRows.forEach(tr => {
-        const cells = [];
-        tr.querySelectorAll("td").forEach(td => cells.push(td.innerText));
-        rows.push({ cells, isToday: tr.classList.contains("current-day-row") });
-    });
-
-    // Buat elemen poster
+    // Buat elemen poster (A4, 1080 × 1527)
     const poster = document.createElement("div");
     poster.id = "posterCanvas";
     poster.style.cssText = `
         position: fixed; left: -9999px; top: 0;
-        width: 1080px; height: 1527px; /* A4 Aspect Ratio */
+        width: 1080px; height: 1527px;
         font-family: 'Plus Jakarta Sans', 'Segoe UI', sans-serif;
-        background: #FAFAF7;
-        color: #1C2B22;
-        display: flex;
-        flex-direction: column;
-        box-sizing: border-box;
+        background: #FFFFFF; color: ${C.ink};
+        display: flex; flex-direction: column; box-sizing: border-box;
     `;
 
-    // Hitung tinggi tabel secara dinamis
-    const rowHeight = 34;
-    const tableContentHeight = (rows.length + 1) * rowHeight + 20;
+    const cellHtml = (c, ci, r) => {
+        const isDate = ci === 0;
+        const subColor = r.isFasting ? C.green : (r.isEvent ? C.goldInk : C.ink3);
+        return `<td style="
+                height: ${rowH}px; padding: 0 8px; text-align: center; vertical-align: middle;
+                border-bottom: 1px solid ${C.line};
+                font-size: 15px; font-weight: ${isDate || r.isToday ? 700 : 500};
+                color: ${r.isToday ? C.pine : C.ink};
+                ${isDate ? `border-left: 4px solid ${r.isToday ? C.green : (r.isEvent ? C.gold : 'transparent')};` : ''}
+            ">${c.main}${c.sub ? `<div style="font-size: 10px; font-weight: 700; line-height: 1.1; color: ${subColor};">${c.sub}</div>` : ''}</td>`;
+    };
 
     poster.innerHTML = `
-        <!-- Header Poster -->
-        <div style="
-            flex: 0 0 auto;
-            background: linear-gradient(160deg, #092E1A 0%, #0E4427 35%, #1A6B3C 100%);
-            padding: 40px 50px 30px;
-            text-align: center;
-            position: relative;
-            overflow: hidden;
-        ">
-            <!-- Dekorasi latar -->
-            <div style="
-                position: absolute; inset: 0;
-                background-image: url('images/kabah_bg.png');
-                background-size: cover; background-position: center;
-                opacity: 0.15; mix-blend-mode: soft-light;
-            "></div>
-            <div style="
-                position: absolute; inset: 0;
-                background: linear-gradient(to bottom, rgba(9,46,26,0.3) 0%, rgba(14,68,39,0.9) 100%);
-            "></div>
-            
-            <!-- Badge -->
-            <div style="
-                display: inline-flex; align-items: center; gap: 8px;
-                background: rgba(201,152,46,0.15); color: #C9982E;
-                font-size: 13px; font-weight: 700; text-transform: uppercase;
-                letter-spacing: 3px; padding: 8px 24px; border-radius: 50px;
-                border: 1px solid rgba(201,152,46,0.25); margin-bottom: 18px;
-                position: relative; z-index: 2;
-            ">✦ Jadwal & Waktu Sholat</div>
-            
-            <!-- Judul -->
-            <div style="
-                font-size: 40px; font-weight: 800; color: white;
-                position: relative; z-index: 2; margin-bottom: 6px;
-                text-shadow: 0 2px 8px rgba(0,0,0,0.15);
-            ">LFNU Taiwan</div>
+        <div style="flex: 0 0 14px; background: ${C.green};"></div>
+        <div style="flex: 0 0 4px; background: ${C.gold};"></div>
 
-            <!-- Garis emas -->
-            <div style="
-                width: 180px; height: 1px; margin: 14px auto;
-                background: linear-gradient(90deg, transparent, #C9982E, transparent);
-                opacity: 0.6; position: relative; z-index: 2;
-            "></div>
-
-            <!-- Supervisi -->
-            <div style="
-                font-size: 14px; color: rgba(255,255,255,0.7);
-                font-style: italic; font-weight: 500;
-                position: relative; z-index: 2; margin-bottom: 20px;
-            ">${translations.poster_supervised[currentLang]}</div>
-
-            <!-- Judul jadwal -->
-            <div style="
-                display: inline-block;
-                background: rgba(255,255,255,0.15); /* Removed backdrop-filter for html2canvas compatibility */
-                padding: 12px 32px; border-radius: 12px;
-                border: 1px solid rgba(255,255,255,0.2);
-                position: relative; z-index: 2;
-            ">
-                <div style="font-size: 24px; font-weight: 700; color: white;">${title}</div>
-                <div style="font-size: 14px; color: #C9982E; font-weight: 600; margin-top: 6px;">📍 ${city}</div>
+        <!-- Kepala poster -->
+        <div style="display: flex; justify-content: space-between; align-items: flex-end; gap: 32px; padding: 40px 56px 26px;">
+            <div>
+                <div style="font-family: 'Reem Kufi', sans-serif; font-size: 22px; font-weight: 600; color: ${C.green};">PCINU Taiwan</div>
+                <div style="font-family: 'Reem Kufi', sans-serif; font-size: 46px; font-weight: 600; line-height: 1.15; color: ${C.pine}; margin-top: 2px;">${title}</div>
+                <div style="font-size: 15px; color: ${C.ink2}; margin-top: 8px;">${translations.poster_supervised[currentLang]}</div>
+            </div>
+            <div style="text-align: right; flex-shrink: 0;">
+                <div style="font-size: 14px; color: ${C.ink3};">${translations.label_city[currentLang]}</div>
+                <div style="font-size: 26px; font-weight: 700; color: ${C.green};">${city}</div>
             </div>
         </div>
 
-        <!-- Tabel Container -->
-        <div style="
-            flex: 1 1 auto; padding: 20px 48px;
-            display: flex; flex-direction: column; justify-content: center;
-        ">
-            <table style="
-                width: 100%; border-collapse: collapse;
-                font-size: 13px; font-family: 'Plus Jakarta Sans', sans-serif;
-            ">
-                <thead style="background: #1A6B3C; color: #FFFFFF;">
-                    <tr>
-                        ${headers.map(h => `
-                            <th style="
-                                padding: 10px 8px; font-weight: 700; font-size: 12px;
-                                color: #FFFFFF !important; text-transform: uppercase;
-                                letter-spacing: 1px; text-align: center;
-                            ">${h}</th>
-                        `).join('')}
-                    </tr>
+        <!-- Tabel -->
+        <div style="flex: 1 1 auto; padding: 0 56px;">
+            <!-- tabular-nums dari style.css dimatikan: html2canvas menggambar angka proporsional sehingga jadi renggang -->
+            <table style="width: 100%; border-collapse: separate; border-spacing: 0; font-variant-numeric: normal;
+                border: 1px solid ${C.line}; border-radius: 14px; overflow: hidden;">
+                <thead>
+                    <tr>${headers.map(h => `<th style="
+                        height: ${rowH + 4}px; padding: 0 8px; background: ${C.leaf}; color: ${C.green};
+                        font-size: 14px; font-weight: 700; text-align: center;
+                        border-bottom: 1px solid ${C.line};">${h}</th>`).join('')}</tr>
                 </thead>
                 <tbody>
-                    ${rows.map((r, i) => `
-                        <tr style="
-                            background: ${r.isToday ? '#E8F5EE' : (i % 2 === 0 ? '#FFFFFF' : '#FAFAF7')};
-                            ${r.isToday ? 'font-weight: 700;' : ''}
-                        ">
-                            ${r.cells.map((c, ci) => `
-                                <td style="
-                                    padding: 5.5px 8px; text-align: center;
-                                    border-bottom: 1px solid rgba(26,107,60,0.08);
-                                    font-size: 13px;
-                                    ${r.isToday ? 'color: #1A6B3C;' : 'color: #1C2B22;'}
-                                    ${ci === 0 ? 'font-weight: 700;' : ''}
-                                ">${c}</td>
-                            `).join('')}
-                        </tr>
-                    `).join('')}
+                    ${rows.map(r => `<tr style="background: ${r.isToday ? C.leaf : (r.isHoliday ? C.goldWashStrong : (r.isEvent ? C.goldWash : '#FFFFFF'))};">
+                        ${r.cells.map((c, ci) => cellHtml(c, ci, r)).join('')}
+                    </tr>`).join('')}
                 </tbody>
             </table>
         </div>
 
-        <!-- Catatan kaki -->
-        <div style="
-            flex: 0 0 auto;
-            padding: 24px 48px 16px; margin: 0 48px;
-            border-top: 1px solid rgba(26,107,60,0.15);
-            display: flex; justify-content: space-between; align-items: flex-start;
-            gap: 24px; font-size: 12px; color: #8A9B90;
-        ">
+        <!-- Catatan -->
+        <div style="display: flex; gap: 40px; margin: 24px 56px 0; padding-top: 18px; border-top: 1px solid rgba(21,36,27,0.18); font-size: 13px; color: ${C.ink2};">
             <div style="flex: 1;">
-                <div style="font-weight: 700; color: #5A6B60; margin-bottom: 6px;">${translations.poster_note_title_1[currentLang]}</div>
+                <div style="font-weight: 700; color: ${C.ink}; margin-bottom: 2px;">${translations.poster_note_title_1[currentLang]}</div>
                 <div>${translations.poster_note_desc_1[currentLang]}</div>
             </div>
-            <div style="text-align: right;">
-                <div style="font-weight: 700; color: #5A6B60; margin-bottom: 6px;">${translations.poster_note_title_2[currentLang]}</div>
+            <div style="flex: 1;">
+                <div style="font-weight: 700; color: ${C.ink}; margin-bottom: 2px;">${translations.poster_note_title_2[currentLang]}</div>
                 <div>${translations.poster_note_desc_2[currentLang]}</div>
+            </div>
+            <div style="flex: 1;">
+                <div style="font-weight: 700; color: ${C.ink}; margin-bottom: 2px;">${translations.note_6_title[currentLang]}</div>
+                <div>${translations.note_6_desc[currentLang]}</div>
             </div>
         </div>
 
-        <!-- Footer -->
-        <div style="
-            flex: 0 0 auto;
-            padding: 16px 48px 32px;
-            text-align: center; font-size: 12px; color: #8A9B90;
-        ">
+        <div style="padding: 18px 56px 30px; font-size: 12px; color: ${C.ink3};">
             ${translations.poster_footer[currentLang]}
         </div>
     `;
@@ -513,7 +758,7 @@ async function exportToPoster() {
         const canvas = await html2canvas(poster, {
             scale: 2,
             useCORS: true,
-            backgroundColor: '#FAFAF7',
+            backgroundColor: '#FFFFFF',
             logging: false,
         });
 
@@ -582,3 +827,10 @@ document.addEventListener('visibilitychange', () => {
         requestWakeLock();
     }
 });
+
+// --- Mode Offline (Service Worker) ---
+if ('serviceWorker' in navigator && location.protocol !== 'file:') {
+    window.addEventListener('load', () => {
+        navigator.serviceWorker.register('sw.js').catch(err => console.warn('Service worker gagal didaftarkan:', err));
+    });
+}

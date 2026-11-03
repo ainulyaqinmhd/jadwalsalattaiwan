@@ -63,11 +63,13 @@ const translations = {
     "note_4_desc": { id: "<strong>10 menit sebelum Subuh</strong> sebagai rambu persiapan puasa.", en: "<strong>10 minutes before Fajr</strong> as a preparation marker for fasting." },
     "note_5_title": { id: "Metode Ashar", en: "Asr Method" },
     "note_5_desc": { id: "Kriteria Jumhur Ulama (Madzhab Hambali, Maliki, dan Syafi'i).", en: "Criteria of the Majority of Scholars (Hambali, Maliki, and Shafi'i schools)." },
+    "note_6_title": { id: "Kalender Hijriah", en: "Hijri Calendar" },
+    "note_6_desc": { id: "Kriteria IRNU: tinggi hilal mar'i <strong>≥ 3°</strong>, elongasi haqiqi <strong>≥ 6,4°</strong>.", en: "IRNU criterion: apparent crescent altitude <strong>≥ 3°</strong>, true elongation <strong>≥ 6.4°</strong>." },
     "copyright_protected": { id: "Dilindungi doa dan niat baik.", en: "Protected by prayers and good intentions." },
 
     // --- Dynamic Strings (Used in JS) ---
-    "countdown_current": { id: "Saat ini:", en: "Current:" },
-    "countdown_until": { id: "menuju", en: "until" },
+    "countdown_current": { id: "Waktu", en: "Now:" },
+    "countdown_until": { id: "dalam", en: "in" },
     "gps_option": { id: "📍 Koordinat GPS Anda", en: "📍 Your GPS Coordinates" },
     "alert_gps": { id: "Gagal mendeteksi lokasi.", en: "Failed to detect location." },
     "schedule_title": { id: "Jadwal", en: "Schedule for" },
@@ -75,6 +77,48 @@ const translations = {
     "alert_poster_load": { id: "Library sedang dimuat. Mohon tunggu sebentar lalu coba lagi.", en: "Library is loading. Please wait a moment and try again." },
     "alert_poster_fail": { id: "Gagal membuat poster. Silakan coba lagi.", en: "Failed to create poster. Please try again." },
     "btn_processing": { id: "Memproses...", en: "Processing..." },
+    "error_load": { id: "Gagal memuat jadwal. Periksa koneksi internet.", en: "Failed to load the schedule. Check your internet connection." },
+    "error_hijri": { id: "Kalender Hijriah tidak dapat dihitung (library astronomi gagal dimuat).", en: "The Hijri calendar could not be calculated (astronomy library failed to load)." },
+    "btn_retry": { id: "Coba lagi", en: "Retry" },
+
+    // --- Hijri & Hilal ---
+    "hijri_eve": { id: "Malam", en: "Night of" },
+    "hijri_status_hisab": { id: "Perkiraan hisab IRNU", en: "Provisional, IRNU calculation" },
+    "hijri_status_fixed": { id: "Telah ditetapkan", en: "Confirmed" },
+    "hilal_title": { id: "Data Hilal Awal", en: "Crescent Data for" },
+    "hilal_conj": { id: "Ijtimak", en: "Conjunction" },
+    "hilal_markaz": { id: "Markaz", en: "Location" },
+    "hilal_sunset": { id: "Matahari terbenam", en: "Sunset" },
+    "hilal_alt": { id: "Tinggi hilal mar'i", en: "Apparent altitude" },
+    "hilal_elong": { id: "Elongasi haqiqi", en: "True elongation" },
+    "hilal_verdict": { id: "Kriteria IRNU", en: "IRNU criterion" },
+    "hilal_met": { id: "Terpenuhi", en: "Fulfilled" },
+    "hilal_not_met": { id: "Belum terpenuhi → istikmal", en: "Not fulfilled → month completed to 30 days" },
+    "hilal_after_sunset": { id: "Ijtimak setelah matahari terbenam → istikmal", en: "Conjunction after sunset → month completed to 30 days" },
+    "hilal_note": { id: "Hasil hisab saat matahari terbenam pada hari ijtimak, di markaz terbaik se-Taiwan. Keputusan akhir mengikuti hasil rukyatul hilal dan ikhbar PBNU.", en: "Calculated at sunset on the day of conjunction, at the best location in Taiwan. The final decision follows the crescent sighting and PBNU's announcement." },
+
+    // --- Kalender ---
+    "cal_title": { id: "Kalender", en: "Calendar" },
+    "cal_today": { id: "Hari ini", en: "Today" },
+    "cal_prev": { id: "Bulan sebelumnya", en: "Previous month" },
+    "cal_next": { id: "Bulan berikutnya", en: "Next month" },
+    "cal_provisional": { id: "perkiraan", en: "provisional" },
+
+    // --- Hari-hari penting ---
+    "ev_new_year": { id: "Tahun Baru Hijriah", en: "Islamic New Year" },
+    "ev_tasua": { id: "Tasu'a", en: "Tasu'a" },
+    "ev_asyura": { id: "Asyura", en: "Ashura" },
+    "ev_maulid": { id: "Maulid Nabi", en: "Mawlid" },
+    "ev_isra": { id: "Isra' Mi'raj", en: "Isra' Mi'raj" },
+    "ev_nisfu": { id: "Nisfu Sya'ban", en: "Mid-Sha'ban" },
+    "ev_ramadan": { id: "Awal Ramadhan", en: "Ramadan begins" },
+    "ev_nuzul": { id: "Nuzulul Qur'an", en: "Nuzul al-Qur'an" },
+    "ev_fitri": { id: "Idul Fitri", en: "Eid al-Fitr" },
+    "ev_tarwiyah": { id: "Tarwiyah", en: "Tarwiyah" },
+    "ev_arafah": { id: "Arafah", en: "Day of Arafah" },
+    "ev_adha": { id: "Idul Adha", en: "Eid al-Adha" },
+    "ev_tasyrik": { id: "Hari Tasyrik", en: "Tashreeq" },
+    "ev_bidh": { id: "Ayyamul Bidh", en: "White Days" },
     
     // --- Poster specific ---
     "poster_supervised": { id: "Disupervisi oleh Lembaga Falakiyah NU (LFNU) Taiwan", en: "Supervised by NU Falakiyah Institution (LFNU) Taiwan" },
@@ -89,6 +133,10 @@ const arrays = {
     namaHari: {
         id: ["Ahad", "Senin", "Selasa", "Rabu", "Kamis", "Jumat", "Sabtu"],
         en: ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"]
+    },
+    namaHariPendek: {
+        id: ["Ahad", "Sen", "Sel", "Rab", "Kam", "Jum", "Sab"],
+        en: ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"]
     },
     namaBulan: {
         id: ["Januari", "Februari", "Maret", "April", "Mei", "Juni", "Juli", "Agustus", "September", "Oktober", "November", "Desember"],

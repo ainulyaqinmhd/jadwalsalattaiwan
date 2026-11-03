@@ -1,54 +1,39 @@
 /* =============================================
    JADWAL SALAT PCINU TAIWAN
-   Theme: Nahdlatul Ulama — Minimalist & Elegant
+   Konsep: papan jadwal sholat masjid — jam besar,
+   tujuh waktu dalam satu bilah, sisanya tenang.
    ============================================= */
 
-/* --- PALET WARNA NU --- */
 :root {
-    /* Hijau NU — lebih hangat & elegan */
-    --nu-green: #1A6B3C;
-    --nu-green-dark: #0E4427;
-    --nu-green-deep: #092E1A;
-    --nu-green-light: #E8F5EE;
-    --nu-green-muted: #2D8B55;
+    /* Hijau & emas NU */
+    --pine: #0F3B24;          /* latar papan */
+    --green: #1A6B3C;         /* hijau NU utama */
+    --green-muted: #2D8B55;
+    --leaf: #E4EFE6;          /* tint: hari ini, header tabel */
+    --gold: #C9982E;          /* emas NU — hanya di atas latar gelap */
+    --gold-ink: #8A6516;      /* emas untuk teks di atas latar terang */
+    --gold-wash: #FBF5E6;     /* baris hari penting */
+    --gold-wash-strong: #F5E8C8;
 
-    /* Emas NU — lebih refined */
-    --nu-gold: #C9982E;
-    --nu-gold-light: #F5EDD4;
-    --nu-gold-muted: rgba(201, 152, 46, 0.15);
+    /* Netral */
+    --paper: #F3F6F2;
+    --card: #FFFFFF;
+    --ink: #15241B;
+    --ink-2: #4D5E53;
+    --ink-3: #6F7F74;
+    --line: rgba(21, 36, 27, 0.10);
+    --line-strong: rgba(21, 36, 27, 0.18);
+    --danger: #B3412E;
 
-    /* Netral hangat */
-    --bg-primary: #FAFAF7;
-    --bg-card: #FFFFFF;
-    --bg-hover: #F5F5F0;
+    --font-ui: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    --font-display: 'Reem Kufi', 'Plus Jakarta Sans', sans-serif;
 
-    /* Teks */
-    --text-primary: #1C2B22;
-    --text-secondary: #5A6B60;
-    --text-muted: #8A9B90;
-    --text-on-green: #FFFFFF;
-    --text-on-green-muted: rgba(255, 255, 255, 0.7);
-
-    /* Bayangan & Border */
-    --shadow-sm: 0 1px 3px rgba(26, 107, 60, 0.06);
-    --shadow-md: 0 4px 12px rgba(26, 107, 60, 0.08);
-    --shadow-lg: 0 8px 30px rgba(26, 107, 60, 0.10);
-    --shadow-xl: 0 16px 50px rgba(26, 107, 60, 0.12);
-    --border-subtle: 1px solid rgba(26, 107, 60, 0.08);
-
-    /* Radius */
-    --radius-sm: 8px;
-    --radius-md: 12px;
-    --radius-lg: 16px;
-    --radius-xl: 20px;
-    --radius-pill: 50px;
-
-    /* Transisi */
-    --transition-fast: 0.2s cubic-bezier(0.4, 0, 0.2, 1);
-    --transition-smooth: 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+    --radius-board: 22px;
+    --radius-control: 10px;
+    --radius-pill: 999px;
 }
 
-/* --- RESET & BASE --- */
+/* --- Dasar --- */
 *, *::before, *::after {
     box-sizing: border-box;
     margin: 0;
@@ -56,1501 +41,1403 @@
 }
 
 body {
-    font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
-    background-color: var(--bg-primary);
-    color: var(--text-primary);
-    line-height: 1.6;
+    font-family: var(--font-ui);
+    background: var(--paper);
+    color: var(--ink);
+    line-height: 1.55;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
     min-height: 100vh;
-    position: relative;
     overflow-x: hidden;
 }
 
-/* --- DEKORASI LATAR BELAKANG --- */
-.bg-ornament {
-    position: fixed;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    pointer-events: none;
-    z-index: 0;
-    background:
-        radial-gradient(ellipse at 0% 0%, rgba(26, 107, 60, 0.03) 0%, transparent 50%),
-        radial-gradient(ellipse at 100% 100%, rgba(201, 152, 46, 0.03) 0%, transparent 50%);
+button, input, select {
+    font: inherit;
+    color: inherit;
 }
 
-/* --- KONTAINER UTAMA --- */
+button {
+    cursor: pointer;
+}
+
+a {
+    color: var(--green);
+}
+
+:focus-visible {
+    outline: 2px solid var(--green);
+    outline-offset: 2px;
+}
+
+[hidden] {
+    display: none !important;
+}
+
 .main-container {
-    position: relative;
-    z-index: 1;
-    max-width: 1100px;
+    max-width: 1120px;
     margin: 0 auto;
-    padding: 24px 20px 60px;
+    padding: 20px 20px 48px;
 }
 
-/* --- LANGUAGE SELECTOR --- */
-.lang-selector-hero {
+/* =============================================
+   PAPAN JADWAL (HERO)
+   ============================================= */
+.board {
+    position: relative;
+    isolation: isolate;
+    overflow: hidden;
+    background: var(--pine);
+    color: #FFFFFF;
+    border-radius: var(--radius-board);
+    padding-top: 18px;
+}
+
+.board :focus-visible {
+    outline-color: var(--gold);
+}
+
+/* Siluet Ka'bah, sangat samar, memudar ke tepi */
+.board-bg {
     position: absolute;
-    top: 24px;
-    right: 24px;
-    display: inline-flex;
+    inset: 0;
+    z-index: -1;
+    pointer-events: none;
+    background:
+        radial-gradient(ellipse 60% 55% at 50% 48%, rgba(45, 139, 85, 0.30), transparent 70%),
+        url('../images/kabah_bg.png') center 30% / cover no-repeat;
+    opacity: 0.4;
+    mix-blend-mode: soft-light;
+    -webkit-mask-image: radial-gradient(ellipse 52% 58% at 50% 45%, #000 15%, transparent 72%);
+    mask-image: radial-gradient(ellipse 52% 58% at 50% 45%, #000 15%, transparent 72%);
+}
+
+/* --- Bilah atas: tautan, layar penuh, bahasa --- */
+.board-bar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 12px;
+    padding: 0 20px;
+}
+
+.board-bar-end {
+    display: flex;
     align-items: center;
     gap: 8px;
-    background: rgba(255, 255, 255, 0.12);
-    backdrop-filter: blur(12px);
-    -webkit-backdrop-filter: blur(12px);
-    padding: 6px 14px;
-    border-radius: var(--radius-pill);
-    border: 1px solid rgba(255, 255, 255, 0.2);
-    z-index: 10;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
 }
 
-.lang-selector-hero .lang-btn {
+.board-chip {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    height: 32px;
+    padding: 0 12px;
+    border: 1px solid rgba(255, 255, 255, 0.18);
+    border-radius: var(--radius-pill);
+    background: rgba(255, 255, 255, 0.06);
+    color: rgba(255, 255, 255, 0.85);
+    font-size: 12px;
+    font-weight: 600;
+    text-decoration: none;
+    transition: background-color 0.2s ease, border-color 0.2s ease;
+}
+
+a.board-chip:hover,
+button.board-chip:hover {
+    background: rgba(255, 255, 255, 0.12);
+    border-color: rgba(255, 255, 255, 0.3);
+}
+
+.btn-screensaver-hero {
+    width: 32px;
+    padding: 0;
+    justify-content: center;
+    display: none; /* hanya di layar lebar */
+}
+
+.lang-selector-hero {
+    padding: 0 4px;
+    gap: 0;
+}
+
+.lang-btn {
     background: none;
     border: none;
-    font-size: 11px;
+    height: 26px;
+    padding: 0 8px;
+    border-radius: var(--radius-pill);
+    font-size: 12px;
     font-weight: 700;
-    color: rgba(255, 255, 255, 0.6);
-    cursor: pointer;
-    padding: 4px;
-    transition: color var(--transition-fast);
+    color: rgba(255, 255, 255, 0.55);
+    transition: color 0.2s ease;
 }
 
-.lang-selector-hero .lang-btn:hover {
+.lang-btn:hover {
     color: #FFFFFF;
 }
 
-.lang-selector-hero .lang-btn.active {
-    color: var(--nu-gold);
-    text-shadow: 0 0 8px rgba(201, 152, 46, 0.4);
+.lang-btn.active {
+    color: var(--gold);
 }
 
-.lang-selector-hero .lang-divider {
-    color: rgba(255, 255, 255, 0.2);
-    font-size: 12px;
-}
-
-/* =============================================
-   HERO HEADER
-   ============================================= */
-.hero-header {
-    background: linear-gradient(160deg, var(--nu-green-deep) 0%, var(--nu-green-dark) 35%, var(--nu-green) 100%);
-    background-size: 200% 200%;
-    animation: gradientShift 12s ease-in-out infinite;
-    border-radius: var(--radius-xl);
-    padding: 48px 28px 58px;
-    color: var(--text-on-green);
+/* --- Identitas --- */
+.board-identity {
     text-align: center;
-    box-shadow:
-        var(--shadow-xl),
-        0 0 60px rgba(26, 107, 60, 0.08),
-        inset 0 1px 0 rgba(255, 255, 255, 0.05);
-    margin-bottom: 24px;
-    position: relative;
-    overflow: hidden;
+    margin-top: 10px;
+    padding: 0 20px;
 }
 
-@keyframes gradientShift {
-    0%, 100% { background-position: 0% 50%; }
-    50% { background-position: 100% 50%; }
+.board-org {
+    font-family: var(--font-display);
+    font-size: 30px;
+    font-weight: 600;
+    line-height: 1.15;
+    letter-spacing: 0.01em;
 }
 
-/* --- Silhouette Background --- */
-.hero-bg-image {
-    position: absolute;
-    inset: 0;
-    pointer-events: none;
-    z-index: 0;
-    background-image: url('../images/kabah_bg.png');
-    background-size: cover;
-    background-position: center center;
-    background-repeat: no-repeat;
-    opacity: 0.6;
-    mix-blend-mode: soft-light;
-}
-
-.hero-bg-image::after {
-    content: '';
-    position: absolute;
-    inset: 0;
-    background: linear-gradient(to bottom, rgba(26, 107, 60, 0.2) 0%, var(--nu-green-dark) 90%);
-}
-
-/* --- Ornamen lingkaran halus --- */
-.hero-ornament-left,
-.hero-ornament-right {
-    position: absolute;
-    border-radius: 50%;
-    pointer-events: none;
-}
-
-.hero-ornament-left {
-    top: -80px;
-    left: -60px;
-    width: 280px;
-    height: 280px;
-    background: radial-gradient(circle, rgba(255, 255, 255, 0.05) 0%, transparent 65%);
-    animation: floatOrb 8s ease-in-out infinite;
-}
-
-.hero-ornament-right {
-    bottom: -60px;
-    right: -40px;
-    width: 220px;
-    height: 220px;
-    background: radial-gradient(circle, rgba(201, 152, 46, 0.1) 0%, transparent 65%);
-    animation: floatOrb 10s ease-in-out infinite reverse;
-}
-
-@keyframes floatOrb {
-    0%, 100% { transform: translate(0, 0) scale(1); }
-    50% { transform: translate(8px, -8px) scale(1.05); }
-}
-
-/* --- Bintang NU (9 bintang) --- */
-.hero-stars {
-    position: absolute;
-    inset: 0;
-    pointer-events: none;
-    z-index: 1;
-}
-
-.star {
-    position: absolute;
-    width: 4px;
-    height: 4px;
-    background: var(--nu-gold);
-    border-radius: 50%;
-    box-shadow:
-        0 0 6px 1px rgba(201, 152, 46, 0.5),
-        0 0 12px 2px rgba(201, 152, 46, 0.2);
-    animation: twinkle 3s ease-in-out infinite;
-}
-
-/* Stagger twinkling per bintang */
-.star:nth-child(1) { animation-delay: 0s; width: 3px; height: 3px; }
-.star:nth-child(2) { animation-delay: 0.4s; width: 4px; height: 4px; }
-.star:nth-child(3) { animation-delay: 0.8s; width: 3px; height: 3px; }
-.star:nth-child(4) { animation-delay: 1.2s; width: 5px; height: 5px; }
-.star:nth-child(5) { animation-delay: 1.6s; width: 3px; height: 3px; }
-.star:nth-child(6) { animation-delay: 2.0s; width: 4px; height: 4px; }
-.star:nth-child(7) { animation-delay: 2.4s; width: 3px; height: 3px; }
-.star:nth-child(8) { animation-delay: 0.6s; width: 4px; height: 4px; }
-.star:nth-child(9) { animation-delay: 1.8s; width: 5px; height: 5px; }
-
-@keyframes twinkle {
-    0%, 100% { opacity: 0.3; transform: scale(1); }
-    50% { opacity: 1; transform: scale(1.4); }
-}
-
-/* --- Bulan sabit dekoratif --- */
-.hero-crescent {
-    position: absolute;
-    top: 14%;
-    right: 6%;
-    font-size: 38px;
-    color: rgba(201, 152, 46, 0.18);
-    z-index: 1;
-    pointer-events: none;
-    animation: crescentGlow 6s ease-in-out infinite;
-    filter: drop-shadow(0 0 8px rgba(201, 152, 46, 0.15));
-}
-
-@keyframes crescentGlow {
-    0%, 100% { opacity: 0.15; transform: rotate(-5deg) scale(1); }
-    50% { opacity: 0.35; transform: rotate(0deg) scale(1.08); }
-}
-
-/* --- Badge judul --- */
-.hero-badge {
-    display: inline-flex;
-    align-items: center;
-    gap: 8px;
-    background: var(--nu-gold-muted);
-    color: var(--nu-gold);
-    font-size: 11px;
-    font-weight: 700;
-    text-transform: uppercase;
-    letter-spacing: 3px;
-    padding: 7px 20px;
-    border-radius: var(--radius-pill);
-    border: 1px solid rgba(201, 152, 46, 0.25);
-    margin-bottom: 18px;
-    position: relative;
-    z-index: 2;
-    backdrop-filter: blur(4px);
-    -webkit-backdrop-filter: blur(4px);
-}
-
-.hero-badge-icon {
-    display: inline-block;
-    animation: starPulse 2s ease-in-out infinite;
-    font-size: 10px;
-}
-
-@keyframes starPulse {
-    0%, 100% { opacity: 0.6; transform: scale(1) rotate(0deg); }
-    50% { opacity: 1; transform: scale(1.3) rotate(72deg); }
-}
-
-/* --- Judul organisasi --- */
-.hero-org {
-    font-size: 36px;
-    font-weight: 800;
-    margin: 0 0 0 0;
-    letter-spacing: 0.5px;
-    position: relative;
-    z-index: 2;
-    color: var(--text-on-green);
-    text-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
-}
-
-/* --- Garis emas pemisah --- */
-.hero-gold-line {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 0;
-    margin: 14px auto;
-    width: 180px;
-    position: relative;
-    z-index: 2;
-}
-
-.hero-gold-line::before,
-.hero-gold-line::after {
-    content: '';
-    flex: 1;
-    height: 1px;
-    background: linear-gradient(90deg, transparent, var(--nu-gold), transparent);
-    opacity: 0.5;
-}
-
-.gold-diamond {
-    color: var(--nu-gold);
-    font-size: 8px;
-    padding: 0 10px;
-    opacity: 0.6;
-}
-
-/* --- Teks supervisi --- */
-.hero-supervised {
+.board-supervised {
+    margin-top: 2px;
     font-size: 13px;
-    color: var(--text-on-green-muted);
-    margin-bottom: 28px;
-    font-weight: 500;
-    font-style: italic;
-    position: relative;
-    z-index: 2;
+    color: rgba(255, 255, 255, 0.62);
 }
 
-/* --- Wrapper jam & tanggal --- */
-.hero-clock-wrapper {
-    position: relative;
-    z-index: 2;
-    margin-bottom: 8px;
+/* --- Jam & hitung mundur --- */
+.board-now {
+    text-align: center;
+    padding: 30px 20px;
 }
 
-.hero-dates {
-    margin-bottom: 6px;
+.board-dates {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 4px 20px;
+    font-size: 15px;
 }
 
 .hero-date {
-    font-size: 15px;
-    color: var(--text-on-green-muted);
-    margin-bottom: 2px;
+    color: rgba(255, 255, 255, 0.78);
     font-weight: 500;
-    letter-spacing: 0.5px;
 }
 
 .hero-hijri {
-    font-size: 12px;
-    color: var(--nu-gold);
+    color: var(--gold);
     font-weight: 600;
-    letter-spacing: 0.8px;
-    opacity: 0.85;
-    min-height: 16px;
+}
+
+.hero-hijri-event {
+    display: inline-block;
+    margin-left: 8px;
+    padding: 1px 9px;
+    border-radius: var(--radius-pill);
+    background: rgba(201, 152, 46, 0.18);
+    font-size: 12px;
+    vertical-align: 1px;
 }
 
 .hero-clock {
-    font-size: 68px;
+    margin: 8px 0 14px;
+    font-size: clamp(76px, 13vw, 144px);
     font-weight: 800;
-    color: var(--text-on-green);
-    letter-spacing: 2px;
-    text-shadow: 0 3px 12px rgba(0, 0, 0, 0.15);
-    font-variant-numeric: tabular-nums;
     line-height: 1;
+    letter-spacing: -0.02em;
+    font-variant-numeric: tabular-nums;
 }
 
-/* --- Countdown pill --- */
+.clock-sec {
+    display: inline-block;
+    vertical-align: baseline;
+    margin-left: 0.12em;
+    font-size: 0.3em;
+    font-weight: 600;
+    letter-spacing: 0;
+    color: rgba(255, 255, 255, 0.5);
+}
+
 .hero-countdown {
     display: inline-flex;
-    align-items: center;
+    flex-wrap: wrap;
     justify-content: center;
-    text-align: center;
-    gap: 10px;
-    background: linear-gradient(135deg, rgba(255, 255, 255, 0.95) 0%, rgba(245, 247, 246, 0.85) 100%);
-    backdrop-filter: blur(12px);
-    -webkit-backdrop-filter: blur(12px);
-    border: 1px solid rgba(255, 255, 255, 0.5);
-    padding: 10px 24px;
-    border-radius: var(--radius-pill);
-    box-shadow:
-        0 12px 32px rgba(9, 46, 26, 0.15),
-        inset 0 1px 0 rgba(255, 255, 255, 0.8);
-    color: var(--text-primary);
-    font-weight: 600;
-    font-size: 14px;
-    position: relative;
-    z-index: 2;
-    transform: translateY(24px);
+    align-items: center;
+    gap: 6px 14px;
+    font-size: 15px;
+    color: rgba(255, 255, 255, 0.78);
 }
 
-.hero-countdown .badge-current {
-    background: var(--nu-gold);
-    color: white;
-    padding: 4px 12px;
-    border-radius: var(--radius-pill);
-    font-size: 11px;
+.badge-current {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    color: var(--gold);
     font-weight: 700;
-    text-transform: uppercase;
-    letter-spacing: 1px;
 }
 
-.hero-countdown strong {
-    color: var(--nu-green-dark);
-    font-size: 18px;
+.badge-current::before {
+    content: '';
+    width: 7px;
+    height: 7px;
+    border-radius: 50%;
+    background: currentColor;
+}
+
+.countdown-info strong {
+    color: #FFFFFF;
+    font-weight: 700;
     font-variant-numeric: tabular-nums;
 }
 
-/* =============================================
-   KARTU WAKTU SALAT
-   ============================================= */
+.countdown-error {
+    color: #F2B8AE;
+}
+
+/* --- Bilah tujuh waktu --- */
 .today-prayers {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 10px;
-    justify-content: center;
-    margin-bottom: 24px;
-    width: 100%;
-    max-width: 880px;
-    margin-left: auto;
-    margin-right: auto;
+    display: grid;
+    grid-template-columns: repeat(7, minmax(0, 1fr));
+    background: rgba(0, 0, 0, 0.16);
+    border-top: 1px solid rgba(255, 255, 255, 0.10);
 }
 
 .prayer-card {
-    background: var(--bg-card);
-    padding: 16px 12px;
-    border-radius: var(--radius-md);
-    box-shadow: var(--shadow-sm);
-    text-align: center;
-    flex: 1;
-    min-width: 95px;
-    border: var(--border-subtle);
-    transition: all var(--transition-smooth);
     position: relative;
-    overflow: hidden;
+    padding: 16px 6px 18px;
+    text-align: center;
+    border-left: 1px solid rgba(255, 255, 255, 0.08);
+    transition: background-color 0.4s ease;
 }
 
-.prayer-card::after {
-    content: '';
-    position: absolute;
-    bottom: 0;
-    left: 0;
-    right: 0;
-    height: 3px;
-    background: var(--nu-green-light);
-    transition: all var(--transition-smooth);
+.prayer-card:first-child {
+    border-left: none;
 }
 
-.prayer-card:hover {
-    transform: translateY(-2px);
-    box-shadow: var(--shadow-md);
-}
-
-.prayer-name {
-    font-size: 11px;
-    font-weight: 700;
-    color: var(--text-muted);
-    text-transform: uppercase;
-    margin-bottom: 6px;
-    letter-spacing: 1.5px;
+/* Kartu sementara saat memuat */
+.today-prayers .prayer-card:only-child {
+    grid-column: 1 / -1;
 }
 
 .prayer-icon {
-    width: 22px;
-    height: 22px;
-    margin: 0 auto 8px auto;
     display: block;
-    color: var(--nu-green-light);
-    opacity: 0.5;
-    transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    width: 18px;
+    height: 18px;
+    margin: 0 auto 8px;
+    color: rgba(255, 255, 255, 0.5);
+}
+
+.prayer-name {
+    font-size: 13px;
+    font-weight: 500;
+    color: rgba(255, 255, 255, 0.68);
 }
 
 .prayer-time {
+    margin-top: 2px;
     font-size: 24px;
     font-weight: 700;
-    color: var(--text-primary);
     font-variant-numeric: tabular-nums;
+    color: #FFFFFF;
 }
 
-/* Kartu aktif */
+/* Imsak & terbit bukan waktu sholat: sedikit diredam */
+#card-Imsak .prayer-time,
+#card-Sunrise .prayer-time {
+    color: rgba(255, 255, 255, 0.72);
+    font-weight: 600;
+}
+
 .prayer-card.active {
-    background: var(--nu-green);
-    border-color: var(--nu-green);
-    transform: translateY(-12px) scale(1.05);
-    box-shadow: 0 12px 30px rgba(26, 107, 60, 0.35);
+    background: var(--green);
 }
 
-.prayer-card.active::after {
-    background: var(--nu-gold);
-    height: 4px;
+.prayer-card.active::before {
+    content: '';
+    position: absolute;
+    inset: 0 0 auto 0;
+    height: 3px;
+    background: var(--gold);
 }
 
 .prayer-card.active .prayer-name {
-    color: var(--text-on-green-muted);
-}
-
-.prayer-card.active .prayer-time {
-    color: var(--text-on-green);
+    color: var(--gold-wash-strong);
+    font-weight: 600;
 }
 
 .prayer-card.active .prayer-icon {
-    color: var(--nu-gold);
-    opacity: 1;
-    transform: scale(1.3) translateY(-2px);
-    filter: drop-shadow(0 0 6px rgba(230, 187, 83, 0.5));
+    color: var(--gold);
 }
 
-@keyframes gentlePulse {
-    0% { transform: scale(1.3) translateY(-2px); }
-    50% { transform: scale(1.4) translateY(-4px); }
-    100% { transform: scale(1.3) translateY(-2px); }
-}
-
-.prayer-card.active #card-Sunrise .prayer-icon,
-.prayer-card.active #card-Dhuhr .prayer-icon,
-.prayer-card.active #card-Asr .prayer-icon {
-    animation: gentlePulse 4s ease-in-out infinite;
+.prayer-card.active .prayer-time {
+    color: #FFFFFF;
 }
 
 /* =============================================
-   KONTROL FILTER
+   JUDUL BAGIAN
    ============================================= */
-.controls {
-    background: var(--bg-card);
-    padding: 16px 20px;
-    border-radius: var(--radius-lg);
-    box-shadow: var(--shadow-sm);
-    margin-bottom: 24px;
+.section-header {
     display: flex;
-    gap: 12px;
-    align-items: flex-end;
+    justify-content: space-between;
+    align-items: center;
     flex-wrap: wrap;
-    justify-content: center;
-    border: var(--border-subtle);
+    gap: 12px;
+    margin-bottom: 14px;
+}
+
+.section-title {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 6px 12px;
+    font-family: var(--font-display);
+    font-size: 24px;
+    font-weight: 600;
+    line-height: 1.2;
+    color: var(--ink);
+}
+
+.hijri-status {
+    font-family: var(--font-ui);
+    display: inline-block;
+    padding: 3px 10px;
+    border-radius: var(--radius-pill);
+    background: var(--gold-wash-strong);
+    color: var(--gold-ink);
+    font-size: 12px;
+    font-weight: 600;
+    line-height: 1.4;
+    white-space: nowrap;
+}
+
+.hijri-status.fixed {
+    background: var(--leaf);
+    color: var(--green);
+}
+
+.hijri-status:empty {
+    display: none;
+}
+
+/* Permukaan seragam untuk isi tiap bagian */
+.panel {
+    background: var(--card);
+    border: 1px solid var(--line);
+    border-radius: 14px;
+}
+
+/* =============================================
+   JADWAL BULANAN
+   ============================================= */
+.table-section {
+    margin-top: 44px;
+}
+
+/* Masehi / Hijriah */
+.calendar-toggle {
+    display: inline-flex;
+    padding: 3px;
+    background: var(--card);
+    border: 1px solid var(--line-strong);
+    border-radius: var(--radius-pill);
+}
+
+.toggle-btn {
+    border: none;
+    background: none;
+    padding: 6px 16px;
+    border-radius: var(--radius-pill);
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--ink-2);
+    transition: background-color 0.2s ease, color 0.2s ease;
+}
+
+.toggle-btn:hover {
+    color: var(--green);
+}
+
+.toggle-btn.active {
+    background: var(--green);
+    color: #FFFFFF;
+}
+
+/* Filter & ekspor */
+.controls {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: flex-end;
+    gap: 12px 16px;
+    margin-bottom: 16px;
 }
 
 .control-group {
     display: flex;
     flex-direction: column;
-    gap: 4px;
+    gap: 6px;
 }
 
 .control-group label {
-    font-size: 11px;
-    font-weight: 700;
-    color: var(--text-muted);
-    text-transform: uppercase;
-    letter-spacing: 1px;
+    font-size: 12px;
+    font-weight: 600;
+    color: var(--ink-2);
 }
 
-select, input[type="month"] {
-    padding: 9px 14px;
+.control-row {
+    display: flex;
+    gap: 8px;
+}
+
+select,
+input[type="month"],
+input[type="number"] {
+    height: 40px;
+    padding: 0 12px;
+    min-width: 170px;
+    background-color: var(--card);
+    border: 1px solid var(--line-strong);
+    border-radius: var(--radius-control);
     font-size: 14px;
-    font-family: inherit;
-    border: 1px solid rgba(26, 107, 60, 0.15);
-    border-radius: var(--radius-sm);
-    outline: none;
-    color: var(--text-primary);
-    background: var(--bg-primary);
-    transition: border-color var(--transition-fast), box-shadow var(--transition-fast);
-    cursor: pointer;
+    font-weight: 500;
+    color: var(--ink);
+    transition: border-color 0.2s ease;
 }
 
-select:focus, input[type="month"]:focus {
-    border-color: var(--nu-green);
-    box-shadow: 0 0 0 3px rgba(26, 107, 60, 0.1);
+select {
+    -webkit-appearance: none;
+    appearance: none;
+    padding-right: 34px;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%234D5E53' stroke-width='2.5' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right 12px center;
 }
 
-button {
-    font-family: inherit;
-    cursor: pointer;
+select:hover,
+input:hover {
+    border-color: var(--green-muted);
 }
 
-.btn-location {
+.input-year {
+    width: 92px;
+    min-width: 0 !important;
+}
+
+.btn-location,
+.btn-export {
     display: inline-flex;
     align-items: center;
+    justify-content: center;
     gap: 6px;
-    padding: 9px 18px;
+    height: 40px;
+    padding: 0 14px;
+    background: var(--card);
+    border: 1px solid var(--line-strong);
+    border-radius: var(--radius-control);
     font-size: 13px;
     font-weight: 600;
-    background: var(--nu-green-dark);
-    color: white;
-    border: none;
-    border-radius: var(--radius-sm);
-    transition: all var(--transition-fast);
+    color: var(--green);
+    white-space: nowrap;
+    transition: background-color 0.2s ease, border-color 0.2s ease;
 }
 
-.btn-location:hover {
-    background: var(--nu-green);
-    box-shadow: var(--shadow-md);
-}
-
-.btn-location svg {
-    flex-shrink: 0;
-}
-
-/* =============================================
-   SECTION HEADER & TITLE
-   ============================================= */
-.section-header {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    margin-bottom: 12px;
-    gap: 12px;
-    flex-wrap: wrap;
-}
-
-.section-title {
-    font-size: 16px;
-    font-weight: 700;
-    color: var(--text-secondary);
-    margin-bottom: 0;
-    padding-left: 4px;
-    display: flex;
-    align-items: center;
-    gap: 8px;
-}
-
-.section-title::before {
-    content: '';
-    display: inline-block;
-    width: 4px;
-    height: 18px;
-    background: var(--nu-gold);
-    border-radius: 2px;
-}
-
-/* --- Toggle Masehi / Hijriah & Export --- */
-.calendar-actions {
-    display: flex;
-    align-items: center;
-    gap: 8px;
-}
-
-.calendar-toggle {
-    display: flex;
-    background: var(--bg-primary);
-    border-radius: var(--radius-pill);
-    padding: 3px;
-    border: var(--border-subtle);
-    box-shadow: var(--shadow-sm);
-}
-
-.btn-export {
-    display: flex;
-    align-items: center;
-    gap: 6px;
-    padding: 6px 14px;
-    font-size: 13px;
-    font-weight: 600;
-    color: var(--nu-green);
-    background: white;
-    border: 1px solid var(--border-color);
-    border-radius: var(--radius-pill);
-    cursor: pointer;
-    box-shadow: var(--shadow-sm);
-    transition: var(--transition-fast);
-}
-
+.btn-location:hover,
 .btn-export:hover {
-    background: var(--bg-secondary);
-    border-color: var(--nu-green);
-}
-
-.btn-export:active {
-    transform: scale(0.96);
+    background: var(--leaf);
+    border-color: var(--green-muted);
 }
 
 .btn-poster {
-    color: var(--nu-gold);
-    border-color: rgba(201, 152, 46, 0.3);
+    color: var(--gold-ink);
 }
 
 .btn-poster:hover {
-    background: var(--nu-gold-light);
-    border-color: var(--nu-gold);
+    background: var(--gold-wash);
+    border-color: var(--gold);
 }
 
 .btn-export:disabled {
     opacity: 0.6;
     cursor: wait;
-    transform: none;
 }
 
-.toggle-btn {
-    padding: 6px 16px;
-    font-size: 12px;
-    font-weight: 600;
-    font-family: inherit;
-    border: none;
-    background: transparent;
-    color: var(--text-muted);
-    border-radius: var(--radius-pill);
-    cursor: pointer;
-    transition: all var(--transition-fast);
-    letter-spacing: 0.3px;
+.export-actions {
+    display: flex;
+    gap: 8px;
+    margin-left: auto;
 }
 
-.toggle-btn:hover {
-    color: var(--text-primary);
-}
-
-.toggle-btn.active {
-    background: var(--nu-green);
-    color: white;
-    box-shadow: 0 2px 8px rgba(26, 107, 60, 0.25);
-}
-
-/* =============================================
-   TABEL JADWAL
-   ============================================= */
-.table-section {
-    margin-bottom: 28px;
-}
-
-/* Label bulan Hijri di dalam sel tabel */
-.hijri-month-label {
-    font-size: 9px;
-    font-weight: 500;
-    color: var(--text-muted);
-    text-transform: uppercase;
-    letter-spacing: 0.3px;
-    margin-top: 2px;
-    line-height: 1;
-}
-
-.current-day-row .hijri-month-label {
-    color: var(--text-on-green-muted);
-}
-
-.table-container {
-    width: 100%;
-    overflow-x: auto;
-    background: var(--bg-card);
-    border-radius: var(--radius-lg);
-    box-shadow: var(--shadow-md);
-    border: var(--border-subtle);
-    -webkit-overflow-scrolling: touch;
-}
-
-table {
-    width: 100%;
-    border-collapse: collapse;
-    text-align: center;
-    white-space: nowrap;
-}
-
-th {
-    background: var(--nu-green);
-    color: var(--text-on-green);
-    font-size: 11px;
-    font-weight: 700;
-    text-transform: uppercase;
-    letter-spacing: 1px;
-    padding: 14px 12px;
-    position: sticky;
-    top: 0;
-    z-index: 10;
-}
-
-th:first-child {
-    border-radius: var(--radius-lg) 0 0 0;
-}
-
-th:last-child {
-    border-radius: 0 var(--radius-lg) 0 0;
-}
-
-td {
-    padding: 12px;
-    border-bottom: 1px solid rgba(26, 107, 60, 0.06);
-    font-size: 14px;
-    color: var(--text-primary);
-    font-variant-numeric: tabular-nums;
-}
-
-tbody tr {
-    transition: background-color var(--transition-fast);
-}
-
-tbody tr:hover {
-    background-color: var(--nu-green-light);
-}
-
-tbody tr:nth-child(even) {
-    background-color: var(--bg-primary);
-}
-
-tbody tr:nth-child(even):hover {
-    background-color: var(--nu-green-light);
-}
-
-/* Baris hari ini */
-.current-day-row {
-    background: linear-gradient(90deg, var(--nu-green-dark), var(--nu-green)) !important;
-    position: relative;
-}
-
-.current-day-row td {
-    font-weight: 600;
-    color: var(--text-on-green) !important;
-    border-bottom: 1px solid rgba(255, 255, 255, 0.08);
-}
-
-.current-day-row td strong {
-    color: var(--text-on-green) !important;
-}
-
-.current-day-row td:first-child {
-    border-left: 4px solid var(--nu-gold);
-}
-
-/* =============================================
-   LOADING
-   ============================================= */
+/* Memuat */
 .loading {
-    text-align: center;
-    font-size: 14px;
-    color: var(--nu-green);
-    padding: 20px;
-    display: none;
-    font-weight: 600;
+    display: none; /* diatur JS → flex */
     align-items: center;
     justify-content: center;
     gap: 10px;
+    padding: 14px;
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--green);
 }
 
 .loading-spinner {
-    width: 20px;
-    height: 20px;
-    border: 2px solid var(--nu-green-light);
-    border-top-color: var(--nu-green);
+    width: 18px;
+    height: 18px;
+    border: 2px solid var(--leaf);
+    border-top-color: var(--green);
     border-radius: 50%;
     animation: spin 0.7s linear infinite;
-    display: inline-block;
 }
 
 @keyframes spin {
     to { transform: rotate(360deg); }
 }
 
+/* --- Tabel --- */
+.table-container {
+    width: 100%;
+    overflow-x: auto;
+    background: var(--card);
+    border: 1px solid var(--line);
+    border-radius: 14px;
+    -webkit-overflow-scrolling: touch;
+}
+
+table {
+    width: 100%;
+    border-collapse: separate;
+    border-spacing: 0;
+    text-align: center;
+    white-space: nowrap;
+    font-variant-numeric: tabular-nums;
+}
+
+th {
+    position: sticky;
+    top: 0;
+    z-index: 2;
+    padding: 12px 10px;
+    background: var(--leaf);
+    border-bottom: 1px solid var(--line);
+    font-size: 12px;
+    font-weight: 700;
+    color: var(--green);
+}
+
+td {
+    padding: 11px 10px;
+    background: var(--card);
+    border-bottom: 1px solid var(--line);
+    font-size: 14px;
+    color: var(--ink);
+}
+
+td strong {
+    font-weight: 700;
+}
+
+tbody tr:last-child td {
+    border-bottom: none;
+}
+
+/* Kolom tanggal tetap terlihat saat tabel digeser di layar kecil */
+th:first-child,
+td:first-child {
+    position: sticky;
+    left: 0;
+    z-index: 1;
+}
+
+th:first-child {
+    z-index: 3;
+}
+
+tbody tr:hover td {
+    background: #F6F9F6;
+}
+
+/* Label Hijriah di sel tanggal */
+.hijri-month-label,
+.hijri-event {
+    display: block;
+    margin-top: 1px;
+    font-size: 10.5px;
+    line-height: 1.2;
+}
+
+.hijri-month-label {
+    font-weight: 500;
+    color: var(--ink-3);
+}
+
+.hijri-event {
+    font-weight: 700;
+    color: var(--gold-ink);
+}
+
+tr.row-fasting .hijri-event {
+    color: var(--green-muted);
+}
+
+/* Hari penting */
+tr.row-event td {
+    background: var(--gold-wash);
+}
+
+tr.row-holiday td {
+    background: var(--gold-wash-strong);
+}
+
+tr.row-event td:first-child {
+    box-shadow: inset 3px 0 0 var(--gold);
+}
+
+/* Hari ini */
+tr.current-day-row td {
+    background: var(--leaf);
+    color: var(--pine);
+    font-weight: 700;
+}
+
+tr.current-day-row td:first-child {
+    box-shadow: inset 3px 0 0 var(--green);
+}
+
+/* Galat */
+.table-error {
+    padding: 32px 16px !important;
+    white-space: normal;
+    color: var(--ink-2);
+    position: static !important;
+}
+
+.btn-retry {
+    margin-left: 8px;
+    padding: 6px 16px;
+    background: transparent;
+    border: 1px solid var(--green);
+    border-radius: var(--radius-pill);
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--green);
+    transition: background-color 0.2s ease, color 0.2s ease;
+}
+
+.btn-retry:hover {
+    background: var(--green);
+    color: #FFFFFF;
+}
+
+/* =============================================
+   DATA HILAL & CATATAN
+   ============================================= */
+.info-columns {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr);
+    gap: 44px;
+    margin-top: 52px;
+}
+
+.hilal-panel {
+    padding: 16px 20px 18px;
+}
+
+.hilal-panel > .hijri-status {
+    margin-bottom: 4px;
+}
+
+.hilal-grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    column-gap: 24px;
+}
+
+.hilal-item {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+    padding: 12px 0;
+    border-bottom: 1px solid var(--line);
+    min-width: 0;
+}
+
+.hilal-label {
+    font-size: 13px;
+    color: var(--ink-3);
+}
+
+.hilal-value {
+    font-size: 16px;
+    font-weight: 700;
+    color: var(--ink);
+    font-variant-numeric: tabular-nums;
+    overflow-wrap: anywhere;
+}
+
+.hilal-value small {
+    font-size: 12px;
+    font-weight: 500;
+    color: var(--ink-3);
+}
+
+.hilal-check {
+    margin-left: 4px;
+}
+
+.hilal-check.ok { color: var(--green-muted); }
+.hilal-check.no { color: var(--danger); }
+
+.hilal-result {
+    margin-top: 14px;
+    font-size: 16px;
+    color: var(--ink-2);
+}
+
+.hilal-result strong {
+    color: var(--green);
+}
+
+.hilal-note {
+    margin-top: 6px;
+    max-width: 62ch;
+    font-size: 13px;
+    color: var(--ink-3);
+}
+
+.notes-list {
+    padding: 4px 20px;
+}
+
+.notes-list > div {
+    display: grid;
+    grid-template-columns: 9.5rem minmax(0, 1fr);
+    gap: 4px 16px;
+    padding: 12px 0;
+    border-bottom: 1px solid var(--line);
+}
+
+.notes-list > div:last-child {
+    border-bottom: none;
+}
+
+.notes-list dt {
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--ink);
+}
+
+.notes-list dd {
+    font-size: 14px;
+    color: var(--ink-2);
+}
+
+.notes-list dd strong {
+    color: var(--green);
+    font-weight: 700;
+}
+
 /* =============================================
    FOOTER
    ============================================= */
 .footer-wrapper {
-    background: var(--bg-card);
-    padding: 32px 28px;
-    border-radius: var(--radius-xl);
-    border: var(--border-subtle);
-    box-shadow: var(--shadow-sm);
-    position: relative;
-    overflow: hidden;
-}
-
-.footer-wrapper::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    height: 4px;
-    background: linear-gradient(90deg, var(--nu-green), var(--nu-gold), var(--nu-green));
-}
-
-.friendly-greeting {
     display: flex;
-    align-items: flex-start;
-    gap: 18px;
-    margin-bottom: 24px;
-}
-
-.greeting-icon {
-    font-size: 28px;
-    width: 52px;
-    height: 52px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    background: var(--nu-green-light);
-    border-radius: var(--radius-md);
-    flex-shrink: 0;
-    color: var(--nu-green);
-}
-
-.friendly-greeting h3 {
-    margin: 0 0 6px 0;
-    color: var(--nu-green-dark);
-    font-size: 18px;
-    font-weight: 700;
-}
-
-.friendly-greeting p {
-    margin: 0;
-    color: var(--text-secondary);
-    line-height: 1.65;
-    font-size: 14px;
-}
-
-.footer-divider {
-    border: 0;
-    border-top: 1px solid rgba(26, 107, 60, 0.08);
-    margin: 24px 0;
-}
-
-/* Info teknis — grid layout */
-.technical-info h4 {
-    margin-top: 0;
-    color: var(--text-primary);
-    font-size: 15px;
-    margin-bottom: 14px;
-    font-weight: 700;
-    text-align: center;
-}
-
-.info-grid {
-    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
     flex-wrap: wrap;
-    justify-content: center;
-    gap: 12px;
+    gap: 20px 40px;
+    margin-top: 56px;
+    padding-top: 24px;
+    border-top: 1px solid var(--line-strong);
 }
 
-.info-item {
-    background: var(--bg-primary);
-    padding: 14px 16px;
-    border-radius: var(--radius-sm);
-    border-top: 3px solid var(--nu-gold);
-    text-align: center;
-    width: calc(33.333% - 8px);
+.footer-greeting {
+    max-width: 62ch;
+    font-size: 14px;
+    color: var(--ink-2);
 }
 
-.info-item strong {
+.footer-greeting strong {
     display: block;
-    font-size: 12px;
-    font-weight: 700;
-    color: var(--nu-green-dark);
-    text-transform: uppercase;
-    letter-spacing: 0.5px;
-    margin-bottom: 4px;
-}
-
-.info-item span {
-    font-size: 13px;
-    color: var(--text-secondary);
-    line-height: 1.5;
-}
-
-.info-item span strong {
-    display: inline;
-    font-size: inherit;
-    color: var(--nu-green-dark);
-    text-transform: none;
-    letter-spacing: 0;
-    margin-bottom: 0;
+    margin-bottom: 2px;
+    font-family: var(--font-display);
+    font-size: 18px;
+    font-weight: 600;
+    color: var(--green);
 }
 
 .copyright {
-    margin-top: 28px;
-    text-align: center;
-    font-size: 12px;
-    color: var(--text-muted);
-    font-weight: 500;
-    line-height: 1.8;
-}
-
-.copyright span {
-    color: var(--nu-green);
-    font-weight: 700;
+    font-size: 13px;
+    color: var(--ink-3);
+    text-align: right;
 }
 
 .copyright a {
-    color: var(--text-muted);
+    font-weight: 600;
     text-decoration: none;
-    transition: color var(--transition-fast);
 }
 
 .copyright a:hover {
-    color: var(--nu-green);
+    text-decoration: underline;
 }
 
 /* =============================================
-   PENYESUAIAN RESPONSIF
+   RESPONSIF
    ============================================= */
-
-/* --- Tablet (≤ 768px) --- */
-@media (max-width: 768px) {
-    .main-container {
-        padding: 16px 14px 40px;
-    }
-
-    .hero-header {
-        padding: 48px 18px 48px;
-        border-radius: var(--radius-lg);
-    }
-
-    .lang-selector-hero {
-        top: 16px;
-        right: 16px;
-        padding: 5px 12px;
-    }
-
-    .hero-crescent {
-        font-size: 28px;
-        top: 10%;
-        right: 4%;
-    }
-
-    .hero-gold-line {
-        width: 140px;
-        margin: 10px auto;
-    }
-
-    .hero-badge {
-        font-size: 10px;
-        letter-spacing: 2px;
-        padding: 5px 14px;
-    }
-
-    .hero-org {
-        font-size: 28px;
-    }
-
-    .hero-hijri {
-        font-size: 11px;
-    }
-
-    .hero-clock {
-        font-size: 52px;
-    }
-
-    .hero-countdown {
-        flex-direction: column;
-        text-align: center;
-        gap: 6px;
-        padding: 10px 20px;
-        font-size: 13px;
-        border-radius: var(--radius-lg);
-    }
-
-    .hero-countdown .countdown-info {
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        gap: 2px;
-    }
-
-    .today-prayers {
-        display: flex;
-        flex-wrap: wrap;
-        justify-content: center;
-        gap: 8px;
-    }
-
-    .prayer-card {
-        width: calc(25% - 6px);
-        min-width: unset;
-        flex: unset;
-        padding: 12px 6px;
-    }
-
-    .prayer-name {
-        font-size: 10px;
-        letter-spacing: 0.8px;
-    }
-
-    .prayer-time {
-        font-size: 19px;
-    }
-
-    .controls {
-        padding: 14px;
-        gap: 10px;
-    }
-
-    th, td {
-        padding: 10px 8px;
-        font-size: 13px;
-    }
-
-    th {
-        font-size: 10px;
-    }
-
-    .footer-wrapper {
-        padding: 24px 20px;
-    }
-
-    .info-grid {
-        /* Overridden by info-item width */
-    }
-
-    .info-item {
-        width: calc(50% - 6px);
+@media (min-width: 768px) {
+    .btn-screensaver-hero {
+        display: inline-flex;
     }
 }
 
-/* --- Mobile (≤ 480px) --- */
-@media (max-width: 480px) {
+@media (min-width: 920px) {
+    .info-columns {
+        grid-template-columns: minmax(0, 7fr) minmax(0, 5fr);
+        gap: 56px;
+        align-items: start;
+    }
+}
+
+@media (max-width: 720px) {
     .main-container {
-        padding: 10px 8px 30px;
+        padding: 12px 16px 40px;
     }
 
-    .hero-header {
-        padding: 48px 14px 42px;
-        border-radius: var(--radius-md);
-        margin-bottom: 20px;
+    .board {
+        border-radius: 18px;
+        padding-top: 14px;
     }
 
-    .lang-selector-hero {
-        top: 10px;
-        right: 10px;
-        padding: 4px 10px;
-        gap: 6px;
+    .board-bar {
+        padding: 0 14px;
     }
 
-    .lang-selector-hero .lang-btn {
-        font-size: 9px;
-        padding: 2px;
+    .board-org {
+        font-size: 25px;
     }
 
-    .hero-crescent {
-        font-size: 22px;
-        top: 8%;
-        right: 3%;
-        opacity: 0.12;
-    }
-
-    .hero-gold-line {
-        width: 120px;
-        margin: 8px auto;
-    }
-
-    .star {
-        width: 3px !important;
-        height: 3px !important;
-    }
-
-    .hero-badge {
-        font-size: 9px;
-        letter-spacing: 1.5px;
-        padding: 4px 12px;
-        margin-bottom: 12px;
-    }
-
-    .hero-org {
-        font-size: 22px;
-    }
-
-    .hero-supervised {
-        font-size: 11px;
-        margin-bottom: 18px;
-    }
-
-    .hero-date {
-        font-size: 13px;
-    }
-
-    .hero-hijri {
-        font-size: 10px;
-    }
-
-    .hero-clock {
-        font-size: 42px;
-    }
-
-    .hero-countdown {
-        padding: 8px 16px;
+    .board-supervised {
         font-size: 12px;
-        border-radius: var(--radius-lg);
-        transform: translateY(20px);
     }
 
-    .hero-countdown .badge-current {
-        font-size: 10px;
-        padding: 3px 10px;
+    .board-now {
+        padding: 22px 16px 24px;
     }
 
-    .hero-countdown strong {
-        font-size: 15px;
-    }
-
-    .hero-countdown .countdown-info {
-        display: flex;
+    .board-dates {
         flex-direction: column;
-        align-items: center;
         gap: 2px;
-    }
-
-    .today-prayers {
-        display: flex;
-        flex-wrap: wrap;
-        justify-content: center;
-        gap: 6px;
-        margin-bottom: 18px;
-    }
-
-    .prayer-card {
-        width: calc(25% - 4.5px);
-        padding: 10px 4px;
-        border-radius: var(--radius-sm);
-    }
-
-    .prayer-name {
-        font-size: 8px;
-        letter-spacing: 0.5px;
-        margin-bottom: 3px;
-    }
-
-    .prayer-time {
-        font-size: 16px;
-    }
-
-    .prayer-card.active {
-        transform: translateY(-3px) scale(1.02);
-    }
-
-    /* Kontrol stacking */
-    .controls {
-        flex-direction: column;
-        padding: 12px;
-        gap: 8px;
-        align-items: stretch;
-    }
-
-    .control-group {
-        width: 100%;
-    }
-
-    .control-group label {
-        font-size: 10px;
-    }
-
-    select, input[type="month"] {
-        width: 100%;
         font-size: 14px;
     }
 
-    .btn-location {
-        width: 100%;
-        justify-content: center;
-        padding: 10px;
+    .hero-countdown {
+        font-size: 14px;
+    }
+
+    .prayer-card {
+        padding: 12px 2px 14px;
+    }
+
+    .prayer-icon {
+        display: none;
+    }
+
+    .prayer-name {
+        font-size: 11px;
+    }
+
+    .prayer-time {
+        font-size: 14.5px;
+    }
+
+    .board-identity {
+        margin-top: 14px;
+    }
+
+    .table-section {
+        margin-top: 32px;
     }
 
     .section-title {
-        font-size: 14px;
+        font-size: 21px;
     }
 
-    /* Tabel compact */
-    .table-container {
-        border-radius: var(--radius-md);
+    .controls > .control-group {
+        flex: 1 1 100%;
     }
 
-    th {
-        padding: 10px 5px;
-        font-size: 9px;
-        letter-spacing: 0.3px;
+    .control-row > select {
+        flex: 1;
+        min-width: 0;
     }
 
-    th:first-child { border-radius: var(--radius-md) 0 0 0; }
-    th:last-child { border-radius: 0 var(--radius-md) 0 0; }
-
-    td {
-        padding: 8px 5px;
-        font-size: 12px;
-    }
-
-    /* Footer */
-    .footer-wrapper {
-        padding: 20px 14px;
-        border-radius: var(--radius-md);
-    }
-
-    .friendly-greeting {
-        flex-direction: column;
-        text-align: center;
-        align-items: center;
-        gap: 12px;
-    }
-
-    .greeting-icon {
-        width: 44px;
-        height: 44px;
-        font-size: 22px;
-    }
-
-    .friendly-greeting h3 {
-        font-size: 16px;
-    }
-
-    .friendly-greeting p {
-        font-size: 13px;
-    }
-
-    .info-item {
-        padding: 12px 14px;
+    input[type="month"] {
         width: 100%;
     }
 
-    .copyright {
-        font-size: 11px;
-    }
-}
-
-/* --- Small Mobile (≤ 360px) --- */
-@media (max-width: 360px) {
-    .hero-clock {
-        font-size: 36px;
+    .export-actions {
+        flex: 1 1 100%;
+        margin-left: 0;
     }
 
-    .hero-org {
-        font-size: 20px;
-    }
-
-    .prayer-name {
-        font-size: 7px;
-    }
-
-    .prayer-time {
-        font-size: 14px;
-    }
-
-    th {
-        font-size: 8px;
-        padding: 8px 3px;
+    .export-actions .btn-export {
+        flex: 1;
     }
 
     td {
-        padding: 7px 3px;
-        font-size: 11px;
+        padding: 9px 8px;
+        font-size: 13px;
+    }
+
+    th {
+        padding: 10px 8px;
+        font-size: 11.5px;
+    }
+
+    .info-columns {
+        margin-top: 40px;
+        gap: 36px;
+    }
+
+    .notes-list > div {
+        grid-template-columns: minmax(0, 1fr);
+    }
+
+    .footer-wrapper {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    .copyright {
+        text-align: left;
+    }
+}
+
+@media (max-width: 360px) {
+    .prayer-name {
+        font-size: 10px;
+    }
+
+    .prayer-time {
+        font-size: 13px;
+    }
+
+    .btn-home-hero span {
+        display: none;
+    }
+
+    .hilal-grid {
+        grid-template-columns: minmax(0, 1fr);
     }
 }
 
 /* =============================================
-   SCREENSAVER MODE
+   KALENDER MASEHI & HIJRIAH
    ============================================= */
-/* --- SCREENSAVER BUTTON --- */
-.btn-screensaver-hero, .btn-home-hero {
-    position: absolute;
+.cal-nav {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+}
+
+.cal-nav-btn,
+.cal-today-btn {
+    display: inline-flex;
     align-items: center;
     justify-content: center;
-    background: rgba(255, 255, 255, 0.12);
-    backdrop-filter: blur(12px);
-    -webkit-backdrop-filter: blur(12px);
-    border-radius: var(--radius-pill);
-    border: 1px solid rgba(255, 255, 255, 0.2);
-    z-index: 10;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
-    color: white;
-    cursor: pointer;
-    transition: all var(--transition-fast);
+    height: 36px;
+    background: var(--card);
+    border: 1px solid var(--line-strong);
+    border-radius: var(--radius-control);
+    color: var(--ink-2);
+    transition: background-color 0.2s ease, border-color 0.2s ease, color 0.2s ease;
 }
 
-.btn-home-hero {
-    top: 24px;
-    left: 24px;
-    display: inline-flex;
-    text-decoration: none;
-    padding: 6px 14px;
-    gap: 6px;
-    font-size: 11px;
+.cal-nav-btn {
+    width: 36px;
+}
+
+.cal-today-btn {
+    padding: 0 14px;
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--green);
+}
+
+.cal-nav-btn:hover,
+.cal-today-btn:hover {
+    background: var(--leaf);
+    border-color: var(--green-muted);
+    color: var(--green);
+}
+
+.cal-card {
+    padding: 18px 18px 14px;
+}
+
+.cal-head {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    flex-wrap: wrap;
+    gap: 2px 16px;
+    margin-bottom: 14px;
+}
+
+.cal-month {
+    font-family: var(--font-display);
+    font-size: 21px;
+    font-weight: 600;
+    color: var(--pine);
+}
+
+.cal-hijri-range {
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--gold-ink);
+}
+
+.cal-grid {
+    display: grid;
+    grid-template-columns: repeat(7, minmax(0, 1fr));
+    gap: 2px;
+}
+
+.cal-dow {
+    padding: 2px 0 8px;
+    margin-bottom: 4px;
+    border-bottom: 1px solid var(--line);
+    text-align: center;
+    font-size: 12px;
+    font-weight: 600;
+    color: var(--ink-3);
+}
+
+.cal-dow.is-sun { color: var(--danger); }
+.cal-dow.is-fri { color: var(--green); }
+
+.cal-day {
+    display: flex;
+    flex-direction: column;
+    min-height: 78px;
+    min-width: 0;
+    padding: 7px 8px 6px;
+    text-align: left;
+    background: transparent;
+    border: none;
+    border-radius: var(--radius-control);
+    transition: background-color 0.15s ease;
+}
+
+.cal-day:hover {
+    background: var(--leaf);
+}
+
+.cal-top {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    gap: 4px;
+}
+
+.cal-g {
+    font-size: 18px;
     font-weight: 700;
+    line-height: 1.2;
+    color: var(--ink);
+    font-variant-numeric: tabular-nums;
 }
 
-.btn-screensaver-hero {
-    bottom: 24px;
-    right: 24px;
-    padding: 8px; /* Original padding for square button */
-    display: none; /* Hidden on mobile by default */
+.cal-h {
+    font-size: 12px;
+    font-weight: 600;
+    color: var(--gold-ink);
+    font-variant-numeric: tabular-nums;
 }
 
-.btn-screensaver-hero:hover, .btn-home-hero:hover {
-    background: rgba(255, 255, 255, 0.25);
-    transform: translateY(-1px);
+.cal-p {
+    font-size: 10.5px;
+    color: var(--ink-3);
 }
 
-body.screensaver-active {
-    background: var(--nu-green-deep);
+.cal-ev,
+.cal-hm {
+    margin-top: auto;
+    padding-top: 2px;
     overflow: hidden;
-    margin: 0;
-    padding: 0;
-    height: 100vh;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    font-size: 10.5px;
+    font-weight: 700;
+    line-height: 1.2;
 }
 
-body.screensaver-active .controls,
+.cal-ev { color: var(--gold-ink); }
+.cal-hm { color: var(--ink-2); font-weight: 600; }
+
+.cal-day.is-sun .cal-g { color: var(--danger); }
+.cal-day.is-fri .cal-g { color: var(--green); }
+
+/* Hari penting */
+.cal-day.ev-event { background: var(--gold-wash); }
+.cal-day.ev-holiday { background: var(--gold-wash-strong); }
+.cal-day.ev-fasting .cal-ev { color: var(--green-muted); }
+
+/* Hari ini & terpilih */
+.cal-day.is-today {
+    box-shadow: inset 0 0 0 2px var(--green);
+}
+
+.cal-day.is-selected {
+    background: var(--green);
+}
+
+.cal-day.is-selected .cal-g,
+.cal-day.is-selected .cal-ev,
+.cal-day.is-selected .cal-hm {
+    color: #FFFFFF;
+}
+
+.cal-day.is-selected .cal-h {
+    color: var(--gold-wash-strong);
+}
+
+.cal-day.is-selected .cal-p {
+    color: rgba(255, 255, 255, 0.75);
+}
+
+.cal-day.is-selected.is-today {
+    box-shadow: inset 0 0 0 2px var(--gold);
+}
+
+.cal-detail {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: baseline;
+    gap: 4px 14px;
+    margin-top: 14px;
+    padding-top: 12px;
+    border-top: 1px solid var(--line);
+    font-size: 14px;
+    color: var(--ink-2);
+}
+
+.cal-detail strong {
+    font-size: 15px;
+    color: var(--ink);
+}
+
+.cal-detail-hijri {
+    font-weight: 600;
+    color: var(--gold-ink);
+}
+
+.cal-detail-hijri small {
+    font-weight: 500;
+    color: var(--ink-3);
+}
+
+.cal-detail-ev {
+    padding: 1px 10px;
+    border-radius: var(--radius-pill);
+    background: var(--gold-wash-strong);
+    font-size: 12px;
+    font-weight: 700;
+    color: var(--gold-ink);
+}
+
+.cal-detail-ev.ev-fasting {
+    background: var(--leaf);
+    color: var(--green);
+}
+
+/* Catatan di bawah kalender & hilal */
+.notes-section {
+    margin-top: 52px;
+}
+
+@media (min-width: 920px) {
+    .notes-list {
+        display: grid;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        column-gap: 48px;
+    }
+
+    .notes-list > div:nth-last-child(2) {
+        border-bottom: none;
+    }
+}
+
+@media (max-width: 720px) {
+    .cal-card {
+        padding: 12px 10px 10px;
+    }
+
+    .cal-grid {
+        gap: 3px;
+    }
+
+    .cal-day {
+        position: relative;
+        min-height: 54px;
+        padding: 5px 5px 8px;
+    }
+
+    .cal-top {
+        flex-direction: column;
+        gap: 0;
+    }
+
+    .cal-g {
+        font-size: 15px;
+    }
+
+    .cal-h {
+        font-size: 10.5px;
+    }
+
+    .cal-p,
+    .cal-ev,
+    .cal-hm {
+        display: none;
+    }
+
+    /* Penanda hari penting di layar kecil */
+    .cal-day.ev-event::after,
+    .cal-day.ev-holiday::after,
+    .cal-day.ev-fasting::after {
+        content: '';
+        position: absolute;
+        right: 6px;
+        bottom: 6px;
+        width: 6px;
+        height: 6px;
+        border-radius: 50%;
+        background: var(--gold);
+    }
+
+    .cal-day.ev-fasting::after {
+        background: var(--green-muted);
+    }
+
+    .cal-day.is-selected::after {
+        background: #FFFFFF;
+    }
+
+    .notes-section {
+        margin-top: 40px;
+    }
+}
+
+/* =============================================
+   MODE LAYAR PENUH (PAPAN MASJID)
+   ============================================= */
+body.screensaver-active {
+    background: var(--pine);
+    overflow: hidden;
+}
+
 body.screensaver-active .table-section,
+body.screensaver-active .info-columns,
+body.screensaver-active .notes-section,
 body.screensaver-active .footer-wrapper,
-body.screensaver-active .bg-ornament,
 body.screensaver-active .btn-home-hero,
 body.screensaver-active .lang-selector-hero {
     display: none !important;
 }
 
 body.screensaver-active .main-container {
-    padding: 20px 0 40px 0;
     max-width: none;
     height: 100vh;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    background: linear-gradient(160deg, var(--nu-green-deep) 0%, var(--nu-green-dark) 35%, var(--nu-green) 100%);
-    overflow: hidden;
-}
-
-body.screensaver-active .hero-header {
-    margin: 0;
-    width: 100%;
-    flex: 1;
-    border-radius: 0;
-    box-shadow: none;
-    background: none;
-    padding: 0 20px;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    position: relative; /* So stars position relative to this large flex area */
-    z-index: 1;
-}
-
-body.screensaver-active .hero-crescent,
-body.screensaver-active .hero-stars,
-body.screensaver-active .hero-ornament-left,
-body.screensaver-active .hero-ornament-right,
-body.screensaver-active .hero-bg-image {
-    opacity: 0.15;
-}
-
-/* Screen Burn-in Protection Animations */
-@keyframes screenSaverDrift {
-    0% { transform: translate(0, 0); }
-    25% { transform: translate(10px, 8px); }
-    50% { transform: translate(-8px, 12px); }
-    75% { transform: translate(-12px, -8px); }
-    100% { transform: translate(0, 0); }
-}
-
-body.screensaver-active .main-container {
+    padding: 0;
     animation: screenSaverDrift 60s linear infinite;
 }
 
-/* Let today-prayers sit at the bottom naturally */
-body.screensaver-active .today-prayers {
-    position: relative;
-    transform: none;
-    width: 100%;
-    max-width: 800px;
-    z-index: 10;
-    margin: 0;
-    padding: 0 20px;
-    flex-shrink: 0; /* Keep its natural height */
+body.screensaver-active .board {
+    display: flex;
+    flex-direction: column;
+    height: 100vh;
+    border-radius: 0;
+    padding-top: 2.4vh;
 }
 
-/* Apply Gestalt: Make prayer cards subtle "ground" elements to not compete with the "figure" clock */
+body.screensaver-active .board-bar {
+    justify-content: flex-end;
+    padding: 0 2.4vw;
+}
+
+body.screensaver-active .btn-screensaver-hero {
+    opacity: 0.35;
+    transition: opacity 0.2s ease;
+}
+
+body.screensaver-active .btn-screensaver-hero:hover,
+body.screensaver-active .btn-screensaver-hero:focus-visible {
+    opacity: 1;
+}
+
+body.screensaver-active .board-org {
+    font-size: clamp(28px, 4.2vh, 52px);
+}
+
+body.screensaver-active .board-supervised {
+    font-size: clamp(13px, 1.9vh, 22px);
+}
+
+body.screensaver-active .board-now {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    padding: 2vh 3vw;
+}
+
+body.screensaver-active .board-dates {
+    font-size: clamp(16px, 3vh, 34px);
+    gap: 0.4vh 2.4vw;
+}
+
+body.screensaver-active .hero-clock {
+    font-size: min(25vw, 40vh);
+    margin: 1.4vh 0 2.4vh;
+}
+
+body.screensaver-active .hero-countdown {
+    font-size: clamp(16px, 3vh, 34px);
+}
+
 body.screensaver-active .prayer-card {
-    background: rgba(255, 255, 255, 0.08);
-    backdrop-filter: blur(8px);
-    -webkit-backdrop-filter: blur(8px);
-    border: 1px solid rgba(255, 255, 255, 0.1);
-    box-shadow: none;
-    color: rgba(255, 255, 255, 0.8);
-}
-body.screensaver-active .prayer-card::after {
-    display: none;
-}
-body.screensaver-active .prayer-name {
-    color: rgba(255, 255, 255, 0.6);
-}
-body.screensaver-active .prayer-time {
-    color: #FFFFFF;
-}
-body.screensaver-active .prayer-card.active {
-    background: rgba(255, 255, 255, 0.15);
-    border: 1px solid rgba(255, 255, 255, 0.3);
-    color: #FFFFFF;
-    transform: translateY(-16px) scale(1.05);
-    box-shadow: 0 12px 30px rgba(0, 0, 0, 0.15);
-}
-body.screensaver-active .prayer-card.active .prayer-name {
-    color: rgba(255, 255, 255, 0.9);
+    padding: 2.4vh 0.6vw 2.8vh;
 }
 
-/* Scale up sizes for Screensaver Mode on larger screens (Tablets/Monitors) */
-@media (min-width: 768px) {
-    body.screensaver-active .hero-clock {
-        font-size: 120px;
-        text-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+body.screensaver-active .prayer-icon {
+    display: block;
+    width: clamp(18px, 2.8vh, 32px);
+    height: clamp(18px, 2.8vh, 32px);
+}
+
+body.screensaver-active .prayer-name {
+    font-size: clamp(12px, 2.3vh, 26px);
+}
+
+body.screensaver-active .prayer-time {
+    font-size: clamp(22px, 5.4vh, 64px);
+}
+
+/* Perlindungan burn-in layar */
+@keyframes screenSaverDrift {
+    0%   { transform: translate(0, 0); }
+    25%  { transform: translate(8px, 6px); }
+    50%  { transform: translate(-6px, 10px); }
+    75%  { transform: translate(-10px, -6px); }
+    100% { transform: translate(0, 0); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    *, *::before, *::after {
+        transition-duration: 0.01ms !important;
     }
-    body.screensaver-active .hero-dates {
-        gap: 16px;
-        margin-bottom: 30px;
+
+    body.screensaver-active .main-container {
+        animation: none;
     }
-    body.screensaver-active .hero-date, 
-    body.screensaver-active .hero-hijri {
-        font-size: 22px;
-    }
-    body.screensaver-active .hero-countdown {
-        font-size: 20px;
-        padding: 16px 40px;
-        transform: translateY(40px);
-    }
-    body.screensaver-active .hero-countdown strong {
-        font-size: 24px;
-    }
-    .btn-screensaver-hero {
-        display: inline-flex; /* Show on computer view */
-    }
-    body.screensaver-active .btn-screensaver-hero {
-        padding: 12px;
-        bottom: 32px;
-        right: 32px;
-        top: auto;
-        left: auto;
-    }
-    body.screensaver-active .btn-screensaver-hero svg {
-        width: 24px;
-        height: 24px;
-    }
-    body.screensaver-active .today-prayers {
-        max-width: 900px;
-        gap: 12px;
-    }
-    body.screensaver-active .prayer-card {
-        padding: 16px 12px;
-    }
-    body.screensaver-active .prayer-name {
-        font-size: 12px;
-    }
-    body.screensaver-active .prayer-time {
-        font-size: 22px;
-    }
-    body.screensaver-active .prayer-card svg {
-        width: 24px;
-        height: 24px;
+
+    .loading-spinner {
+        animation-duration: 2s;
     }
 }

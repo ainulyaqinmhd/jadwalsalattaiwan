@@ -1,0 +1,19 @@
+{
+    "name": "Jadwal Sholat PCINU Taiwan",
+    "short_name": "Jadwal Sholat",
+    "description": "Jadwal & waktu sholat untuk umat Muslim Indonesia di Taiwan, disupervisi oleh LFNU Taiwan.",
+    "start_url": "./",
+    "scope": "./",
+    "display": "standalone",
+    "background_color": "#FAFAF7",
+    "theme_color": "#1A6B3C",
+    "lang": "id",
+    "icons": [
+        {
+            "src": "images/icon.svg",
+            "sizes": "any",
+            "type": "image/svg+xml",
+            "purpose": "any maskable"
+        }
+    ]
+}

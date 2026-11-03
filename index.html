@@ -25,171 +25,138 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link
-        href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:ital,wght@0,400;0,500;0,600;0,700;0,800&display=swap"
+        href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Reem+Kufi:wght@500;600;700&display=swap"
         rel="stylesheet">
-    <link rel="stylesheet" href="css/style.css?v=2">
+    <link rel="stylesheet" href="css/style.css?v=13">
+    <link rel="manifest" href="manifest.webmanifest">
+    <link rel="icon" href="images/icon.svg" type="image/svg+xml">
+    <meta name="theme-color" content="#0F3B24">
 </head>
 
 <body>
 
-    <!-- Dekorasi latar belakang -->
-    <div class="bg-ornament"></div>
-
     <main class="main-container">
 
-        <!-- Hero Header -->
-        <header class="hero-header">
-            <!-- Home Link -->
-            <a href="https://nutaiwan.com/" class="btn-home-hero" title="Kembali ke nutaiwan.com" aria-label="Home">
-                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                    <line x1="19" y1="12" x2="5" y2="12"></line>
-                    <polyline points="12 19 5 12 12 5"></polyline>
-                </svg>
-                <span class="home-text">nutaiwan.com</span>
-            </a>
+        <!-- Papan jadwal (hero) -->
+        <header class="board">
+            <div class="board-bg" aria-hidden="true"></div>
 
-            <!-- Screensaver Toggle -->
-            <button class="btn-screensaver-hero" onclick="toggleScreensaver()" title="Layar Penuh" aria-label="Screensaver">
-                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                    <path d="M8 3H5a2 2 0 0 0-2 2v3m18 0V5a2 2 0 0 0-2-2h-3m0 18h3a2 2 0 0 0 2-2v-3M3 16v3a2 2 0 0 0 2 2h3"></path>
-                </svg>
-            </button>
-
-            <!-- Language Selector -->
-            <div class="lang-selector-hero">
-                <button class="lang-btn" data-lang="id" onclick="setLang('id')">ID</button>
-                <span class="lang-divider">|</span>
-                <button class="lang-btn" data-lang="en" onclick="setLang('en')">EN</button>
-            </div>
-            <!-- Gambar Silhouette Kabah -->
-            <div class="hero-bg-image"></div>
-
-            <!-- Ornamen dekoratif -->
-            <div class="hero-ornament-left"></div>
-            <div class="hero-ornament-right"></div>
-
-            <!-- Bintang NU — 9 bintang bercahaya -->
-            <div class="hero-stars">
-                <div class="star" style="top:12%;left:8%"></div>
-                <div class="star" style="top:18%;left:15%"></div>
-                <div class="star" style="top:8%;left:22%"></div>
-                <div class="star" style="top:25%;right:18%"></div>
-                <div class="star" style="top:10%;right:10%"></div>
-                <div class="star" style="top:35%;left:5%"></div>
-                <div class="star" style="bottom:30%;right:8%"></div>
-                <div class="star" style="bottom:20%;left:12%"></div>
-                <div class="star" style="top:15%;right:25%"></div>
-            </div>
-
-            <!-- Bulan sabit dekoratif -->
-            <div class="hero-crescent">☽</div>
-
-            <!-- Konten utama -->
-            <div class="hero-badge">
-                <span class="hero-badge-icon">✦</span>
-                <span data-i18n="hero_badge">Jadwal & waktu sholat</span>
-            </div>
-            <h1 class="hero-org">PCINU Taiwan</h1>
-
-            <!-- Garis emas pemisah -->
-            <div class="hero-gold-line">
-                <span class="gold-diamond">◆</span>
-            </div>
-
-            <p class="hero-supervised" data-i18n="hero_supervised">Disupervisi oleh Lembaga Falakiyah NU (LFNU) Taiwan
-            </p>
-
-            <div class="hero-clock-wrapper">
-                <div class="hero-dates">
-                    <div class="hero-date" id="todayDate" data-i18n="hero_loading">Memuat tanggal...</div>
-                    <div class="hero-hijri" id="hijriDate"></div>
+            <div class="board-bar">
+                <a href="https://nutaiwan.com/" class="board-chip btn-home-hero" title="Kembali ke nutaiwan.com">
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                        stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                        <line x1="19" y1="12" x2="5" y2="12"></line>
+                        <polyline points="12 19 5 12 12 5"></polyline>
+                    </svg>
+                    <span>nutaiwan.com</span>
+                </a>
+                <div class="board-bar-end">
+                    <button class="board-chip btn-screensaver-hero" onclick="toggleScreensaver()"
+                        title="Layar penuh" aria-label="Layar penuh">
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                            stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                            <path d="M8 3H5a2 2 0 0 0-2 2v3m18 0V5a2 2 0 0 0-2-2h-3m0 18h3a2 2 0 0 0 2-2v-3M3 16v3a2 2 0 0 0 2 2h3"></path>
+                        </svg>
+                    </button>
+                    <div class="board-chip lang-selector-hero" role="group" aria-label="Bahasa">
+                        <button class="lang-btn" data-lang="id" onclick="setLang('id')">ID</button>
+                        <button class="lang-btn" data-lang="en" onclick="setLang('en')">EN</button>
+                    </div>
                 </div>
-                <div class="hero-clock" id="liveClock">00:00:00</div>
             </div>
 
-            <div class="hero-countdown" id="countdownBox" data-i18n="hero_calc">
-                Mengkalkulasi waktu astronomi...
+            <div class="board-identity">
+                <h1 class="board-org">PCINU Taiwan</h1>
+                <p class="board-supervised" data-i18n="hero_supervised">Disupervisi oleh Lembaga Falakiyah NU (LFNU) Taiwan</p>
             </div>
+
+            <div class="board-now">
+                <div class="board-dates">
+                    <span class="hero-date" id="todayDate" data-i18n="hero_loading">Memuat tanggal...</span>
+                    <span class="hero-hijri" id="hijriDate"></span>
+                </div>
+                <div class="hero-clock" id="liveClock">00:00</div>
+                <div class="hero-countdown" id="countdownBox" data-i18n="hero_calc" aria-live="off">
+                    Mengkalkulasi waktu astronomi...
+                </div>
+            </div>
+
+            <!-- Waktu sholat hari ini -->
+            <section class="today-prayers" id="todayPrayers" aria-label="Waktu sholat hari ini">
+                <div class="prayer-card">
+                    <div class="prayer-name" data-i18n="hero_loading">Memuat...</div>
+                    <div class="prayer-time">--:--</div>
+                </div>
+            </section>
         </header>
 
-        <!-- Kartu Waktu Sholat Hari Ini -->
-        <section class="today-prayers" id="todayPrayers" aria-label="Waktu sholat hari ini">
-            <div class="prayer-card">
-                <div class="prayer-name" data-i18n="hero_loading">Memuat...</div>
-                <div class="prayer-time">--:--</div>
-            </div>
-        </section>
-
-        <!-- Kontrol Filter -->
-        <section class="controls" aria-label="Filter lokasi dan bulan">
-            <button class="btn-location" onclick="useCurrentLocation()">
-                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
-                    stroke-linecap="round" stroke-linejoin="round">
-                    <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path>
-                    <circle cx="12" cy="10" r="3"></circle>
-                </svg>
-                <span data-i18n="btn_gps">Gunakan GPS</span>
-            </button>
-            <div class="control-group">
-                <label for="citySelect" data-i18n="label_city">Wilayah</label>
-                <select id="citySelect" onchange="loadData()"></select>
-            </div>
-            <div class="control-group" id="masehiMonthPicker">
-                <label for="monthSelect" data-i18n="label_masehi">Bulan & Tahun Masehi</label>
-                <input type="month" id="monthSelect" onchange="loadData()">
-            </div>
-            <div class="control-group" id="hijriMonthPicker" style="display: none;">
-                <label data-i18n="label_hijri">Bulan Hijriah</label>
-                <div style="display: flex; gap: 8px;">
-                    <select id="hijriMonthSelect" onchange="loadData()">
-                        <option value="1">Muharram</option>
-                        <option value="2">Safar</option>
-                        <option value="3">Rabiul Awal</option>
-                        <option value="4">Rabiul Akhir</option>
-                        <option value="5">Jumadil Awal</option>
-                        <option value="6">Jumadil Akhir</option>
-                        <option value="7">Rajab</option>
-                        <option value="8">Sya'ban</option>
-                        <option value="9">Ramadhan</option>
-                        <option value="10">Syawal</option>
-                        <option value="11">Dzulqa'dah</option>
-                        <option value="12">Dzulhijjah</option>
-                    </select>
-                    <input type="number" id="hijriYearSelect" onchange="loadData()" min="1400" max="1500"
-                        style="width: 80px;">
-                </div>
-            </div>
-        </section>
-
-        <div id="loadingMessage" class="loading">
-            <div class="loading-spinner"></div>
-            <span data-i18n="msg_sync">Menyelaraskan data...</span>
-        </div>
-
-        <!-- Tabel Jadwal Bulanan -->
-        <section class="table-section" aria-label="Jadwal sholat bulanan">
+        <!-- Jadwal bulanan -->
+        <section class="table-section" aria-labelledby="sectionTitleText">
             <div class="section-header">
                 <h2 class="section-title"><span id="sectionTitleText" data-i18n="section_table">Jadwal Bulanan</span>
+                    <span class="hijri-status" id="hijriStatus"></span>
                 </h2>
-                <div class="calendar-actions">
-                    <div class="calendar-toggle" id="calendarToggle">
-                        <button class="toggle-btn active" data-mode="masehi" onclick="switchCalendarMode('masehi')"
-                            data-i18n="btn_masehi">Masehi</button>
-                        <button class="toggle-btn" data-mode="hijriah" onclick="switchCalendarMode('hijriah')"
-                            data-i18n="btn_hijriah">Hijriah</button>
+                <div class="calendar-toggle" id="calendarToggle" role="group">
+                    <button class="toggle-btn active" data-mode="masehi" onclick="switchCalendarMode('masehi')"
+                        data-i18n="btn_masehi">Masehi</button>
+                    <button class="toggle-btn" data-mode="hijriah" onclick="switchCalendarMode('hijriah')"
+                        data-i18n="btn_hijriah">Hijriah</button>
+                </div>
+            </div>
+
+            <div class="controls">
+                <div class="control-group">
+                    <label for="citySelect" data-i18n="label_city">Wilayah</label>
+                    <div class="control-row">
+                        <select id="citySelect" onchange="loadData()"></select>
+                        <button class="btn-location" onclick="useCurrentLocation()" title="Gunakan GPS">
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                                <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path>
+                                <circle cx="12" cy="10" r="3"></circle>
+                            </svg>
+                            <span data-i18n="btn_gps">Gunakan GPS</span>
+                        </button>
                     </div>
-                    <button class="btn-export" onclick="exportToExcel()" aria-label="Export ke Excel">
+                </div>
+                <div class="control-group" id="masehiMonthPicker">
+                    <label for="monthSelect" data-i18n="label_masehi">Bulan & Tahun Masehi</label>
+                    <input type="month" id="monthSelect" onchange="loadData()">
+                </div>
+                <div class="control-group" id="hijriMonthPicker" style="display: none;">
+                    <label for="hijriMonthSelect" data-i18n="label_hijri">Bulan Hijriah</label>
+                    <div class="control-row">
+                        <select id="hijriMonthSelect" onchange="loadData()">
+                            <option value="1">Muharram</option>
+                            <option value="2">Safar</option>
+                            <option value="3">Rabiul Awal</option>
+                            <option value="4">Rabiul Akhir</option>
+                            <option value="5">Jumadil Awal</option>
+                            <option value="6">Jumadil Akhir</option>
+                            <option value="7">Rajab</option>
+                            <option value="8">Sya'ban</option>
+                            <option value="9">Ramadhan</option>
+                            <option value="10">Syawal</option>
+                            <option value="11">Dzulqa'dah</option>
+                            <option value="12">Dzulhijjah</option>
+                        </select>
+                        <input type="number" id="hijriYearSelect" onchange="loadData()" min="1400" max="1500"
+                            step="1" inputmode="numeric" aria-label="Tahun Hijriah" class="input-year">
+                    </div>
+                </div>
+                <div class="export-actions">
+                    <button class="btn-export" onclick="exportToExcel()">
                         <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-                            stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
                             <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
                             <polyline points="7 10 12 15 17 10"></polyline>
                             <line x1="12" y1="15" x2="12" y2="3"></line>
                         </svg>
                         <span data-i18n="btn_excel">Excel</span>
                     </button>
-                    <button class="btn-export btn-poster" onclick="exportToPoster()" aria-label="Download Poster">
+                    <button class="btn-export btn-poster" onclick="exportToPoster()">
                         <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-                            stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
                             <rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect>
                             <circle cx="8.5" cy="8.5" r="1.5"></circle>
                             <polyline points="21 15 16 10 5 21"></polyline>
@@ -198,11 +165,18 @@
                     </button>
                 </div>
             </div>
+
+            <div id="loadingMessage" class="loading" role="status">
+                <div class="loading-spinner"></div>
+                <span data-i18n="msg_sync">Menyelaraskan data...</span>
+            </div>
+
             <div class="table-container">
                 <table id="prayerTable">
                     <thead id="tableHead">
                         <tr>
                             <th data-i18n="th_date_m">Tgl</th>
+                            <th data-i18n="th_date_h">Hijri</th>
                             <th data-i18n="th_day">Hari</th>
                             <th data-i18n="th_imsak">Imsak</th>
                             <th data-i18n="th_fajr">Subuh</th>
@@ -218,57 +192,95 @@
             </div>
         </section>
 
-        <!-- Footer -->
-        <footer class="footer-wrapper">
-            <div class="friendly-greeting">
-                <div class="greeting-icon">☪</div>
+        <div class="info-columns">
+            <!-- Kalender Masehi & Hijriah (IRNU) -->
+            <section class="calendar-section" aria-labelledby="calTitle">
+                <div class="section-header">
+                    <h2 class="section-title"><span id="calTitle" data-i18n="cal_title">Kalender</span>
+                        <span class="hijri-status" id="calStatus"></span>
+                    </h2>
+                    <div class="cal-nav">
+                        <button class="cal-nav-btn" id="calPrev" onclick="shiftCalendar(-1)" aria-label="Bulan sebelumnya">
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"
+                                stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="15 18 9 12 15 6"></polyline></svg>
+                        </button>
+                        <button class="cal-today-btn" onclick="calendarToday()" data-i18n="cal_today">Hari ini</button>
+                        <button class="cal-nav-btn" id="calNext" onclick="shiftCalendar(1)" aria-label="Bulan berikutnya">
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"
+                                stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="9 18 15 12 9 6"></polyline></svg>
+                        </button>
+                    </div>
+                </div>
+                <div class="panel cal-card">
+                    <div class="cal-head">
+                        <div class="cal-month" id="calMonth"></div>
+                        <div class="cal-hijri-range" id="calHijriRange"></div>
+                    </div>
+                    <div class="cal-grid" id="calGrid"></div>
+                    <div class="cal-detail" id="calDetail" aria-live="polite"></div>
+                </div>
+            </section>
+            <!-- Data hilal awal bulan berikutnya -->
+            <section class="hilal-section" id="hilalSection" aria-labelledby="hilalTitle" hidden>
+                <div class="section-header">
+                    <h2 class="section-title"><span id="hilalTitle"></span></h2>
+                </div>
+                <div class="panel hilal-panel">
+                    <span class="hijri-status" id="hilalStatus"></span>
+                    <div class="hilal-grid" id="hilalGrid"></div>
+                    <p class="hilal-result" id="hilalResult"></p>
+                    <p class="hilal-note" id="hilalNote"></p>
+                </div>
+            </section>
+
+        </div>
+
+        <!-- Catatan falakiyah -->
+        <section class="notes-section" aria-labelledby="notesTitle">
+            <div class="section-header">
+                <h2 class="section-title" id="notesTitle" data-i18n="footer_note_title">Catatan Falakiyah & Panduan Jadwal</h2>
+            </div>
+            <dl class="panel notes-list">
                 <div>
-                    <h3 data-i18n="footer_greeting_title">Semoga Membawa Keberkahan</h3>
-                    <p data-i18n="footer_greeting_desc">Jadwal sholat ini disusun dengan teliti untuk menemani dan
-                        mempermudah ibadah para Nahdliyin serta
-                        seluruh umat Muslim Indonesia yang sedang merantau di penjuru Formosa.</p>
+                    <dt data-i18n="note_1_title">Kriteria LF-PBNU</dt>
+                    <dd data-i18n="note_1_desc">Perhitungan merujuk pada standar otentik Lembaga Falakiyah PBNU.</dd>
                 </div>
-            </div>
-
-            <hr class="footer-divider">
-
-            <div class="technical-info">
-                <h4 data-i18n="footer_note_title">Catatan Falakiyah & Panduan Jadwal</h4>
-                <div class="info-grid">
-                    <div class="info-item">
-                        <strong data-i18n="note_1_title">Kriteria LF-PBNU</strong>
-                        <span data-i18n="note_1_desc">Perhitungan merujuk pada standar otentik Lembaga Falakiyah
-                            PBNU.</span>
-                    </div>
-                    <div class="info-item">
-                        <strong data-i18n="note_2_title">Sudut Matahari</strong>
-                        <span data-i18n="note_2_desc">Subuh: <strong>-20°</strong> · Isya: <strong>-18°</strong> di
-                            bawah ufuk.</span>
-                    </div>
-                    <div class="info-item">
-                        <strong data-i18n="note_3_title">Ikhtiyat</strong>
-                        <span data-i18n="note_3_desc">Penambahan <strong>2 menit</strong> pada Subuh, Dhuhur, Asar,
-                            Maghrib, dan Isya'.</span>
-                    </div>
-                    <div class="info-item">
-                        <strong data-i18n="note_4_title">Waktu Imsak</strong>
-                        <span data-i18n="note_4_desc"><strong>10 menit sebelum Subuh</strong> sebagai rambu persiapan
-                            puasa.</span>
-                    </div>
-                    <div class="info-item">
-                        <strong data-i18n="note_5_title">Metode Ashar</strong>
-                        <span data-i18n="note_5_desc">Kriteria Jumhur Ulama (Madzhab Hambali, Maliki, dan
-                            Syafi'i).</span>
-                    </div>
+                <div>
+                    <dt data-i18n="note_2_title">Sudut Matahari</dt>
+                    <dd data-i18n="note_2_desc">Subuh: <strong>-20°</strong> · Isya: <strong>-18°</strong> di bawah ufuk.</dd>
                 </div>
-            </div>
+                <div>
+                    <dt data-i18n="note_3_title">Ikhtiyat</dt>
+                    <dd data-i18n="note_3_desc">Penambahan <strong>2 menit</strong> pada Subuh, Dhuhur, Asar, Maghrib, dan Isya'.</dd>
+                </div>
+                <div>
+                    <dt data-i18n="note_4_title">Waktu Imsak</dt>
+                    <dd data-i18n="note_4_desc"><strong>10 menit sebelum Subuh</strong> sebagai rambu persiapan puasa.</dd>
+                </div>
+                <div>
+                    <dt data-i18n="note_5_title">Metode Ashar</dt>
+                    <dd data-i18n="note_5_desc">Kriteria Jumhur Ulama (Madzhab Hambali, Maliki, dan Syafi'i).</dd>
+                </div>
+                <div>
+                    <dt data-i18n="note_6_title">Kalender Hijriah</dt>
+                    <dd data-i18n="note_6_desc">Kriteria IRNU: tinggi hilal mar'i <strong>≥ 3°</strong>, elongasi haqiqi <strong>≥ 6,4°</strong>.</dd>
+                </div>
+            </dl>
+        </section>
 
-            <div class="copyright">
-                &copy; 2026 <span>LFNU Taiwan</span> · <a href="https://ainulyaqinmhd.github.io/" target="_blank"
-                    rel="noopener">@ainulyaqinmhd</a> & <a href="https://github.com/mthudaa"
-                    target="_blank">@mthudaa</a>
+        <footer class="footer-wrapper">
+            <p class="footer-greeting">
+                <strong data-i18n="footer_greeting_title">Semoga Membawa Keberkahan</strong>
+                <span data-i18n="footer_greeting_desc">Jadwal sholat ini disusun dengan teliti untuk menemani dan
+                    mempermudah ibadah para Nahdliyin serta seluruh umat Muslim Indonesia yang sedang merantau di
+                    penjuru Formosa.</span>
+            </p>
+            <p class="copyright">
+                &copy; 2026 LFNU Taiwan · <a href="https://ainulyaqinmhd.github.io/" target="_blank"
+                    rel="noopener">@ainulyaqinmhd</a> & <a href="https://github.com/mthudaa" target="_blank"
+                    rel="noopener">@mthudaa</a>
                 <br><span data-i18n="copyright_protected">Dilindungi doa dan niat baik.</span>
-            </div>
+            </p>
         </footer>
 
     </main>
@@ -278,7 +290,9 @@
     <!-- html2canvas for Poster Export -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
     <script src="js/translations.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/astronomy-engine@2.1.19/astronomy.browser.min.js"></script>
     <script src="js/locations.js"></script>
+    <script src="js/hijri.js"></script>
     <script src="js/app.js"></script>
 </body>
 
