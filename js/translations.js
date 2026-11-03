@@ -1,22 +1,22 @@
 const translations = {
     // --- Meta & Header ---
     "page_title": { id: "Jadwal Sholat Otomatis - PCINU Taiwan", en: "Automatic Prayer Schedule - PCINU Taiwan" },
-    "page_desc": { 
-        id: "Jadwal & waktu sholat untuk umat Muslim Indonesia di Taiwan, disupervisi oleh Lembaga Falakiyah NU (LFNU) Taiwan.", 
-        en: "Prayer schedule & timings for Indonesian Muslims in Taiwan, supervised by the Nahdlatul Ulama Falakiyah Institution (LFNU) Taiwan." 
+    "page_desc": {
+        id: "Jadwal & waktu sholat untuk umat Muslim Indonesia di Taiwan, disupervisi oleh Lembaga Falakiyah NU (LFNU) Taiwan.",
+        en: "Prayer schedule & timings for Indonesian Muslims in Taiwan, supervised by the Nahdlatul Ulama Falakiyah Institution (LFNU) Taiwan."
     },
     "hero_badge": { id: "Jadwal & waktu sholat", en: "Prayer schedule & timings" },
     "hero_supervised": { id: "Disupervisi oleh Lembaga Falakiyah NU (LFNU) Taiwan", en: "Supervised by the Nahdlatul Ulama Falakiyah Institution (LFNU) Taiwan" },
     "hero_loading": { id: "Memuat tanggal...", en: "Loading date..." },
     "hero_calc": { id: "Mengkalkulasi waktu astronomi...", en: "Calculating astronomical time..." },
-    
+
     // --- Controls ---
     "btn_gps": { id: "Gunakan GPS", en: "Use GPS" },
     "label_city": { id: "Wilayah", en: "Region" },
     "label_masehi": { id: "Bulan & Tahun Masehi", en: "Gregorian Month & Year" },
     "label_hijri": { id: "Bulan Hijriah", en: "Hijri Month" },
     "msg_sync": { id: "Menyelaraskan data...", en: "Synchronizing data..." },
-    
+
     // --- Table Actions ---
     "section_table": { id: "Jadwal Bulanan", en: "Monthly Schedule" },
     "btn_masehi": { id: "Masehi", en: "Gregorian" },
@@ -24,7 +24,7 @@ const translations = {
     "btn_excel": { id: "Excel", en: "Excel" },
     "btn_poster": { id: "Poster", en: "Poster" },
     "btn_screensaver": { id: "Layar Penuh", en: "Fullscreen" },
-    
+
     // --- Table Headers ---
     "th_date_m": { id: "Tgl", en: "Date" },
     "th_date_h": { id: "Hijri", en: "Hijri" },
@@ -36,7 +36,7 @@ const translations = {
     "th_asr": { id: "Ashar", en: "Asr" },
     "th_maghrib": { id: "Maghrib", en: "Maghrib" },
     "th_isha": { id: "Isya", en: "Isha" },
-    
+
     // --- Prayers (for cards and countdown) ---
     "prayer_imsak": { id: "Imsak", en: "Imsak" },
     "prayer_fajr": { id: "Subuh", en: "Fajr" },
@@ -48,9 +48,9 @@ const translations = {
 
     // --- Footer ---
     "footer_greeting_title": { id: "Semoga Membawa Keberkahan", en: "May it Bring Blessings" },
-    "footer_greeting_desc": { 
-        id: "Jadwal sholat ini disusun dengan teliti untuk menemani dan mempermudah ibadah para Nahdliyin serta seluruh umat Muslim Indonesia yang sedang merantau di penjuru Formosa.", 
-        en: "This prayer schedule has been meticulously compiled to accompany and facilitate the worship of Nahdliyin and all Indonesian Muslims residing across Formosa." 
+    "footer_greeting_desc": {
+        id: "Jadwal sholat ini disusun dengan teliti untuk menemani dan mempermudah ibadah para Nahdliyin serta seluruh umat Muslim Indonesia yang sedang merantau di penjuru Formosa.",
+        en: "This prayer schedule has been meticulously compiled to accompany and facilitate the worship of Nahdliyin and all Indonesian Muslims residing across Formosa."
     },
     "footer_note_title": { id: "Catatan Falakiyah & Panduan Jadwal", en: "Astronomical Notes & Schedule Guide" },
     "note_1_title": { id: "Kriteria LF-PBNU", en: "LF-PBNU Criteria" },
@@ -95,7 +95,7 @@ const translations = {
     "hilal_met": { id: "Terpenuhi", en: "Fulfilled" },
     "hilal_not_met": { id: "Belum terpenuhi → istikmal", en: "Not fulfilled → month completed to 30 days" },
     "hilal_after_sunset": { id: "Ijtimak setelah matahari terbenam → istikmal", en: "Conjunction after sunset → month completed to 30 days" },
-    "hilal_note": { id: "Hasil hisab saat matahari terbenam pada hari ijtimak, di markaz terbaik se-Taiwan. Keputusan akhir mengikuti hasil rukyatul hilal dan ikhbar PBNU.", en: "Calculated at sunset on the day of conjunction, at the best location in Taiwan. The final decision follows the crescent sighting and PBNU's announcement." },
+    "hilal_note": { id: "Hasil hisab saat matahari terbenam pada hari ijtimak, di markaz PCINU Taiwan (Taipei). Keputusan akhir mengikuti hasil rukyatul hilal dan ikhbar PCINU Taiwan.", en: "Calculated at sunset on the day of conjunction, at the PCINU Taiwan (Taipei) location. The final decision follows the crescent sighting and PCINU Taiwan's announcement." },
 
     // --- Kalender ---
     "cal_title": { id: "Kalender", en: "Calendar" },
@@ -119,7 +119,7 @@ const translations = {
     "ev_adha": { id: "Idul Adha", en: "Eid al-Adha" },
     "ev_tasyrik": { id: "Hari Tasyrik", en: "Tashreeq" },
     "ev_bidh": { id: "Ayyamul Bidh", en: "White Days" },
-    
+
     // --- Poster specific ---
     "poster_supervised": { id: "Disupervisi oleh Lembaga Falakiyah NU (LFNU) Taiwan", en: "Supervised by NU Falakiyah Institution (LFNU) Taiwan" },
     "poster_note_title_1": { id: "Catatan Falakiyah", en: "Astronomical Notes" },
@@ -153,10 +153,10 @@ let currentLang = localStorage.getItem('appLang') || 'id';
 function setLang(lang) {
     currentLang = lang;
     localStorage.setItem('appLang', lang);
-    
+
     // Update HTML attribute
     document.documentElement.lang = lang;
-    
+
     // Update data-i18n tags
     document.querySelectorAll('[data-i18n]').forEach(el => {
         const key = el.getAttribute('data-i18n');

@@ -17,9 +17,10 @@ const HIJRI_CONFIG = {
     minAltitude: 3,       // derajat, tinggi hilal mar'i minimal
     minElongation: 6.4,   // derajat, elongasi haqiqi minimal
 
-    // Markaz perhitungan. null = semua kota di locations.js (wilayatul hukmi Taiwan).
-    // Contoh markaz tunggal: [{ lat: 25.0330, lng: 121.5654 }]
-    markaz: null,
+    // Markaz perhitungan: PCINU Taiwan (Taipei).
+    // Isi beberapa titik untuk memakai "terpenuhi di salah satu markaz",
+    // atau null untuk memakai semua kota di locations.js (wilayatul hukmi Taiwan).
+    markaz: [{ name: 'PCINU Taiwan (Taipei)', lat: 25.0330, lng: 121.5654 }],
     utcOffset: 8,         // zona waktu markaz (jam), Taiwan = UTC+8
 
     // Geser SEMUA tanggal Hijriah sekian hari (+1 / -1 / ...). Biasanya biarkan 0.
