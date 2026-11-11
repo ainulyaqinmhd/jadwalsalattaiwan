@@ -4,7 +4,7 @@
  * - Library CDN (versi tetap): ambil dari cache dulu.
  * Naikkan CACHE_VERSION jika daftar PRECACHE berubah.
  */
-const CACHE_VERSION = 'jadwal-v1';
+const CACHE_VERSION = 'jadwal-v7';
 
 const PRECACHE = [
     './',
@@ -12,8 +12,18 @@ const PRECACHE = [
     'css/style.css',
     'js/translations.js',
     'js/locations.js',
+    'js/hilal-de440.js',
     'js/hijri.js',
+    'js/eclipse.js',
+    'js/prayer-api.js',
+    'js/calendar.js',
     'js/app.js',
+    'kalender.html',
+    'js/calendar-page.js',
+    'hisab.html',
+    'kalkulator.html',
+    'js/hisab-page.js',
+    'js/hisab-viz.js',
     'images/icon.svg',
     'images/kabah_bg.png',
     'https://cdn.jsdelivr.net/npm/astronomy-engine@2.1.19/astronomy.browser.min.js',

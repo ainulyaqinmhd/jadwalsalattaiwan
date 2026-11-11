@@ -1,0 +1,223 @@
+<!DOCTYPE html>
+<html lang="id">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title data-i18n="calc_doc_title">Kalkulator Hilal & Gerhana - PCINU Taiwan</title>
+    <meta name="description"
+        content="Kalkulator hilal kriteria IRNU dan pencari gerhana untuk lokasi dan tanggal mana pun.">
+
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://ainulyaqinmhd.github.io/jadwalsalattaiwan/kalkulator.html">
+    <meta property="og:title" content="Kalkulator Hilal & Gerhana - PCINU Taiwan">
+    <meta property="og:description" content="Kalkulator hilal (kriteria IRNU) dan pencari gerhana untuk lokasi dan tanggal mana pun.">
+    <meta property="og:image" content="https://ainulyaqinmhd.github.io/jadwalsalattaiwan/images/og-image.jpg">
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Reem+Kufi:wght@500;600;700&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="css/style.css?v=19">
+    <link rel="manifest" href="manifest.webmanifest">
+    <link rel="icon" href="images/icon.svg" type="image/svg+xml">
+    <meta name="theme-color" content="#0F3B24">
+</head>
+
+<body class="hisabpage calcpage">
+
+    <main class="main-container">
+
+        <header class="board board--compact">
+            <div class="board-bg" aria-hidden="true"></div>
+            <div class="board-bar">
+                <a href="https://nutaiwan.com/" class="board-chip btn-home-hero" title="Kembali ke nutaiwan.com">
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                        stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                        <line x1="19" y1="12" x2="5" y2="12"></line>
+                        <polyline points="12 19 5 12 12 5"></polyline>
+                    </svg>
+                    <span>nutaiwan.com</span>
+                </a>
+                <div class="board-bar-end">
+                    <div class="board-chip lang-selector-hero" role="group" aria-label="Bahasa">
+                        <button class="lang-btn" data-lang="id" onclick="setLang('id')">ID</button>
+                        <button class="lang-btn" data-lang="en" onclick="setLang('en')">EN</button>
+                    </div>
+                </div>
+            </div>
+            <nav class="site-nav" aria-label="Menu">
+                <a href="index.html" class="site-nav-link"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"></circle><polyline points="12 7 12 12 15 14"></polyline></svg><span data-i18n="nav_schedule">Jadwal Sholat</span></a>
+                <a href="kalender.html" class="site-nav-link"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="4.5" width="18" height="16" rx="2"></rect><line x1="16" y1="2.5" x2="16" y2="6.5"></line><line x1="8" y1="2.5" x2="8" y2="6.5"></line><line x1="3" y1="10" x2="21" y2="10"></line></svg><span data-i18n="nav_calendar">Kalender</span></a>
+                <a href="kalkulator.html" class="site-nav-link" aria-current="page"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="5" y="2.5" width="14" height="19" rx="2"></rect><line x1="8.5" y1="6.5" x2="15.5" y2="6.5"></line><line x1="8.5" y1="11" x2="8.51" y2="11"></line><line x1="12" y1="11" x2="12.01" y2="11"></line><line x1="15.5" y1="11" x2="15.51" y2="11"></line><line x1="8.5" y1="14.5" x2="8.51" y2="14.5"></line><line x1="12" y1="14.5" x2="12.01" y2="14.5"></line><line x1="15.5" y1="14.5" x2="15.51" y2="14.5"></line><line x1="8.5" y1="18" x2="12.01" y2="18"></line><line x1="15.5" y1="18" x2="15.51" y2="18"></line></svg><span data-i18n="nav_calculator">Kalkulator</span></a>
+                <a href="hisab.html" class="site-nav-link"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M2 4.5h6a4 4 0 0 1 4 4v12a3 3 0 0 0-3-3H2z"></path><path d="M22 4.5h-6a4 4 0 0 0-4 4v12a3 3 0 0 1 3-3h7z"></path></svg><span data-i18n="nav_learn">Belajar Hisab</span></a>
+            </nav>
+
+            <div class="board-identity">
+                <h1 class="board-org" data-i18n="calc_title">Kalkulator Hilal & Gerhana</h1>
+                <p class="board-supervised" data-i18n="calc_desc">Kriteria IRNU untuk lokasi dan tanggal mana pun</p>
+            </div>
+        </header>
+
+        <!-- ================= KALKULATOR HILAL ================= -->
+        <section class="hisab-section" aria-labelledby="calcTitle">
+            <div class="section-header">
+                <h2 class="section-title" id="calcTitle">
+                    <span data-lang-block="id">Hilal awal bulan</span><span data-lang-block="en">New-month crescent</span>
+                </h2>
+            </div>
+
+            <div class="panel hisab-form">
+                <div class="form-grid">
+                    <div class="field">
+                        <label for="hMonth"><span data-lang-block="id">Awal bulan</span><span data-lang-block="en">Start of month</span></label>
+                        <div class="control-row">
+                            <select id="hMonth"></select>
+                            <input type="number" id="hYear" class="input-year" min="1300" max="1600" step="1"
+                                inputmode="numeric" aria-label="Tahun Hijriah">
+                        </div>
+                    </div>
+                    <div class="field">
+                        <label for="hPlace"><span data-lang-block="id">Lokasi</span><span data-lang-block="en">Location</span></label>
+                        <select id="hPlace"></select>
+                    </div>
+                    <div class="field field--small">
+                        <label for="hLat"><span data-lang-block="id">Lintang (°)</span><span data-lang-block="en">Latitude (°)</span></label>
+                        <input type="number" id="hLat" step="0.0001" min="-90" max="90">
+                    </div>
+                    <div class="field field--small">
+                        <label for="hLng"><span data-lang-block="id">Bujur (°)</span><span data-lang-block="en">Longitude (°)</span></label>
+                        <input type="number" id="hLng" step="0.0001" min="-180" max="180">
+                    </div>
+                    <div class="field field--small">
+                        <label for="hElev"><span data-lang-block="id">Tinggi tempat (m)</span><span data-lang-block="en">Elevation (m)</span></label>
+                        <input type="number" id="hElev" step="1" min="-500" max="9000">
+                    </div>
+                    <div class="field field--small">
+                        <label for="hTz"><span data-lang-block="id">Zona waktu (UTC+)</span><span data-lang-block="en">Time zone (UTC+)</span></label>
+                        <input type="number" id="hTz" step="0.5" min="-12" max="14">
+                    </div>
+                    <div class="field">
+                        <label for="hDate"><span data-lang-block="id">Tanggal pengamatan (sore)</span><span data-lang-block="en">Observation date (evening)</span></label>
+                        <div class="control-row">
+                            <input type="date" id="hDate">
+                            <button type="button" class="btn-export" id="hDateReset">
+                                <span data-lang-block="id">Hari ijtimak</span><span data-lang-block="en">Conjunction day</span>
+                            </button>
+                        </div>
+                    </div>
+                    <div class="field field--small">
+                        <label for="hMinAlt"><span data-lang-block="id">Tinggi min. (°)</span><span data-lang-block="en">Min. altitude (°)</span></label>
+                        <input type="number" id="hMinAlt" step="0.1" min="0" max="20">
+                    </div>
+                    <div class="field field--small">
+                        <label for="hMinElong"><span data-lang-block="id">Elongasi min. (°)</span><span data-lang-block="en">Min. elongation (°)</span></label>
+                        <input type="number" id="hMinElong" step="0.1" min="0" max="30">
+                    </div>
+                </div>
+            </div>
+
+            <div class="verdict" id="hVerdict" aria-live="polite"></div>
+        </section>
+
+        <!-- ================= HASIL ================= -->
+        <section class="hisab-section" aria-labelledby="resTitle">
+            <div class="section-header">
+                <h2 class="section-title" id="resTitle">
+                    <span data-lang-block="id">Hasil perhitungan</span><span data-lang-block="en">Results</span>
+                </h2>
+                <a class="link-btn" href="hisab.html" data-hisab-link="hisab.html">
+                    <span data-lang-block="id">Lihat langkah & gambarnya →</span><span data-lang-block="en">See the steps & pictures →</span>
+                </a>
+            </div>
+            <div class="panel calc-results">
+                <dl class="values" id="cResults"></dl>
+            </div>
+        </section>
+
+        <!-- ================= POSISI HILAL ================= -->
+        <section class="hisab-section" aria-labelledby="posTitle">
+            <div class="section-header">
+                <h2 class="section-title" id="posTitle">
+                    <span data-lang-block="id">Posisi hilal</span><span data-lang-block="en">Crescent position</span>
+                </h2>
+                <div class="pos-tools">
+                    <button class="btn-export" type="button" onclick="HisabViz.downloadPositions()">
+                        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                            stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                            <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="7 10 12 15 17 10"></polyline>
+                            <line x1="12" y1="15" x2="12" y2="3"></line></svg>
+                        <span data-lang-block="id">Unduh gambar</span><span data-lang-block="en">Download image</span>
+                    </button>
+                </div>
+            </div>
+            <p class="learn-intro" data-lang-block="id">Bandingkan posisi hilal di beberapa tempat pada sore yang sama.
+                Pilih titik sebanyak yang Anda mau; lokasi kalkulator di atas selalu ikut ditampilkan.</p>
+            <p class="learn-intro" data-lang-block="en">Compare the crescent at several places on the same evening.
+                Choose as many points as you like; the calculator location above is always included.</p>
+            <div class="panel pt-picker" id="vPosPicker"></div>
+            <figure class="panel viz pos-figure" id="vPos"></figure>
+        </section>
+
+        <!-- ================= GERHANA ================= -->
+        <section class="hisab-section" aria-labelledby="eclTitle">
+            <div class="section-header">
+                <h2 class="section-title" id="eclTitle">
+                    <span data-lang-block="id">Pencari gerhana</span><span data-lang-block="en">Eclipse finder</span>
+                </h2>
+            </div>
+            <div class="panel step">
+                <p data-lang-block="id">Empat gerhana berikutnya sejak tanggal yang dipilih, dilihat dari lokasi di atas:
+                    jenis, waktu kontak, tinggi di atas ufuk, dan apakah disunnahkan sholat gerhana.
+                    <a href="hisab.html#eclTitle">Pelajari cara terjadinya gerhana</a>.</p>
+                <p data-lang-block="en">The next four eclipses from the chosen date, seen from the location above:
+                    type, contact times, altitude above the horizon, and whether the eclipse prayer applies.
+                    <a href="hisab.html#eclTitle">Learn how eclipses happen</a>.</p>
+                <div class="form-grid form-grid--inline">
+                    <div class="field">
+                        <label for="eFrom"><span data-lang-block="id">Cari mulai tanggal</span><span data-lang-block="en">Search from</span></label>
+                        <input type="date" id="eFrom">
+                    </div>
+                    <p class="field-note">
+                        <span data-lang-block="id">Lokasi mengikuti kalkulator di atas.</span>
+                        <span data-lang-block="en">Uses the location from the calculator above.</span>
+                    </p>
+                </div>
+                <div class="ecl-results" id="eResults" aria-live="polite"></div>
+            </div>
+        </section>
+
+        <p class="hilal-note calc-source">
+            <span data-lang-block="id">Dihitung di peramban dengan Astronomy Engine (akurasi ±1′). Kalender situs memakai
+                tabel JPL DE440s untuk 1440–1500 H; keduanya sama untuk semua 732 awal bulan.</span>
+            <span data-lang-block="en">Computed in your browser with Astronomy Engine (±1′ accuracy). The site calendar uses
+                a JPL DE440s table for 1440–1500 AH; both agree on all 732 month starts.</span>
+        </p>
+
+        <footer class="footer-wrapper">
+            <p class="footer-greeting">
+                <strong data-i18n="footer_greeting_title">Semoga Membawa Keberkahan</strong>
+                <span data-i18n="hilal_note">Hasil hisab saat matahari terbenam pada hari ijtimak, di markaz PCINU
+                    Taiwan (Taipei). Keputusan akhir mengikuti hasil rukyatul hilal dan ikhbar PCINU Taiwan.</span>
+            </p>
+            <p class="copyright">
+                &copy; 2026 LFNU Taiwan · <a href="https://ainulyaqinmhd.github.io/" target="_blank"
+                    rel="noopener">@ainulyaqinmhd</a> & <a href="https://github.com/mthudaa" target="_blank"
+                    rel="noopener">@mthudaa</a>
+                <br><span data-i18n="copyright_protected">Dilindungi doa dan niat baik.</span>
+            </p>
+        </footer>
+    </main>
+
+    <script src="js/translations.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/astronomy-engine@2.1.19/astronomy.browser.min.js"></script>
+    <script src="js/locations.js"></script>
+    <script src="js/hilal-de440.js"></script>
+    <script src="js/hijri.js"></script>
+    <script src="js/eclipse.js"></script>
+    <script src="js/hisab-viz.js"></script>
+    <script src="js/hisab-page.js"></script>
+</body>
+
+</html>

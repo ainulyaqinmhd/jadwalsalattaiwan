@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html lang="id">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title data-i18n="calpage_doc_title">Kalender Hijriah & Masehi - PCINU Taiwan</title>
+    <meta name="description"
+        content="Kalender Hijriah (kriteria IRNU) dan Masehi lengkap dengan pasaran, hari besar Islam, dan data hilal untuk umat Muslim Indonesia di Taiwan.">
+
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://ainulyaqinmhd.github.io/jadwalsalattaiwan/kalender.html">
+    <meta property="og:title" content="Kalender Hijriah & Masehi - PCINU Taiwan">
+    <meta property="og:description" content="Kalender Hijriah (kriteria IRNU) dan Masehi untuk umat Muslim Indonesia di Taiwan.">
+    <meta property="og:image" content="https://ainulyaqinmhd.github.io/jadwalsalattaiwan/images/og-image.jpg">
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Reem+Kufi:wght@500;600;700&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="css/style.css?v=19">
+    <link rel="manifest" href="manifest.webmanifest">
+    <link rel="icon" href="images/icon.svg" type="image/svg+xml">
+    <meta name="theme-color" content="#0F3B24">
+</head>
+
+<body class="calpage">
+
+    <main class="main-container">
+
+        <!-- Kepala halaman -->
+        <header class="board board--compact">
+            <div class="board-bg" aria-hidden="true"></div>
+
+            <div class="board-bar">
+                <a href="https://nutaiwan.com/" class="board-chip btn-home-hero" title="Kembali ke nutaiwan.com">
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                        stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                        <line x1="19" y1="12" x2="5" y2="12"></line>
+                        <polyline points="12 19 5 12 12 5"></polyline>
+                    </svg>
+                    <span>nutaiwan.com</span>
+                </a>
+                <div class="board-bar-end">
+                <div class="board-chip lang-selector-hero" role="group" aria-label="Bahasa">
+                    <button class="lang-btn" data-lang="id" onclick="setLang('id')">ID</button>
+                    <button class="lang-btn" data-lang="en" onclick="setLang('en')">EN</button>
+                </div>
+                </div>
+            </div>
+
+            <nav class="site-nav" aria-label="Menu">
+                <a href="index.html" class="site-nav-link"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"></circle><polyline points="12 7 12 12 15 14"></polyline></svg><span data-i18n="nav_schedule">Jadwal Sholat</span></a>
+                <a href="kalender.html" class="site-nav-link" aria-current="page"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="4.5" width="18" height="16" rx="2"></rect><line x1="16" y1="2.5" x2="16" y2="6.5"></line><line x1="8" y1="2.5" x2="8" y2="6.5"></line><line x1="3" y1="10" x2="21" y2="10"></line></svg><span data-i18n="nav_calendar">Kalender</span></a>
+                <a href="kalkulator.html" class="site-nav-link"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="5" y="2.5" width="14" height="19" rx="2"></rect><line x1="8.5" y1="6.5" x2="15.5" y2="6.5"></line><line x1="8.5" y1="11" x2="8.51" y2="11"></line><line x1="12" y1="11" x2="12.01" y2="11"></line><line x1="15.5" y1="11" x2="15.51" y2="11"></line><line x1="8.5" y1="14.5" x2="8.51" y2="14.5"></line><line x1="12" y1="14.5" x2="12.01" y2="14.5"></line><line x1="15.5" y1="14.5" x2="15.51" y2="14.5"></line><line x1="8.5" y1="18" x2="12.01" y2="18"></line><line x1="15.5" y1="18" x2="15.51" y2="18"></line></svg><span data-i18n="nav_calculator">Kalkulator</span></a>
+                <a href="hisab.html" class="site-nav-link"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M2 4.5h6a4 4 0 0 1 4 4v12a3 3 0 0 0-3-3H2z"></path><path d="M22 4.5h-6a4 4 0 0 0-4 4v12a3 3 0 0 1 3-3h7z"></path></svg><span data-i18n="nav_learn">Belajar Hisab</span></a>
+            </nav>
+
+            <div class="board-identity">
+                <h1 class="board-org" data-i18n="calpage_title">Kalender Hijriah & Masehi</h1>
+                <p class="board-supervised" data-i18n="calpage_desc">Kriteria IRNU, markaz PCINU Taiwan (Taipei)</p>
+            </div>
+
+            <div class="board-dates calpage-today" id="calpageToday"></div>
+        </header>
+
+        <!-- Kalender bulanan + rincian hari -->
+        <div class="calpage-layout">
+            <section class="calpage-month" aria-labelledby="cpMonthTitle">
+                <div class="section-header">
+                    <h2 class="section-title"><span id="cpMonthTitle"></span>
+                        <span class="hijri-status" id="cpMonthStatus"></span>
+                    </h2>
+                    <div class="cal-nav">
+                        <button class="cal-nav-btn" id="cpPrev" onclick="CalPage.shiftMonth(-1)" aria-label="Bulan sebelumnya">
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"
+                                stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="15 18 9 12 15 6"></polyline></svg>
+                        </button>
+                        <button class="cal-today-btn" onclick="CalPage.today()" data-i18n="cal_today">Hari ini</button>
+                        <button class="cal-nav-btn" id="cpNext" onclick="CalPage.shiftMonth(1)" aria-label="Bulan berikutnya">
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"
+                                stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="9 18 15 12 9 6"></polyline></svg>
+                        </button>
+                    </div>
+                </div>
+                <div class="panel cal-card cal-card--large">
+                    <div class="cal-head">
+                        <div class="cal-hijri-range" id="cpHijriRange"></div>
+                    </div>
+                    <div class="cal-grid" id="cpGrid"></div>
+                </div>
+            </section>
+
+            <aside class="calpage-side">
+                <!-- Rincian hari terpilih -->
+                <section class="panel day-panel" id="dayPanel" aria-live="polite">
+                    <div class="day-head">
+                        <div class="day-num" id="dayNum"></div>
+                        <div class="day-labels">
+                            <div class="day-rel" id="dayRel"></div>
+                            <div class="day-greg" id="dayGreg"></div>
+                            <div class="day-hijri" id="dayHijri"></div>
+                        </div>
+                    </div>
+                    <div class="day-ev" id="dayEv"></div>
+                    <div class="day-ecl" id="dayEcl"></div>
+
+                    <div class="day-times-head">
+                        <h3 data-i18n="calpage_prayer_times">Waktu sholat</h3>
+                        <select id="cpCity" onchange="CalPage.setCity(this.value)" aria-label="Wilayah"></select>
+                    </div>
+                    <div class="day-times" id="dayTimes"></div>
+                </section>
+
+                <!-- Hari penting bulan ini -->
+                <section class="calpage-events" aria-labelledby="cpEventsTitle">
+                    <h2 class="section-title section-title--small" id="cpEventsTitle" data-i18n="calpage_events_month">Hari penting bulan ini</h2>
+                    <ul class="panel event-list" id="cpEvents"></ul>
+                </section>
+            </aside>
+        </div>
+
+        <!-- Satu tahun Hijriah -->
+        <section class="calpage-year" aria-labelledby="cpYearTitle">
+            <div class="section-header">
+                <h2 class="section-title" id="cpYearTitle"></h2>
+                <div class="cal-nav">
+                    <button class="cal-nav-btn" id="cpPrevYear" onclick="CalPage.shiftYear(-1)" aria-label="Tahun Hijriah sebelumnya">
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"
+                            stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="15 18 9 12 15 6"></polyline></svg>
+                    </button>
+                    <button class="cal-nav-btn" id="cpNextYear" onclick="CalPage.shiftYear(1)" aria-label="Tahun Hijriah berikutnya">
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"
+                            stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="9 18 15 12 9 6"></polyline></svg>
+                    </button>
+                </div>
+            </div>
+
+            <div class="calpage-year-grid">
+                <div>
+                    <h3 class="calpage-subtitle" id="cpStartsTitle"></h3>
+                    <div class="table-container">
+                        <table class="year-table">
+                            <thead id="cpStartsHead"></thead>
+                            <tbody id="cpStarts"></tbody>
+                        </table>
+                    </div>
+                    <p class="hilal-note" data-i18n="calpage_year_note"></p>
+                    <p class="hilal-note" id="cpSource"></p>
+                </div>
+                <div>
+                    <h3 class="calpage-subtitle" id="cpHolidaysTitle"></h3>
+                    <ul class="panel event-list" id="cpHolidays"></ul>
+
+                    <h3 class="calpage-subtitle calpage-subtitle--spaced" id="cpEclTitle"></h3>
+                    <ul class="panel event-list" id="cpEclipses"></ul>
+                </div>
+            </div>
+        </section>
+
+        <footer class="footer-wrapper">
+            <p class="footer-greeting">
+                <strong data-i18n="footer_greeting_title">Semoga Membawa Keberkahan</strong>
+                <span data-i18n="hilal_note">Hasil hisab saat matahari terbenam pada hari ijtimak, di markaz PCINU
+                    Taiwan (Taipei). Keputusan akhir mengikuti hasil rukyatul hilal dan ikhbar PCINU Taiwan.</span>
+            </p>
+            <p class="copyright">
+                &copy; 2026 LFNU Taiwan · <a href="https://ainulyaqinmhd.github.io/" target="_blank"
+                    rel="noopener">@ainulyaqinmhd</a> & <a href="https://github.com/mthudaa" target="_blank"
+                    rel="noopener">@mthudaa</a>
+                <br><span data-i18n="copyright_protected">Dilindungi doa dan niat baik.</span>
+            </p>
+        </footer>
+    </main>
+
+    <script src="js/translations.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/astronomy-engine@2.1.19/astronomy.browser.min.js"></script>
+    <script src="js/locations.js"></script>
+    <script src="js/hilal-de440.js"></script>
+    <script src="js/hijri.js"></script>
+    <script src="js/eclipse.js"></script>
+    <script src="js/prayer-api.js"></script>
+    <script src="js/calendar.js"></script>
+    <script src="js/calendar-page.js"></script>
+</body>
+
+</html>

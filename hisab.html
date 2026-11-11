@@ -1,0 +1,351 @@
+<!DOCTYPE html>
+<html lang="id">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title data-i18n="hisab_doc_title">Belajar Hisab Hilal & Gerhana - PCINU Taiwan</title>
+    <meta name="description"
+        content="Belajar menghitung awal bulan Hijriah (kriteria IRNU) dan gerhana langkah demi langkah, dengan gambar.">
+
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://ainulyaqinmhd.github.io/jadwalsalattaiwan/hisab.html">
+    <meta property="og:title" content="Belajar Hisab Hilal & Gerhana - PCINU Taiwan">
+    <meta property="og:description" content="Cara menghitung awal bulan Hijriah (kriteria IRNU) dan gerhana, langkah demi langkah dengan gambar.">
+    <meta property="og:image" content="https://ainulyaqinmhd.github.io/jadwalsalattaiwan/images/og-image.jpg">
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Reem+Kufi:wght@500;600;700&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="css/style.css?v=19">
+    <link rel="manifest" href="manifest.webmanifest">
+    <link rel="icon" href="images/icon.svg" type="image/svg+xml">
+    <meta name="theme-color" content="#0F3B24">
+</head>
+
+<body class="hisabpage">
+
+    <main class="main-container">
+
+        <header class="board board--compact">
+            <div class="board-bg" aria-hidden="true"></div>
+            <div class="board-bar">
+                <a href="https://nutaiwan.com/" class="board-chip btn-home-hero" title="Kembali ke nutaiwan.com">
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                        stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                        <line x1="19" y1="12" x2="5" y2="12"></line>
+                        <polyline points="12 19 5 12 12 5"></polyline>
+                    </svg>
+                    <span>nutaiwan.com</span>
+                </a>
+                <div class="board-bar-end">
+                    <div class="board-chip lang-selector-hero" role="group" aria-label="Bahasa">
+                        <button class="lang-btn" data-lang="id" onclick="setLang('id')">ID</button>
+                        <button class="lang-btn" data-lang="en" onclick="setLang('en')">EN</button>
+                    </div>
+                </div>
+            </div>
+            <nav class="site-nav" aria-label="Menu">
+                <a href="index.html" class="site-nav-link"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"></circle><polyline points="12 7 12 12 15 14"></polyline></svg><span data-i18n="nav_schedule">Jadwal Sholat</span></a>
+                <a href="kalender.html" class="site-nav-link"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="4.5" width="18" height="16" rx="2"></rect><line x1="16" y1="2.5" x2="16" y2="6.5"></line><line x1="8" y1="2.5" x2="8" y2="6.5"></line><line x1="3" y1="10" x2="21" y2="10"></line></svg><span data-i18n="nav_calendar">Kalender</span></a>
+                <a href="kalkulator.html" class="site-nav-link"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="5" y="2.5" width="14" height="19" rx="2"></rect><line x1="8.5" y1="6.5" x2="15.5" y2="6.5"></line><line x1="8.5" y1="11" x2="8.51" y2="11"></line><line x1="12" y1="11" x2="12.01" y2="11"></line><line x1="15.5" y1="11" x2="15.51" y2="11"></line><line x1="8.5" y1="14.5" x2="8.51" y2="14.5"></line><line x1="12" y1="14.5" x2="12.01" y2="14.5"></line><line x1="15.5" y1="14.5" x2="15.51" y2="14.5"></line><line x1="8.5" y1="18" x2="12.01" y2="18"></line><line x1="15.5" y1="18" x2="15.51" y2="18"></line></svg><span data-i18n="nav_calculator">Kalkulator</span></a>
+                <a href="hisab.html" class="site-nav-link" aria-current="page"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M2 4.5h6a4 4 0 0 1 4 4v12a3 3 0 0 0-3-3H2z"></path><path d="M22 4.5h-6a4 4 0 0 0-4 4v12a3 3 0 0 1 3-3h7z"></path></svg><span data-i18n="nav_learn">Belajar Hisab</span></a>
+            </nav>
+
+            <div class="board-identity">
+                <h1 class="board-org" data-i18n="hisab_title">Belajar Hisab</h1>
+                <p class="board-supervised" data-i18n="hisab_desc">Cara menghitung awal bulan Hijriah, langkah demi langkah dengan gambar</p>
+            </div>
+        </header>
+
+        <!-- ================= CONTOH ================= -->
+        <section class="hisab-section" aria-labelledby="calcTitle">
+            <div class="section-header">
+                <h2 class="section-title" id="calcTitle">
+                    <span data-lang-block="id">Pilih contoh</span><span data-lang-block="en">Pick an example</span>
+                </h2>
+                <a class="link-btn" href="kalkulator.html" data-hisab-link="kalkulator.html">
+                    <span data-lang-block="id">Buka di kalkulator →</span><span data-lang-block="en">Open in the calculator →</span>
+                </a>
+            </div>
+            <p class="learn-intro" data-lang-block="id">Pilih bulan Hijriah dan lokasi. Setiap langkah di bawah menjelaskan
+                satu bagian perhitungan, dengan rumus, angka, dan gambar dari contoh yang dipilih.
+                Untuk menghitung lokasi dan tanggal lain secara lengkap, pakai <a href="kalkulator.html" data-hisab-link="kalkulator.html">Kalkulator</a>.</p>
+            <p class="learn-intro" data-lang-block="en">Pick a Hijri month and a location. Each step below explains one part
+                of the calculation, with the formula, the numbers and a picture for that example.
+                To work out other locations and dates in full, use the <a href="kalkulator.html" data-hisab-link="kalkulator.html">Calculator</a>.</p>
+
+            <div class="panel hisab-form">
+                <div class="form-grid">
+                    <div class="field">
+                        <label for="hMonth"><span data-lang-block="id">Awal bulan</span><span data-lang-block="en">Start of month</span></label>
+                        <div class="control-row">
+                            <select id="hMonth"></select>
+                            <input type="number" id="hYear" class="input-year" min="1300" max="1600" step="1"
+                                inputmode="numeric" aria-label="Tahun Hijriah">
+                        </div>
+                    </div>
+                    <div class="field">
+                        <label for="hPlace"><span data-lang-block="id">Lokasi</span><span data-lang-block="en">Location</span></label>
+                        <select id="hPlace"></select>
+                    </div>
+                </div>
+                <details class="form-more">
+                    <summary><span data-lang-block="id">Atur lokasi, tanggal & kriteria</span><span data-lang-block="en">Set location, date & criterion</span></summary>
+                    <div class="form-grid">
+                        <div class="field field--small">
+                            <label for="hLat"><span data-lang-block="id">Lintang (°)</span><span data-lang-block="en">Latitude (°)</span></label>
+                            <input type="number" id="hLat" step="0.0001" min="-90" max="90">
+                        </div>
+                        <div class="field field--small">
+                            <label for="hLng"><span data-lang-block="id">Bujur (°)</span><span data-lang-block="en">Longitude (°)</span></label>
+                            <input type="number" id="hLng" step="0.0001" min="-180" max="180">
+                        </div>
+                        <div class="field field--small">
+                            <label for="hElev"><span data-lang-block="id">Tinggi tempat (m)</span><span data-lang-block="en">Elevation (m)</span></label>
+                            <input type="number" id="hElev" step="1" min="-500" max="9000">
+                        </div>
+                        <div class="field field--small">
+                            <label for="hTz"><span data-lang-block="id">Zona waktu (UTC+)</span><span data-lang-block="en">Time zone (UTC+)</span></label>
+                            <input type="number" id="hTz" step="0.5" min="-12" max="14">
+                        </div>
+                        <div class="field">
+                            <label for="hDate"><span data-lang-block="id">Tanggal pengamatan (sore)</span><span data-lang-block="en">Observation date (evening)</span></label>
+                            <div class="control-row">
+                                <input type="date" id="hDate">
+                                <button type="button" class="btn-export" id="hDateReset">
+                                    <span data-lang-block="id">Hari ijtimak</span><span data-lang-block="en">Conjunction day</span>
+                                </button>
+                            </div>
+                        </div>
+                        <div class="field field--small">
+                            <label for="hMinAlt"><span data-lang-block="id">Tinggi min. (°)</span><span data-lang-block="en">Min. altitude (°)</span></label>
+                            <input type="number" id="hMinAlt" step="0.1" min="0" max="20">
+                        </div>
+                        <div class="field field--small">
+                            <label for="hMinElong"><span data-lang-block="id">Elongasi min. (°)</span><span data-lang-block="en">Min. elongation (°)</span></label>
+                            <input type="number" id="hMinElong" step="0.1" min="0" max="30">
+                        </div>
+                    </div>
+                </details>
+            </div>
+
+            <div class="verdict" id="hVerdict" aria-live="polite"></div>
+        </section>
+
+        <!-- ================= LANGKAH ================= -->
+        <section class="hisab-section" aria-labelledby="stepsTitle">
+            <div class="section-header">
+                <h2 class="section-title" id="stepsTitle">
+                    <span data-lang-block="id">Langkah perhitungan</span><span data-lang-block="en">Calculation steps</span>
+                </h2>
+            </div>
+
+            <ol class="steps">
+                <!-- 1. Ijtimak -->
+                <li class="panel step">
+                    <h3><span data-lang-block="id">Ijtimak (konjungsi)</span><span data-lang-block="en">Conjunction (ijtimak)</span></h3>
+                    <div data-lang-block="id">
+                        <p>Bulan baru astronomis terjadi saat Bulan dan Matahari berada pada <b>bujur ekliptika yang sama</b>
+                            dilihat dari pusat Bumi. Setelah ijtimak, Bulan bergerak ke timur sekitar 12° per hari
+                            menjauhi Matahari, sehingga sabit tipis mulai bisa terlihat di ufuk barat setelah Matahari terbenam.</p>
+                        <p>Ijtimak dicari di sekitar perkiraan rata-rata: satu bulan sinodis = 29,530589 hari.</p>
+                    </div>
+                    <div data-lang-block="en">
+                        <p>Astronomical new moon happens when the Moon and the Sun have <b>the same ecliptic longitude</b>
+                            seen from Earth's center. After conjunction the Moon moves about 12° per day eastward, away from
+                            the Sun, so a thin crescent can start to appear in the west after sunset.</p>
+                        <p>The conjunction is searched for around the mean estimate: one synodic month = 29.530589 days.</p>
+                    </div>
+                    <div class="formula">λ<sub>☾</sub> − λ<sub>☉</sub> = 0°</div>
+                    <figure class="viz" id="v1"></figure>
+                    <dl class="values" id="s1"></dl>
+                </li>
+
+                <!-- 2. Ghurub -->
+                <li class="panel step">
+                    <h3><span data-lang-block="id">Matahari terbenam (ghurub)</span><span data-lang-block="en">Sunset (ghurub)</span></h3>
+                    <div data-lang-block="id">
+                        <p>Hilal diamati pada sore hari ijtimak, tepat saat Matahari terbenam. Matahari dianggap terbenam
+                            ketika piringan atasnya menyentuh ufuk: pusatnya berada <b>0°50′ di bawah ufuk</b>
+                            (refraksi udara 34′ + jari-jari Matahari 16′).</p>
+                        <p>Jika ijtimak baru terjadi <i>setelah</i> Matahari terbenam, hilal belum mungkin ada malam itu.</p>
+                    </div>
+                    <div data-lang-block="en">
+                        <p>The crescent is observed on the evening of the conjunction day, at sunset. The Sun has set when
+                            its upper edge touches the horizon: its center is <b>0°50′ below the horizon</b>
+                            (34′ atmospheric refraction + 16′ solar radius).</p>
+                        <p>If the conjunction happens only <i>after</i> sunset, there can be no crescent that evening.</p>
+                    </div>
+                    <div class="formula">h<sub>☉</sub> = −0°50′</div>
+                    <figure class="viz" id="v2"></figure>
+                    <dl class="values" id="s2"></dl>
+                </li>
+
+                <!-- 3. Tinggi hilal -->
+                <li class="panel step">
+                    <h3><span data-lang-block="id">Tinggi hilal mar'i</span><span data-lang-block="en">Apparent crescent altitude (mar'i)</span></h3>
+                    <div data-lang-block="id">
+                        <p>Posisi Bulan saat ghurub dinyatakan dalam asensio rekta (α) dan deklinasi (δ). Dari waktu
+                            sideris lokal (LST) didapat sudut jam H = LST − α, lalu tinggi geosentrik dengan rumus segitiga bola.</p>
+                        <p>Karena Bulan dekat, posisinya dari permukaan Bumi lebih rendah daripada dari pusat Bumi
+                            (<b>paralaks</b>, hampir 1°). Tinggi <i>mar'i</i> dalam kriteria IRNU adalah tinggi
+                            <b>toposentrik</b> pusat Bulan, tanpa refraksi.</p>
+                    </div>
+                    <div data-lang-block="en">
+                        <p>The Moon's position at sunset is given as right ascension (α) and declination (δ). The local
+                            sidereal time (LST) gives the hour angle H = LST − α, and spherical trigonometry gives the
+                            geocentric altitude.</p>
+                        <p>Because the Moon is close, it appears lower from Earth's surface than from Earth's center
+                            (<b>parallax</b>, almost 1°). The <i>mar'i</i> altitude in IRNU is the <b>topocentric</b>
+                            altitude of the Moon's center, without refraction.</p>
+                    </div>
+                    <div class="formula">sin h = sin φ · sin δ + cos φ · cos δ · cos H
+                        <br>h<sub>topo</sub> ≈ h<sub>geo</sub> − HP · cos h<sub>geo</sub></div>
+                    <figure class="viz" id="v3"></figure>
+                    <dl class="values" id="s3"></dl>
+                </li>
+
+                <!-- 4. Elongasi -->
+                <li class="panel step">
+                    <h3><span data-lang-block="id">Elongasi haqiqi</span><span data-lang-block="en">True elongation (haqiqi)</span></h3>
+                    <div data-lang-block="id">
+                        <p>Elongasi adalah jarak sudut antara pusat Bulan dan pusat Matahari dilihat dari pusat Bumi.
+                            Semakin besar elongasi, semakin tebal sabit dan semakin jauh dari silau Matahari.</p>
+                    </div>
+                    <div data-lang-block="en">
+                        <p>Elongation is the angle between the centers of the Moon and the Sun seen from Earth's center.
+                            The larger it is, the thicker the crescent and the further it is from the Sun's glare.</p>
+                    </div>
+                    <div class="formula">cos E = sin δ<sub>☉</sub> · sin δ<sub>☾</sub> + cos δ<sub>☉</sub> · cos δ<sub>☾</sub> · cos(α<sub>☉</sub> − α<sub>☾</sub>)</div>
+                    <figure class="viz" id="v4"></figure>
+                    <dl class="values" id="s4"></dl>
+                </li>
+
+                <!-- 5. Kriteria -->
+                <li class="panel step">
+                    <h3><span data-lang-block="id">Uji kriteria IRNU</span><span data-lang-block="en">Testing the IRNU criterion</span></h3>
+                    <div data-lang-block="id">
+                        <p>Imkanur Rukyah NU (LF PBNU, 2022): hilal dianggap mungkin terlihat bila <b>tinggi mar'i ≥ 3°</b>
+                            dan <b>elongasi haqiqi ≥ 6,4°</b>. Jika terpenuhi, esok harinya tanggal 1. Jika tidak,
+                            bulan berjalan digenapkan 30 hari (<i>istikmal</i>). Keputusan akhir tetap menunggu rukyatul hilal.</p>
+                    </div>
+                    <div data-lang-block="en">
+                        <p>Imkanur Rukyah NU (LF PBNU, 2022): the crescent is considered possibly visible when the
+                            <b>mar'i altitude ≥ 3°</b> and the <b>true elongation ≥ 6.4°</b>. If met, the next day is the 1st.
+                            If not, the current month is completed to 30 days (<i>istikmal</i>). The final decision still
+                            waits for the actual sighting.</p>
+                    </div>
+                    <figure class="viz" id="v5"></figure>
+                    <div class="criteria" id="s5"></div>
+                </li>
+
+                <!-- 6. Data tambahan -->
+                <li class="panel step">
+                    <h3><span data-lang-block="id">Data tambahan & perbandingan</span><span data-lang-block="en">Extra data & comparison</span></h3>
+                    <div data-lang-block="id">
+                        <p>Untuk perbandingan: <b>umur hilal</b> (sejak ijtimak), <b>lama hilal</b> (Bulan terbenam setelah
+                            Matahari), dan <b>iluminasi</b>. Kriteria <i>wujudul hilal</i> (Muhammadiyah) cukup mensyaratkan
+                            ijtimak sebelum ghurub dan Bulan terbenam setelah Matahari.</p>
+                    </div>
+                    <div data-lang-block="en">
+                        <p>For comparison: the crescent's <b>age</b> (since conjunction), <b>lag time</b> (moonset after
+                            sunset), and <b>illumination</b>. The <i>wujudul hilal</i> criterion (Muhammadiyah) only requires
+                            conjunction before sunset and the Moon setting after the Sun.</p>
+                    </div>
+                    <dl class="values" id="s6"></dl>
+                </li>
+            </ol>
+        </section>
+
+        <!-- ================= GERHANA ================= -->
+        <section class="hisab-section" aria-labelledby="eclTitle">
+            <div class="section-header">
+                <h2 class="section-title" id="eclTitle">
+                    <span data-lang-block="id">Bagaimana gerhana terjadi</span><span data-lang-block="en">How eclipses happen</span>
+                </h2>
+            </div>
+            <div class="panel step">
+                <div data-lang-block="id">
+                    <p>Gerhana terjadi saat Matahari, Bumi, dan Bulan hampir segaris. Orbit Bulan miring sekitar 5° terhadap
+                        ekliptika, jadi gerhana hanya terjadi bila ijtimak (gerhana Matahari) atau istiqbal/purnama
+                        (gerhana Bulan) jatuh dekat <b>titik simpul</b> orbit Bulan, kira-kira dua kali setahun.</p>
+                    <p>Gerhana Bulan terlihat dari separuh Bumi yang sedang malam. Gerhana Matahari hanya terlihat di
+                        jalur bayangan Bulan; di luar jalur itu tampak sebagian atau tidak sama sekali. Sholat gerhana
+                        disunnahkan bila gerhana benar-benar tampak dari tempat kita.</p>
+                </div>
+                <div data-lang-block="en">
+                    <p>An eclipse happens when the Sun, Earth and Moon are almost in a line. The Moon's orbit is tilted
+                        about 5° to the ecliptic, so eclipses only happen when a new moon (solar eclipse) or full moon
+                        (lunar eclipse) falls near one of the orbit's <b>nodes</b>, roughly twice a year.</p>
+                    <p>A lunar eclipse is visible from the whole night side of the Earth. A solar eclipse is only seen
+                        along the Moon's shadow path; elsewhere it is partial or not visible at all. The eclipse prayer is
+                        recommended when the eclipse is actually visible from where you are.</p>
+                </div>
+                <p><a class="link-btn" href="kalkulator.html#eclTitle">
+                    <span data-lang-block="id">Cari gerhana berikutnya di kalkulator →</span><span data-lang-block="en">Find the next eclipses in the calculator →</span>
+                </a></p>
+            </div>
+        </section>
+
+        <!-- ================= ISTILAH & SUMBER ================= -->
+        <section class="hisab-section" aria-labelledby="glossTitle">
+            <div class="section-header">
+                <h2 class="section-title" id="glossTitle">
+                    <span data-lang-block="id">Istilah & sumber data</span><span data-lang-block="en">Terms & data sources</span>
+                </h2>
+            </div>
+            <div class="panel">
+                <dl class="notes-list glossary" data-lang-block="id">
+                    <div><dt>Hisab</dt><dd>Perhitungan astronomis posisi Matahari dan Bulan.</dd></div>
+                    <div><dt>Rukyatul hilal</dt><dd>Pengamatan langsung hilal setelah Matahari terbenam.</dd></div>
+                    <div><dt>Geosentrik</dt><dd>Dilihat dari pusat Bumi.</dd></div>
+                    <div><dt>Toposentrik</dt><dd>Dilihat dari permukaan Bumi, di lokasi pengamat.</dd></div>
+                    <div><dt>Paralaks</dt><dd>Selisih arah Bulan antara pusat Bumi dan permukaan Bumi; paling besar dekat ufuk (≈ 1°).</dd></div>
+                    <div><dt>Refraksi</dt><dd>Pembiasan cahaya oleh atmosfer yang membuat benda dekat ufuk tampak lebih tinggi (≈ 34′ di ufuk).</dd></div>
+                    <div><dt>Istikmal</dt><dd>Menggenapkan bulan berjalan menjadi 30 hari bila hilal tidak memenuhi kriteria.</dd></div>
+                    <div><dt>ΔT</dt><dd>Selisih waktu dinamis (TT) dan waktu rotasi Bumi (UT); untuk masa depan hanya bisa diperkirakan.</dd></div>
+                    <div><dt>Sumber data</dt><dd>Halaman ini dan kalkulator memakai Astronomy Engine (akurasi ±1′). Kalender situs memakai tabel efemeris JPL DE440s (NASA) untuk 1440–1500 H, dibuat dengan Skyfield; keduanya sama untuk semua 732 awal bulan.</dd></div>
+                </dl>
+                <dl class="notes-list glossary" data-lang-block="en">
+                    <div><dt>Hisab</dt><dd>Astronomical calculation of the positions of the Sun and Moon.</dd></div>
+                    <div><dt>Rukyatul hilal</dt><dd>Actual sighting of the crescent after sunset.</dd></div>
+                    <div><dt>Geocentric</dt><dd>Seen from Earth's center.</dd></div>
+                    <div><dt>Topocentric</dt><dd>Seen from Earth's surface, at the observer's location.</dd></div>
+                    <div><dt>Parallax</dt><dd>The shift in the Moon's direction between Earth's center and its surface; largest near the horizon (≈ 1°).</dd></div>
+                    <div><dt>Refraction</dt><dd>Bending of light by the atmosphere, which lifts objects near the horizon (≈ 34′ at the horizon).</dd></div>
+                    <div><dt>Istikmal</dt><dd>Completing the current month to 30 days when the crescent does not meet the criterion.</dd></div>
+                    <div><dt>ΔT</dt><dd>The difference between dynamical time (TT) and Earth-rotation time (UT); only estimated for the future.</dd></div>
+                    <div><dt>Data sources</dt><dd>This page and the calculator use Astronomy Engine (±1′ accuracy). The site's calendar uses a NASA JPL DE440s ephemeris table for 1440–1500 H, generated with Skyfield; both agree on all 732 month starts.</dd></div>
+                </dl>
+            </div>
+        </section>
+
+        <footer class="footer-wrapper">
+            <p class="footer-greeting">
+                <strong data-i18n="footer_greeting_title">Semoga Membawa Keberkahan</strong>
+                <span data-i18n="hilal_note">Hasil hisab saat matahari terbenam pada hari ijtimak, di markaz PCINU
+                    Taiwan (Taipei). Keputusan akhir mengikuti hasil rukyatul hilal dan ikhbar PCINU Taiwan.</span>
+            </p>
+            <p class="copyright">
+                &copy; 2026 LFNU Taiwan · <a href="https://ainulyaqinmhd.github.io/" target="_blank"
+                    rel="noopener">@ainulyaqinmhd</a> & <a href="https://github.com/mthudaa" target="_blank"
+                    rel="noopener">@mthudaa</a>
+                <br><span data-i18n="copyright_protected">Dilindungi doa dan niat baik.</span>
+            </p>
+        </footer>
+    </main>
+
+    <script src="js/translations.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/astronomy-engine@2.1.19/astronomy.browser.min.js"></script>
+    <script src="js/locations.js"></script>
+    <script src="js/hilal-de440.js"></script>
+    <script src="js/hijri.js"></script>
+    <script src="js/eclipse.js"></script>
+    <script src="js/hisab-viz.js"></script>
+    <script src="js/hisab-page.js"></script>
+</body>
+
+</html>

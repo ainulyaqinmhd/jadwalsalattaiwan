@@ -1441,3 +1441,1172 @@ body.screensaver-active .prayer-time {
         animation-duration: 2s;
     }
 }
+
+/* =============================================
+   TAUTAN KE HALAMAN KALENDER
+   ============================================= */
+a.board-dates {
+    display: inline-flex;
+    margin: 0 auto;
+    padding: 4px 14px;
+    border-radius: var(--radius-pill);
+    color: inherit;
+    text-decoration: none;
+    transition: background-color 0.2s ease;
+}
+
+a.board-dates:hover {
+    background: rgba(255, 255, 255, 0.08);
+}
+
+a.board-dates:hover .hero-date {
+    text-decoration: underline;
+    text-underline-offset: 3px;
+}
+
+a.cal-day {
+    color: inherit;
+    text-decoration: none;
+}
+
+.cal-more {
+    margin-left: auto;
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--green);
+    text-decoration: none;
+    white-space: nowrap;
+}
+
+.cal-more:hover {
+    text-decoration: underline;
+    text-underline-offset: 3px;
+}
+
+/* =============================================
+   HALAMAN KALENDER (kalender.html)
+   ============================================= */
+.board--compact {
+    padding-bottom: 24px;
+}
+
+.board--compact .board-identity {
+    margin-top: 6px;
+}
+
+.calpage-today {
+    margin-top: 14px;
+    padding: 0 20px;
+}
+
+.calpage-layout {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr);
+    gap: 28px;
+    margin-top: 36px;
+    scroll-margin-top: 16px;
+}
+
+/* Kisi besar */
+.cal-card--large .cal-day {
+    min-height: 98px;
+    padding: 9px 10px 8px;
+}
+
+.cal-card--large .cal-g { font-size: 22px; }
+.cal-card--large .cal-h { font-size: 13px; }
+.cal-card--large .cal-p { font-size: 11.5px; }
+
+.cal-card--large .cal-ev,
+.cal-card--large .cal-hm {
+    font-size: 11.5px;
+    white-space: normal;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+}
+
+/* Kolom samping */
+.calpage-side {
+    display: flex;
+    flex-direction: column;
+    gap: 28px;
+}
+
+.day-panel {
+    padding: 18px 20px 20px;
+}
+
+.day-head {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+}
+
+.day-num {
+    min-width: 2ch;
+    font-size: 56px;
+    font-weight: 800;
+    line-height: 1;
+    text-align: center;
+    color: var(--pine);
+    font-variant-numeric: tabular-nums;
+}
+
+.day-rel {
+    font-size: 12px;
+    font-weight: 700;
+    color: var(--green);
+}
+
+.day-greg {
+    font-size: 15px;
+    font-weight: 700;
+    color: var(--ink);
+}
+
+.day-hijri {
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--gold-ink);
+}
+
+.day-hijri small {
+    font-weight: 500;
+    color: var(--ink-3);
+}
+
+.day-ev {
+    margin-top: 12px;
+}
+
+.day-ev:empty {
+    display: none;
+}
+
+.day-times-head {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 12px;
+    margin: 18px 0 10px;
+    padding-top: 14px;
+    border-top: 1px solid var(--line);
+}
+
+.day-times-head h3 {
+    font-size: 15px;
+    font-weight: 700;
+    color: var(--ink);
+}
+
+.day-times-head select {
+    height: 34px;
+    min-width: 0;
+    font-size: 13px;
+}
+
+.day-times {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 6px;
+}
+
+.day-time {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    gap: 8px;
+    padding: 8px 12px;
+    background: var(--paper);
+    border-radius: 8px;
+}
+
+.day-time span {
+    font-size: 13px;
+    color: var(--ink-2);
+}
+
+.day-time strong {
+    font-size: 15px;
+    font-weight: 700;
+    color: var(--ink);
+    font-variant-numeric: tabular-nums;
+}
+
+.day-time.is-minor strong {
+    font-weight: 600;
+    color: var(--ink-3);
+}
+
+.day-times-error {
+    grid-column: 1 / -1;
+    font-size: 13px;
+    color: var(--ink-2);
+}
+
+/* Daftar hari penting */
+.section-title--small {
+    font-size: 18px;
+    margin-bottom: 12px;
+}
+
+.event-list {
+    list-style: none;
+    margin: 0;
+    padding: 6px;
+}
+
+.event-item {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    width: 100%;
+    padding: 8px 10px;
+    text-align: left;
+    background: none;
+    border: none;
+    border-radius: var(--radius-control);
+    transition: background-color 0.15s ease;
+}
+
+.event-item:hover,
+.event-item.is-selected {
+    background: var(--leaf);
+}
+
+.event-date {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    min-width: 54px;
+    padding: 5px 4px;
+    border-radius: 8px;
+    background: var(--gold-wash);
+    line-height: 1.15;
+}
+
+.event-date strong {
+    font-size: 16px;
+    color: var(--pine);
+    font-variant-numeric: tabular-nums;
+}
+
+.event-date small {
+    font-size: 11px;
+    color: var(--ink-3);
+}
+
+.event-item.ev-holiday .event-date { background: var(--gold-wash-strong); }
+.event-item.ev-fasting .event-date { background: var(--leaf); }
+
+.event-text {
+    display: flex;
+    flex-direction: column;
+    min-width: 0;
+}
+
+.event-name {
+    font-size: 14px;
+    font-weight: 700;
+    color: var(--ink);
+}
+
+.event-sub {
+    font-size: 12px;
+    color: var(--ink-3);
+}
+
+.event-empty {
+    padding: 12px 10px;
+    font-size: 14px;
+    color: var(--ink-3);
+}
+
+/* Satu tahun Hijriah */
+.calpage-year {
+    margin-top: 52px;
+}
+
+.calpage-year-grid {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr);
+    gap: 28px;
+}
+
+.calpage-subtitle {
+    margin-bottom: 10px;
+    font-size: 15px;
+    font-weight: 700;
+    color: var(--ink-2);
+}
+
+.year-table th,
+.year-table td {
+    padding-left: 8px;
+    padding-right: 8px;
+}
+
+.year-table td {
+    font-size: 13.5px;
+}
+
+.calpage .hilal-note {
+    margin-top: 10px;
+}
+
+.link-btn {
+    padding: 0;
+    background: none;
+    border: none;
+    font-weight: 700;
+    color: var(--green);
+}
+
+.link-btn:hover {
+    text-decoration: underline;
+    text-underline-offset: 3px;
+}
+
+tr.current-day-row .link-btn {
+    color: var(--pine);
+}
+
+@media (min-width: 980px) {
+    .calpage-layout {
+        grid-template-columns: minmax(0, 8fr) minmax(0, 4fr);
+        align-items: start;
+    }
+
+    .calpage-year-grid {
+        grid-template-columns: minmax(0, 8fr) minmax(0, 4fr);
+        align-items: start;
+    }
+}
+
+@media (max-width: 720px) {
+    .cal-card--large .cal-day {
+        min-height: 58px;
+        padding: 5px 5px 8px;
+    }
+
+    .cal-card--large .cal-g { font-size: 16px; }
+    .cal-card--large .cal-h { font-size: 11px; }
+
+    .cal-card--large .cal-p,
+    .cal-card--large .cal-ev,
+    .cal-card--large .cal-hm {
+        display: none;
+    }
+
+    .calpage-layout {
+        margin-top: 28px;
+    }
+
+    .day-num {
+        font-size: 46px;
+    }
+}
+
+/* =============================================
+   GERHANA
+   ============================================= */
+.cal-day {
+    position: relative;
+}
+
+/* Penanda gerhana: lingkaran setengah gelap di pojok kanan bawah */
+.cal-day.has-eclipse::before {
+    content: '';
+    position: absolute;
+    right: 7px;
+    bottom: 7px;
+    width: 9px;
+    height: 9px;
+    border-radius: 50%;
+    border: 1.5px solid var(--ink-3);
+    background: linear-gradient(90deg, var(--ink-3) 50%, transparent 50%);
+    opacity: 0.6;
+}
+
+.cal-day.has-eclipse.ecl-visible::before {
+    border-color: var(--pine);
+    background: linear-gradient(90deg, var(--pine) 50%, var(--gold) 50%);
+    opacity: 1;
+}
+
+.cal-day.is-selected.has-eclipse::before {
+    border-color: #FFFFFF;
+    background: linear-gradient(90deg, #FFFFFF 50%, transparent 50%);
+}
+
+.cal-ecl {
+    margin-top: auto;
+    padding-top: 2px;
+    padding-right: 12px;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    font-size: 10.5px;
+    font-weight: 700;
+    line-height: 1.2;
+    color: var(--ink-2);
+}
+
+.cal-day.is-selected .cal-ecl {
+    color: #FFFFFF;
+}
+
+.cal-card--large .cal-ecl {
+    font-size: 11.5px;
+}
+
+@media (max-width: 720px) {
+    .cal-ecl,
+    .cal-card--large .cal-ecl {
+        display: none;
+    }
+
+    .cal-day.has-eclipse::before {
+        right: auto;
+        left: 5px;
+        bottom: 5px;
+        width: 7px;
+        height: 7px;
+    }
+}
+
+/* Kartu gerhana di panel hari */
+.day-ecl:empty {
+    display: none;
+}
+
+.ecl-card {
+    margin-top: 14px;
+    padding: 12px 14px;
+    border-radius: var(--radius-control);
+    background: var(--paper);
+    border-left: 3px solid var(--ink-3);
+    font-size: 13px;
+    color: var(--ink-2);
+}
+
+.ecl-card.is-visible {
+    background: var(--gold-wash);
+    border-left-color: var(--gold);
+}
+
+.ecl-head {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    flex-wrap: wrap;
+    gap: 2px 10px;
+}
+
+.ecl-head strong {
+    font-size: 14px;
+    color: var(--ink);
+}
+
+.ecl-head span {
+    font-weight: 600;
+    color: var(--ink-2);
+    font-variant-numeric: tabular-nums;
+}
+
+.ecl-vis {
+    margin-top: 2px;
+    font-weight: 600;
+    color: var(--green);
+}
+
+.ecl-card:not(.is-visible) .ecl-vis {
+    color: var(--ink-3);
+}
+
+.ecl-contacts {
+    list-style: none;
+    margin: 8px 0 0;
+    padding: 0;
+}
+
+.ecl-contacts li {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) auto 6.5em;
+    gap: 8px;
+    padding: 3px 0;
+    border-top: 1px solid var(--line);
+}
+
+.ecl-contacts li:first-child {
+    border-top: none;
+}
+
+.ecl-contacts strong {
+    color: var(--ink);
+    font-variant-numeric: tabular-nums;
+}
+
+.ecl-contacts small {
+    text-align: right;
+    white-space: nowrap;
+    color: var(--ink-3);
+}
+
+.ecl-contacts li.is-peak span,
+.ecl-contacts li.is-peak strong {
+    font-weight: 700;
+    color: var(--pine);
+}
+
+.ecl-contacts li.is-below span,
+.ecl-contacts li.is-below strong {
+    color: var(--ink-3);
+    font-weight: 500;
+}
+
+.ecl-card p {
+    margin-top: 8px;
+}
+
+.ecl-prayer {
+    font-weight: 700;
+    color: var(--green);
+}
+
+.event-item.ecl-item .event-date {
+    background: var(--paper);
+}
+
+.event-item.ecl-item.is-visible .event-date {
+    background: var(--gold-wash-strong);
+}
+
+.calpage-subtitle--spaced {
+    margin-top: 28px;
+}
+
+/* =============================================
+   HALAMAN BELAJAR HISAB (hisab.html)
+   ============================================= */
+/* Teks dwibahasa: tampilkan sesuai bahasa aktif */
+html[lang="id"] [data-lang-block="en"],
+html[lang="en"] [data-lang-block="id"] {
+    display: none !important;
+}
+
+.hilal-note .cal-more {
+    display: inline-block;
+    margin-left: 6px;
+}
+
+.hisab-section {
+    margin-top: 40px;
+}
+
+.hisab-form {
+    padding: 18px 20px 20px;
+}
+
+.form-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+    gap: 14px 16px;
+    align-items: end;
+}
+
+.form-grid .field {
+    grid-column: span 2;
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    min-width: 0;
+}
+
+.form-grid .field--small {
+    grid-column: span 1;
+}
+
+.form-grid label {
+    font-size: 12px;
+    font-weight: 600;
+    color: var(--ink-2);
+}
+
+.form-grid select,
+.form-grid input {
+    width: 100%;
+    min-width: 0;
+}
+
+.form-grid .control-row > select,
+.form-grid .control-row > input[type="date"] {
+    flex: 1;
+}
+
+.form-grid .control-row .input-year {
+    width: 96px;
+    flex: none;
+}
+
+.form-grid--inline {
+    margin-top: 16px;
+}
+
+.field-note {
+    grid-column: span 2;
+    font-size: 13px;
+    color: var(--ink-3);
+    padding-bottom: 10px;
+}
+
+/* Kesimpulan */
+.verdict {
+    margin-top: 16px;
+    padding: 16px 20px;
+    border-radius: 14px;
+    background: var(--card);
+    border: 1px solid var(--line);
+    border-left: 4px solid var(--ink-3);
+    font-size: 15px;
+    color: var(--ink-2);
+}
+
+.verdict.is-met { border-left-color: var(--green); background: #F4FAF5; }
+.verdict.is-not-met { border-left-color: var(--gold); background: var(--gold-wash); }
+
+.verdict-title {
+    display: block;
+    margin-bottom: 4px;
+    font-size: 18px;
+    color: var(--ink);
+}
+
+.verdict b { color: var(--green); }
+.verdict-nums { margin-top: 4px; font-size: 14px; }
+
+/* Langkah bernomor (memang berurutan) */
+.steps {
+    list-style: none;
+    counter-reset: step;
+    margin: 0;
+    padding: 0;
+    display: grid;
+    gap: 16px;
+}
+
+.step {
+    position: relative;
+    padding: 18px 20px 18px 64px;
+    counter-increment: step;
+}
+
+.steps > .step::before {
+    content: counter(step);
+    position: absolute;
+    left: 18px;
+    top: 16px;
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    display: grid;
+    place-items: center;
+    background: var(--pine);
+    color: #FFFFFF;
+    font-weight: 800;
+    font-size: 15px;
+}
+
+.hisab-section > .panel.step {
+    padding-left: 20px;
+}
+
+.step h3 {
+    margin-bottom: 6px;
+    font-size: 17px;
+    font-weight: 700;
+    color: var(--ink);
+}
+
+.step p {
+    max-width: 75ch;
+    margin-bottom: 8px;
+    font-size: 14.5px;
+    line-height: 1.65;
+    color: var(--ink-2);
+}
+
+.step b { color: var(--ink); }
+
+.formula {
+    display: inline-block;
+    margin: 6px 0 12px;
+    padding: 10px 14px;
+    border-radius: var(--radius-control);
+    background: var(--paper);
+    border: 1px solid var(--line);
+    font-family: 'Cambria Math', 'STIX Two Math', Georgia, serif;
+    font-size: 16px;
+    line-height: 1.7;
+    color: var(--pine);
+}
+
+.values {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    column-gap: 28px;
+}
+
+.values > div {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    gap: 12px;
+    padding: 7px 0;
+    border-bottom: 1px solid var(--line);
+}
+
+.values dt {
+    font-size: 13px;
+    color: var(--ink-3);
+}
+
+.values dd {
+    font-size: 14px;
+    font-weight: 600;
+    text-align: right;
+    color: var(--ink);
+    font-variant-numeric: tabular-nums;
+}
+
+.values dd small {
+    display: block;
+    font-weight: 500;
+    color: var(--ink-3);
+}
+
+.values > .is-key dt { color: var(--green); font-weight: 600; }
+.values > .is-key dd strong { color: var(--pine); font-size: 15px; }
+
+.step-warn {
+    grid-column: 1 / -1;
+    margin-top: 8px;
+    padding: 8px 12px;
+    border-radius: 8px;
+    background: var(--gold-wash);
+    color: var(--gold-ink) !important;
+    font-weight: 600;
+}
+
+.crit-table td:first-child,
+.crit-table th:first-child {
+    text-align: left;
+}
+
+.ecl-results {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 12px;
+    margin-top: 6px;
+}
+
+.glossary {
+    padding: 4px 20px;
+}
+
+@media (max-width: 720px) {
+    .step {
+        padding: 16px 14px 16px 14px;
+    }
+
+    .steps > .step::before {
+        position: static;
+        margin-bottom: 8px;
+    }
+
+    .values {
+        grid-template-columns: minmax(0, 1fr);
+    }
+
+    .form-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    .form-grid .field:not(.field--small),
+    .field-note {
+        grid-column: 1 / -1;
+    }
+}
+
+/* ===== Gambar perhitungan (hisab.html) ===== */
+.viz {
+    margin: 4px 0 14px;
+}
+
+
+.viz-svg {
+    display: block;
+    width: 100%;
+    height: auto;
+    border-radius: 12px;
+    font-family: var(--font-ui);
+}
+
+.viz figcaption {
+    max-width: 75ch;
+    margin-top: 6px;
+    font-size: 12.5px;
+    line-height: 1.55;
+    color: var(--ink-3);
+}
+
+.viz-ctrl {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-top: 8px;
+    font-size: 13px;
+    color: var(--ink-2);
+}
+
+.viz-ctrl input[type="range"] {
+    flex: 1;
+    accent-color: var(--green);
+}
+
+.viz-ctrl output {
+    min-width: 5.5em;
+    text-align: right;
+    font-weight: 600;
+    color: var(--ink);
+    font-variant-numeric: tabular-nums;
+}
+
+.viz-legend {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px 16px;
+    margin-top: 8px;
+    font-size: 12.5px;
+    color: var(--ink-2);
+}
+
+.viz-legend span { display: inline-flex; align-items: center; gap: 6px; }
+.viz-key { display: inline-block; width: 9px; height: 9px; border-radius: 50%; }
+.viz-key--now { width: 12px; height: 12px; background: var(--gold); box-shadow: 0 0 0 2px var(--pine); }
+.viz-key--ok { background: var(--green-muted); }
+.viz-key--no { background: #B9C4BC; }
+
+/* Teks di dalam SVG */
+.viz-svg text { font-size: 12px; fill: var(--ink-2); }
+.viz-svg .viz-label { font-weight: 600; }
+.viz-svg .viz-label--light { fill: #F3F6F2; }
+.viz-svg .viz-label--gold { fill: #E9C46A; }
+.viz-svg .viz-label--green { fill: var(--green); font-weight: 700; }
+.viz-svg .viz-label--muted-light { fill: rgba(243, 246, 242, 0.65); font-weight: 500; }
+.viz-svg .viz-label--now { fill: var(--pine); font-weight: 800; font-size: 13px; }
+.viz-svg .viz-label--now, .viz-svg .viz-label--halo { paint-order: stroke; stroke: var(--paper); stroke-width: 4px; stroke-linejoin: round; }
+.viz-svg .viz-label--muted { fill: var(--ink-3); font-weight: 500; }
+.viz-svg .viz-label--strong { fill: #FFFFFF; font-weight: 800; font-size: 13px; paint-order: stroke; stroke: rgba(15, 59, 36, 0.55); stroke-width: 3px; }
+.viz-svg .viz-tick { font-size: 11px; fill: var(--ink-3); font-variant-numeric: tabular-nums; }
+.viz-svg .viz-tick--light { fill: rgba(243, 246, 242, 0.75); }
+.viz-svg .viz-axis-title { font-size: 12px; font-weight: 600; fill: var(--ink-2); }
+
+/* Orbit */
+.viz-space { fill: var(--pine); }
+.viz-ray { stroke: rgba(233, 196, 106, 0.18); stroke-width: 1; stroke-dasharray: 2 6; }
+.viz-orbit { fill: none; stroke: rgba(243, 246, 242, 0.35); stroke-width: 1.2; stroke-dasharray: 4 4; }
+.viz-motion { fill: none; stroke: rgba(243, 246, 242, 0.7); stroke-width: 1.6; }
+.viz-arrowhead { fill: rgba(243, 246, 242, 0.8); }
+.viz-sight { stroke: rgba(243, 246, 242, 0.75); stroke-width: 1.2; }
+.viz-sight--ghost { stroke-dasharray: 3 4; stroke: rgba(243, 246, 242, 0.4); }
+.viz-angle { fill: none; stroke: #E9C46A; stroke-width: 2; }
+.viz-earth-dark { fill: #1F4A63; }
+.viz-earth-lit { fill: #6FB0D0; }
+.viz-moon-dark { fill: rgba(52, 64, 74, 0.45); stroke: rgba(255, 255, 255, 0.3); stroke-width: 0.8; }
+.viz-moon-lit { fill: #FFF6D8; }
+.viz-moon-dark.is-ghost, .viz-moon-lit.is-ghost { opacity: 0.4; }
+
+/* Linimasa */
+.viz-day { fill: var(--gold-wash); }
+.viz-night { fill: var(--pine); }
+.viz-axis { stroke: var(--ink-3); stroke-width: 1; }
+.viz-span-age { fill: var(--green-muted); }
+.viz-span-lag { fill: var(--gold); }
+.viz-mark { stroke: var(--ink-3); stroke-width: 1; stroke-dasharray: 2 3; }
+.viz-dot { fill: var(--card); stroke-width: 2.5; }
+.viz-dot.is-sun { stroke: #D9822B; }
+.viz-dot.is-moon { stroke: var(--gold-ink); }
+.viz-dot.is-conj { stroke: var(--green); }
+.viz-svg text.is-sun { fill: #B5651D; }
+.viz-svg text.is-moon { fill: var(--gold-ink); }
+.viz-svg text.is-conj { fill: var(--green); }
+
+/* Langit */
+.viz-grid { stroke: rgba(255, 255, 255, 0.14); stroke-width: 1; }
+.viz-grid--dark { stroke: var(--line); }
+.viz-limit { stroke: #E9C46A; stroke-width: 1.6; stroke-dasharray: 6 5; fill: none; }
+.viz-limit--circle { stroke-width: 1.4; }
+.viz-limit--dark { stroke: var(--gold-ink); }
+.viz-track { fill: none; stroke-width: 2; stroke-linecap: round; stroke-dasharray: 0.1 7; }
+.viz-track--sun { stroke: rgba(255, 220, 150, 0.75); }
+.viz-track--moon { stroke: rgba(255, 246, 216, 0.9); }
+.viz-ground { fill: #0F3B24; opacity: 0.86; }
+.viz-horizon { stroke: rgba(243, 246, 242, 0.6); stroke-width: 1.2; }
+.viz-sun { fill: #FFD27A; stroke: #FFF1C9; stroke-width: 1.5; }
+.viz-moon-ghost { fill: none; stroke: rgba(255, 255, 255, 0.7); stroke-width: 1.2; stroke-dasharray: 3 3; }
+.viz-parallax { stroke: rgba(255, 255, 255, 0.7); stroke-width: 1.2; marker-end: none; }
+.viz-measure { stroke: #FFFFFF; stroke-width: 1.6; }
+.viz-elong { stroke: #FFFFFF; stroke-width: 2; }
+.viz-badge { fill: rgba(15, 59, 36, 0.7); }
+.viz-svg .is-below { opacity: 0.35; }
+
+/* Kriteria */
+.viz-plotbg { fill: var(--paper); }
+.viz-zone { fill: rgba(45, 139, 85, 0.14); }
+.viz-zero { stroke: var(--ink-3); stroke-width: 1; }
+.viz-pt.is-ok { fill: var(--green-muted); opacity: 0.55; }
+.viz-pt.is-no { fill: #9AA79E; opacity: 0.45; }
+.viz-pt-ring { fill: none; stroke: var(--pine); stroke-width: 2; }
+.viz-pt-now { stroke: var(--pine); stroke-width: 1.5; }
+.viz-pt-now.is-ok { fill: var(--gold); }
+.viz-pt-now.is-no { fill: var(--gold); }
+
+/* ===== Menu utama (semua halaman) ===== */
+.site-nav {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 4px;
+    max-width: 640px;
+    margin: 16px auto 0;
+    padding: 4px;
+    border: 1px solid rgba(255, 255, 255, 0.14);
+    border-radius: 14px;
+    background: rgba(0, 0, 0, 0.18);
+}
+
+.site-nav-link {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    min-height: 40px;
+    padding: 0 10px;
+    border-radius: 10px;
+    color: rgba(255, 255, 255, 0.78);
+    font-size: 13.5px;
+    font-weight: 600;
+    text-decoration: none;
+    white-space: nowrap;
+    transition: background-color 0.2s ease, color 0.2s ease;
+}
+
+.site-nav-link svg { flex: none; opacity: 0.85; }
+
+.site-nav-link:hover {
+    background: rgba(255, 255, 255, 0.08);
+    color: #FFFFFF;
+}
+
+.site-nav-link[aria-current="page"] {
+    background: #FFFFFF;
+    color: var(--pine);
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.18);
+}
+
+.site-nav-link[aria-current="page"] svg { opacity: 1; color: var(--green); }
+
+body.screensaver-active .site-nav { display: none; }
+
+@media (max-width: 720px) {
+    .site-nav {
+        margin: 14px 14px 0;
+    }
+
+    .site-nav-link {
+        flex-direction: column;
+        gap: 3px;
+        min-height: 52px;
+        padding: 6px 2px;
+        font-size: 11px;
+        white-space: normal;
+        text-align: center;
+        line-height: 1.2;
+    }
+}
+
+/* Tautan teks antarhalaman */
+a.link-btn {
+    font-size: 14px;
+    text-decoration: none;
+}
+
+a.link-btn:hover { text-decoration: underline; }
+
+/* Halaman belajar: pengantar & pengaturan lanjutan */
+.learn-intro {
+    max-width: 75ch;
+    margin: -4px 0 14px;
+    font-size: 14.5px;
+    line-height: 1.65;
+    color: var(--ink-2);
+}
+
+.learn-intro a { color: var(--green); font-weight: 600; }
+
+.form-more {
+    margin-top: 14px;
+    border-top: 1px solid var(--line);
+    padding-top: 12px;
+}
+
+.form-more summary {
+    cursor: pointer;
+    font-size: 13.5px;
+    font-weight: 600;
+    color: var(--green);
+}
+
+.form-more[open] summary { margin-bottom: 12px; }
+
+/* Kalkulator: ringkasan hasil */
+.calc-results {
+    padding: 8px 20px 12px;
+}
+
+.calc-source {
+    margin: 4px 0 28px;
+}
+
+.site-nav + .board-identity { margin-top: 18px; }
+
+/* Kalkulator: posisi hilal (gaya LF PBNU) */
+.pos-tools {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 10px;
+}
+
+.pos-figure {
+    margin: 0;
+    padding: 18px 20px 12px;
+}
+
+.pos-chart svg {
+    display: block;
+    width: 100%;
+    height: auto;
+}
+
+.pos-figure figcaption { margin: 10px 0 12px; }
+
+.pos-table td:nth-child(n+2),
+.pos-table th:nth-child(n+2) { text-align: right; white-space: nowrap; }
+.pos-table tr.is-chosen td { font-weight: 700; background: var(--gold-wash); }
+
+@media (max-width: 720px) {
+    .pos-figure { padding: 14px 12px 8px; }
+}
+
+/* Pemilih titik posisi hilal */
+.pt-picker {
+    margin-bottom: 14px;
+    padding: 14px 18px;
+}
+
+.pt-head {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: 12px;
+    margin-bottom: 10px;
+    font-size: 14px;
+    color: var(--ink);
+}
+
+.pt-count { font-size: 12.5px; color: var(--ink-3); }
+
+.pt-presets {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 6px;
+    padding-bottom: 12px;
+    margin-bottom: 10px;
+    border-bottom: 1px solid var(--line);
+    font-size: 12.5px;
+    color: var(--ink-3);
+}
+
+.pt-preset {
+    height: 28px;
+    padding: 0 12px;
+    border: 1px solid var(--green);
+    border-radius: var(--radius-pill);
+    background: var(--card);
+    color: var(--green);
+    font: inherit;
+    font-weight: 600;
+    cursor: pointer;
+}
+
+.pt-preset:hover { background: var(--leaf); }
+
+.pt-group {
+    display: grid;
+    grid-template-columns: 84px minmax(0, 1fr);
+    gap: 8px;
+    align-items: start;
+    padding: 6px 0;
+}
+
+.pt-group-name {
+    padding-top: 5px;
+    font-size: 12px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+    color: var(--ink-3);
+}
+
+.pt-chips { display: flex; flex-wrap: wrap; gap: 6px; }
+
+.pt-chip {
+    height: 28px;
+    padding: 0 11px;
+    border: 1px solid var(--line-strong);
+    border-radius: var(--radius-pill);
+    background: var(--paper);
+    color: var(--ink-2);
+    font: inherit;
+    font-size: 12.5px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: background-color 0.15s ease, color 0.15s ease;
+}
+
+.pt-chip:hover { border-color: var(--green-muted); }
+
+.pt-chip[aria-pressed="true"] {
+    border-color: var(--pine);
+    background: var(--pine);
+    color: #FFFFFF;
+    font-weight: 600;
+}
+
+.pt-chip[aria-pressed="true"]::before { content: '✓ '; }
+
+.pt-note {
+    margin-top: 6px;
+    font-size: 12px;
+    color: var(--ink-3);
+}
+
+@media (max-width: 720px) {
+    .pt-group { grid-template-columns: minmax(0, 1fr); gap: 4px; }
+    .pt-group-name { padding-top: 0; }
+}

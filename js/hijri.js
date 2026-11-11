@@ -7,7 +7,12 @@
  * Jika terpenuhi di salah satu markaz → besoknya tanggal 1.
  * Jika tidak → istikmal (bulan berjalan digenapkan 30 hari).
  *
- * Depends on: astronomy-engine (global `Astronomy`), locations.js
+ * Sumber data:
+ *   1. Tabel efemeris JPL DE440s (js/hilal-de440.js, dibuat tools/hisab_de440.py)
+ *      — dipakai bila markaz & kriteria sama dengan saat tabel dibuat.
+ *   2. Di luar tabel: dihitung langsung dengan Astronomy Engine.
+ *
+ * Depends on: locations.js; opsional js/hilal-de440.js; astronomy-engine (global `Astronomy`) untuk di luar tabel
  */
 
 // ============================================================
@@ -114,8 +119,43 @@ const Hijri = (() => {
         return { altitude, elongation, sunset: sunset.date };
     }
 
+    // --- Tabel efemeris JPL (js/hilal-de440.js) ---
+    let tableOk = null;
+    function jplTable() {
+        if (tableOk === null) {
+            tableOk = false;
+            if (typeof HILAL_TABLE !== 'undefined') {
+                const t = HILAL_TABLE.meta;
+                const m = getMarkaz();
+                tableOk = m.length === 1 &&
+                    Math.abs(m[0].lat - t.markaz.lat) < 1e-4 && Math.abs(m[0].lng - t.markaz.lng) < 1e-4 &&
+                    t.utcOffset === HIJRI_CONFIG.utcOffset &&
+                    t.minAltitude === HIJRI_CONFIG.minAltitude && t.minElongation === HIJRI_CONFIG.minElongation;
+                if (!tableOk) console.info('hilal-de440.js diabaikan: markaz/kriteria berbeda dari HIJRI_CONFIG.');
+            }
+        }
+        return tableOk ? HILAL_TABLE : null;
+    }
+
+    function fromTable(year, month) {
+        const table = jplTable();
+        const r = table && table.months[`${year}-${month}`];
+        if (!r) return null;
+        const [y, mo, d] = r.d.split('-').map(Number);
+        return {
+            conjunction: new Date(r.c),
+            fulfilled: r.f === 1,
+            hilal: r.a === null ? null
+                : { altitude: r.a, elongation: r.e, sunset: new Date(r.s), ...getMarkaz()[0] },
+            startDay: dayNum(y, mo, d),
+            source: table.meta.ephemeris
+        };
+    }
+
     // Detail perhitungan IRNU untuk awal bulan (berguna untuk dicek di console)
     function evaluate(year, month) {
+        const tabled = fromTable(year, month);
+        if (tabled) return tabled;
         requireAstronomy();
         const idx = idxOf(year, month);
         const approx = new Date(ANCHOR_CONJ_MS + (idx - ANCHOR_IDX) * SYNODIC_MONTH * DAY_MS);
@@ -128,10 +168,10 @@ const Hijri = (() => {
             if (h && (!best || h.altitude > best.altitude)) best = { ...h, ...loc };
             if (h && h.altitude >= HIJRI_CONFIG.minAltitude && h.elongation >= HIJRI_CONFIG.minElongation) {
                 best = { ...h, ...loc };
-                return { conjunction: conj.date, fulfilled: true, hilal: best, startDay: conjLocalDay + 1 };
+                return { conjunction: conj.date, fulfilled: true, hilal: best, startDay: conjLocalDay + 1, source: 'Astronomy Engine' };
             }
         }
-        return { conjunction: conj.date, fulfilled: false, hilal: best, startDay: conjLocalDay + 2 };
+        return { conjunction: conj.date, fulfilled: false, hilal: best, startDay: conjLocalDay + 2, source: 'Astronomy Engine' };
     }
 
     // Nomor hari Masehi untuk tanggal 1 bulan Hijriah (indeks bulan)
@@ -166,6 +206,8 @@ const Hijri = (() => {
         dayNumToDate,
         evaluate,
         specialDay,
+        /** Keterangan tabel JPL yang aktif, atau null */
+        tableInfo: () => { const t = jplTable(); return t ? t.meta : null; },
         /** Pasaran Jawa (Legi, Pahing, Pon, Wage, Kliwon). Patokan: 17 Agustus 1945 = Jumat Legi */
         pasaran: (n) => ['Legi', 'Pahing', 'Pon', 'Wage', 'Kliwon'][(((n - dayNum(1945, 8, 17)) % 5) + 5) % 5],
         /** true jika awal bulan ini ditetapkan manual lewat HIJRI_CONFIG.overrides */

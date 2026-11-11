@@ -18,10 +18,7 @@ const prayerIcons = {
     Isha: `<svg class="prayer-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path></svg>`
 };
 
-const METHOD = 20;
-const IHTIYATH = 2;
-const TUNE = `${IHTIYATH},${IHTIYATH},0,${IHTIYATH},${IHTIYATH},${IHTIYATH},0,${IHTIYATH},0`;
-const ADJUSTMENT = 1;
+// Metode, ihtiyath & akses API waktu sholat: lihat js/prayer-api.js
 // Tanggal Hijriah dihitung dengan kriteria IRNU di js/hijri.js.
 // Koreksi manual: lihat HIJRI_CONFIG (globalOffset / overrides) di js/hijri.js.
 
@@ -126,20 +123,13 @@ function useCurrentLocation() {
 // --- Helper umum ---
 const pad2 = (n) => String(n).padStart(2, '0');
 const dayKey = (d) => `${d.getFullYear()}-${pad2(d.getMonth() + 1)}-${pad2(d.getDate())}`;
-const apiParams = (lat, lng) => `latitude=${lat}&longitude=${lng}&method=${METHOD}&tune=${TUNE}&adjustment=${ADJUSTMENT}`;
+const apiParams = PrayerApi.params;
+const fetchApi = PrayerApi.fetchApi;
 
 // "HH:MM" pada tanggal `now`
 function timeOnDay(now, hhmm) {
     const [h, m] = hhmm.substring(0, 5).split(':').map(Number);
     return new Date(now.getFullYear(), now.getMonth(), now.getDate(), h, m, 0);
-}
-
-async function fetchApi(url) {
-    const res = await fetch(url);
-    if (!res.ok) throw new Error(`HTTP ${res.status}`);
-    const json = await res.json();
-    if (json.code !== 200 || !json.data) throw new Error(`API: ${json.status || 'respons tidak valid'}`);
-    return json.data;
 }
 
 function hijriEventName(month, day) {
@@ -476,7 +466,8 @@ function renderHilalCard() {
         const start = Hijri.dayNumToDate(range.start);
         document.getElementById('hilalResult').innerHTML =
             `1 ${monthName} ${year} H: <strong>${arrays.namaHari[currentLang][start.getDay()]}, ${start.getDate()} ${arrays.namaBulan[currentLang][start.getMonth()]} ${start.getFullYear()}</strong>`;
-        document.getElementById('hilalNote').innerText = tr('hilal_note');
+        document.getElementById('hilalNote').innerHTML = `${tr('hilal_note')} ${tr('calpage_source')}: ${ev.source}.
+            <a class="cal-more" href="hisab.html?y=${year}&m=${month}&p=markaz">${tr('hisab_steps_link')}</a>`;
         section.hidden = false;
     } catch (err) {
         console.error('Gagal menghitung data hilal:', err);
@@ -484,16 +475,14 @@ function renderHilalCard() {
     }
 }
 
-// --- Kalender Masehi & Hijriah (IRNU) ---
+// --- Kalender ringkas (rincian lengkap di kalender.html) ---
 let calYear = null;
 let calMonth = null;     // 0–11
-let calSelected = null;  // nomor hari yang dipilih
 
 function calendarToday() {
     const now = new Date();
     calYear = now.getFullYear();
     calMonth = now.getMonth();
-    calSelected = Hijri.dayNumFromDate(now);
     renderCalendar();
 }
 
@@ -501,20 +490,10 @@ function shiftCalendar(delta) {
     const d = new Date(calYear, calMonth + delta, 1);
     calYear = d.getFullYear();
     calMonth = d.getMonth();
-    calSelected = null;
     renderCalendar();
 }
 
-function selectCalendarDay(n) {
-    calSelected = n;
-    renderCalendar();
-    const btn = document.querySelector(`.cal-day[data-day="${n}"]`);
-    if (btn) btn.focus();
-}
-
-function hijriSafe(n) {
-    try { return Hijri.fromDayNum(n); } catch (err) { return null; }
-}
+const calendarPageUrl = (n) => `kalender.html?d=${CalendarView.toIso(n)}`;
 
 function renderCalendar() {
     const grid = document.getElementById('calGrid');
@@ -523,87 +502,34 @@ function renderCalendar() {
         const now = new Date();
         calYear = now.getFullYear();
         calMonth = now.getMonth();
-        calSelected = Hijri.dayNumFromDate(now);
     }
-    const tr = (key) => translations[key][currentLang];
-    const hName = (m) => arrays.namaBulanHijri[currentLang][m - 1];
-
+    const tr = CalendarView.tr;
     document.getElementById('calPrev').setAttribute('aria-label', tr('cal_prev'));
     document.getElementById('calNext').setAttribute('aria-label', tr('cal_next'));
-    document.getElementById('calMonth').innerText = `${arrays.namaBulan[currentLang][calMonth]} ${calYear}`;
 
-    const first = Hijri.dayNum(calYear, calMonth + 1, 1);
-    const daysInMonth = new Date(calYear, calMonth + 1, 0).getDate();
-    const last = first + daysInMonth - 1;
-    const startDow = new Date(calYear, calMonth, 1).getDay();
-    const todayN = Hijri.dayNumFromDate(new Date());
-
-    // Rentang bulan Hijriah yang tercakup & status penetapan
-    const hFirst = hijriSafe(first);
-    const hLast = hijriSafe(last);
-    const rangeEl = document.getElementById('calHijriRange');
-    const statusEl = document.getElementById('calStatus');
-    if (hFirst && hLast) {
-        const sameYear = hFirst.year === hLast.year;
-        rangeEl.innerText = hFirst.month === hLast.month && sameYear
-            ? `${hName(hFirst.month)} ${hFirst.year} H`
-            : `${hName(hFirst.month)}${sameYear ? '' : ` ${hFirst.year}`} – ${hName(hLast.month)} ${hLast.year} H`;
-        const fixed = Hijri.isFixed(hFirst.year, hFirst.month) && Hijri.isFixed(hLast.year, hLast.month);
-        statusEl.textContent = tr(fixed ? 'hijri_status_fixed' : 'hijri_status_hisab');
-        statusEl.className = `hijri-status${fixed ? ' fixed' : ''}`;
-    } else {
-        rangeEl.innerText = '';
-        statusEl.textContent = '';
-    }
-
-    let html = arrays.namaHariPendek[currentLang]
-        .map((d, i) => `<div class="cal-dow${i === 0 ? ' is-sun' : ''}${i === 5 ? ' is-fri' : ''}">${d}</div>`)
-        .join('');
-    for (let i = 0; i < startDow; i++) html += '<div class="cal-blank" aria-hidden="true"></div>';
-
-    for (let d = 1; d <= daysInMonth; d++) {
-        const n = first + d - 1;
-        const dow = (startDow + d - 1) % 7;
-        const h = hijriSafe(n);
-        const ev = h ? Hijri.specialDay(h.month, h.day) : null;
-        const classes = ['cal-day'];
-        if (dow === 0) classes.push('is-sun');
-        if (dow === 5) classes.push('is-fri');
-        if (n === todayN) classes.push('is-today');
-        if (n === calSelected) classes.push('is-selected');
-        if (ev) classes.push(`ev-${ev.kind}`);
-
-        // Label bawah: nama hari penting, atau nama bulan Hijriah pada tanggal 1 / awal bulan Masehi
-        const bottom = ev ? `<span class="cal-ev">${tr(ev.key)}</span>`
-            : (h && (h.day === 1 || d === 1) ? `<span class="cal-hm">${hName(h.month)}</span>` : '');
-        const label = `${arrays.namaHari[currentLang][dow]} ${Hijri.pasaran(n)}, ${d} ${arrays.namaBulan[currentLang][calMonth]} ${calYear}` +
-            (h ? `, ${h.day} ${hName(h.month)} ${h.year} H` : '') + (ev ? `, ${tr(ev.key)}` : '');
-
-        html += `<button type="button" class="${classes.join(' ')}" data-day="${n}" onclick="selectCalendarDay(${n})"
-            aria-label="${label.replace(/"/g, '&quot;')}"${n === calSelected ? ' aria-pressed="true"' : ''}>
-            <span class="cal-top"><span class="cal-g">${d}</span><span class="cal-h">${h ? h.day : ''}</span></span>
-            <span class="cal-p">${Hijri.pasaran(n)}</span>
-            ${bottom}
-        </button>`;
-    }
+    // Setiap tanggal adalah tautan ke halaman kalender lengkap
+    const { html, meta } = CalendarView.gridHtml(calYear, calMonth, { href: calendarPageUrl });
     grid.innerHTML = html;
 
-    // Rincian hari terpilih
+    document.getElementById('calMonth').innerText = meta.title;
+    document.getElementById('calHijriRange').innerText = meta.rangeText;
+    const statusEl = document.getElementById('calStatus');
+    statusEl.textContent = meta.hasHijri ? tr(meta.fixed ? 'hijri_status_fixed' : 'hijri_status_hisab') : '';
+    statusEl.className = `hijri-status${meta.fixed ? ' fixed' : ''}`;
+
+    // Baris bawah: hari ini (jika di bulan ini) + tautan ke kalender lengkap
     const detail = document.getElementById('calDetail');
-    if (calSelected !== null && calSelected >= first && calSelected <= last) {
-        const g = Hijri.dayNumToDate(calSelected);
-        const h = hijriSafe(calSelected);
-        const ev = h ? Hijri.specialDay(h.month, h.day) : null;
-        const provisional = h && !Hijri.isFixed(h.year, h.month) ? ` <small>(${tr('cal_provisional')})</small>` : '';
-        detail.innerHTML =
-            `<strong>${arrays.namaHari[currentLang][g.getDay()]} ${Hijri.pasaran(calSelected)}, ${g.getDate()} ${arrays.namaBulan[currentLang][g.getMonth()]} ${g.getFullYear()}</strong>` +
-            (h ? `<span class="cal-detail-hijri">${h.day} ${hName(h.month)} ${h.year} H${provisional}</span>` : '') +
-            (ev ? `<span class="cal-detail-ev ev-${ev.kind}">${tr(ev.key)}</span>` : '');
-        detail.hidden = false;
-    } else {
-        detail.innerHTML = '';
-        detail.hidden = true;
+    const todayN = CalendarView.todayNum();
+    let info = '';
+    if (todayN >= meta.first && todayN <= meta.last) {
+        const i = CalendarView.dayInfo(todayN);
+        info = `<strong>${CalendarView.gregorianLabel(todayN)}</strong>` +
+            (i.h ? `<span class="cal-detail-hijri">${CalendarView.hijriLabel(i.h)}${i.fixed ? '' : ` <small>(${tr('cal_provisional')})</small>`}</span>` : '') +
+            (i.ev ? `<span class="cal-detail-ev ev-${i.ev.kind}">${tr(i.ev.key)}</span>` : '');
     }
+    const target = todayN >= meta.first && todayN <= meta.last ? todayN : meta.first;
+    detail.innerHTML = info + `<a class="cal-more" href="${calendarPageUrl(target)}">${tr('cal_open_full')}</a>`;
+    detail.hidden = false;
 }
 
 // --- Jalankan saat halaman dimuat ---

@@ -103,6 +103,82 @@ const translations = {
     "cal_prev": { id: "Bulan sebelumnya", en: "Previous month" },
     "cal_next": { id: "Bulan berikutnya", en: "Next month" },
     "cal_provisional": { id: "perkiraan", en: "provisional" },
+    "cal_open_full": { id: "Buka kalender lengkap", en: "Open full calendar" },
+
+    // --- Halaman kalender ---
+    "calpage_doc_title": { id: "Kalender Hijriah & Masehi - PCINU Taiwan", en: "Hijri & Gregorian Calendar - PCINU Taiwan" },
+    "calpage_title": { id: "Kalender Hijriah & Masehi", en: "Hijri & Gregorian Calendar" },
+    "calpage_desc": { id: "Kriteria IRNU, markaz PCINU Taiwan (Taipei)", en: "IRNU criterion, PCINU Taiwan (Taipei) location" },
+    "calpage_back": { id: "Jadwal sholat", en: "Prayer schedule" },
+    "calpage_prayer_times": { id: "Waktu sholat", en: "Prayer times" },
+    "calpage_events_month": { id: "Hari penting bulan ini", en: "Important days this month" },
+    "calpage_no_events": { id: "Tidak ada hari penting di bulan ini.", en: "No important days this month." },
+    "calpage_month_starts": { id: "Awal Bulan", en: "Month Starts" },
+    "calpage_holidays": { id: "Hari Besar Islam", en: "Islamic Holidays" },
+    "calpage_prev_year": { id: "Tahun Hijriah sebelumnya", en: "Previous Hijri year" },
+    "calpage_next_year": { id: "Tahun Hijriah berikutnya", en: "Next Hijri year" },
+    "calpage_th_month": { id: "Bulan", en: "Month" },
+    "calpage_th_first": { id: "Tanggal 1", en: "1st day" },
+    "calpage_th_conj": { id: "Ijtimak", en: "Conjunction" },
+    "calpage_th_alt": { id: "Tinggi", en: "Altitude" },
+    "calpage_th_elong": { id: "Elongasi", en: "Elongation" },
+    "calpage_th_status": { id: "Status", en: "Status" },
+    "calpage_status_fixed": { id: "Ditetapkan", en: "Confirmed" },
+    "calpage_status_hisab": { id: "Hisab", en: "Calculated" },
+    "calpage_year_note": { id: "Tinggi & elongasi dihitung saat matahari terbenam pada hari ijtimak di markaz PCINU Taiwan (Taipei). \u2713 memenuhi kriteria IRNU, \u2717 belum memenuhi (istikmal).", en: "Altitude & elongation at sunset on the day of conjunction at the PCINU Taiwan (Taipei) location. \u2713 meets the IRNU criterion, \u2717 does not (month completed to 30 days)." },
+    "calpage_eclipses": { id: "Gerhana", en: "Eclipses" },
+    "calpage_no_eclipses": { id: "Tidak ada gerhana di tahun ini.", en: "No eclipses this year." },
+    "calpage_source": { id: "Sumber data", en: "Data source" },
+    "calpage_learn": { id: "Belajar hisab", en: "Learn the calculation" },
+
+    // --- Halaman belajar hisab ---
+    "hisab_doc_title": { id: "Belajar Hisab Hilal & Gerhana - PCINU Taiwan", en: "Learn Crescent & Eclipse Calculation - PCINU Taiwan" },
+    "hisab_title": { id: "Belajar Hisab", en: "Learn the Calculation" },
+    "hisab_desc": { id: "Cara menghitung awal bulan Hijriah, langkah demi langkah dengan gambar", en: "How the start of a Hijri month is calculated, step by step with pictures" },
+    "calc_doc_title": { id: "Kalkulator Hilal & Gerhana - PCINU Taiwan", en: "Crescent & Eclipse Calculator - PCINU Taiwan" },
+    "calc_title": { id: "Kalkulator Hilal & Gerhana", en: "Crescent & Eclipse Calculator" },
+    "calc_desc": { id: "Kriteria IRNU untuk lokasi dan tanggal mana pun", en: "IRNU criterion for any location and date" },
+    "nav_label": { id: "Menu utama", en: "Main menu" },
+    "nav_schedule": { id: "Jadwal Sholat", en: "Prayer Times" },
+    "nav_calendar": { id: "Kalender", en: "Calendar" },
+    "nav_calculator": { id: "Kalkulator", en: "Calculator" },
+    "nav_learn": { id: "Belajar Hisab", en: "Learn Hisab" },
+    "hisab_steps_link": { id: "Lihat langkah perhitungannya", en: "See the calculation steps" },
+
+    // --- Gerhana ---
+    "ecl_lunar_penumbral": { id: "Gerhana Bulan Penumbra", en: "Penumbral Lunar Eclipse" },
+    "ecl_lunar_partial": { id: "Gerhana Bulan Sebagian", en: "Partial Lunar Eclipse" },
+    "ecl_lunar_total": { id: "Gerhana Bulan Total", en: "Total Lunar Eclipse" },
+    "ecl_solar_partial": { id: "Gerhana Matahari Sebagian", en: "Partial Solar Eclipse" },
+    "ecl_solar_annular": { id: "Gerhana Matahari Cincin", en: "Annular Solar Eclipse" },
+    "ecl_solar_total": { id: "Gerhana Matahari Total", en: "Total Solar Eclipse" },
+    "ecl_short_lunar": { id: "Gerhana Bulan", en: "Lunar eclipse" },
+    "ecl_short_solar": { id: "Gerhana Matahari", en: "Solar eclipse" },
+    "ecl_visible": { id: "Terlihat dari {place}", en: "Visible from {place}" },
+    "ecl_not_visible": { id: "Tidak terlihat dari {place}", en: "Not visible from {place}" },
+    "ecl_seen_as": { id: "terlihat sebagai {kind}", en: "seen as {kind}" },
+    "ecl_obscured": { id: "{p}% piringan Matahari tertutup", en: "{p}% of the Sun covered" },
+    "ecl_below": { id: "di bawah ufuk", en: "below horizon" },
+    "ecl_prayer_lunar": { id: "Disunnahkan sholat khusuf (gerhana Bulan).", en: "Salat al-khusuf (lunar eclipse prayer) is recommended." },
+    "ecl_prayer_solar": { id: "Disunnahkan sholat kusuf (gerhana Matahari).", en: "Salat al-kusuf (solar eclipse prayer) is recommended." },
+    "ecl_penumbral_note": { id: "Gerhana penumbra hampir tidak tampak, sehingga umumnya tidak disertai sholat gerhana.", en: "A penumbral eclipse is barely noticeable, so it is generally not accompanied by the eclipse prayer." },
+    "ecl_P1": { id: "Awal penumbra", en: "Penumbra begins" },
+    "ecl_U1": { id: "Awal gerhana sebagian", en: "Partial begins" },
+    "ecl_U2": { id: "Awal gerhana total", en: "Totality begins" },
+    "ecl_U3": { id: "Akhir gerhana total", en: "Totality ends" },
+    "ecl_U4": { id: "Akhir gerhana sebagian", en: "Partial ends" },
+    "ecl_P4": { id: "Akhir penumbra", en: "Penumbra ends" },
+    "ecl_C1": { id: "Awal gerhana", en: "Eclipse begins" },
+    "ecl_C2": { id: "Awal fase total/cincin", en: "Central phase begins" },
+    "ecl_C3": { id: "Akhir fase total/cincin", en: "Central phase ends" },
+    "ecl_C4": { id: "Akhir gerhana", en: "Eclipse ends" },
+    "ecl_peak": { id: "Puncak", en: "Maximum" },
+
+    "rel_today": { id: "Hari ini", en: "Today" },
+    "rel_tomorrow": { id: "Besok", en: "Tomorrow" },
+    "rel_yesterday": { id: "Kemarin", en: "Yesterday" },
+    "rel_in": { id: "{n} hari lagi", en: "In {n} days" },
+    "rel_ago": { id: "{n} hari yang lalu", en: "{n} days ago" },
 
     // --- Hari-hari penting ---
     "ev_new_year": { id: "Tahun Baru Hijriah", en: "Islamic New Year" },
@@ -157,6 +233,12 @@ function setLang(lang) {
     // Update HTML attribute
     document.documentElement.lang = lang;
 
+    // Update data-i18n-title (tooltip)
+    document.querySelectorAll('[data-i18n-title]').forEach(el => {
+        const key = el.getAttribute('data-i18n-title');
+        if (translations[key] && translations[key][lang]) el.title = translations[key][lang];
+    });
+
     // Update data-i18n tags
     document.querySelectorAll('[data-i18n]').forEach(el => {
         const key = el.getAttribute('data-i18n');
@@ -187,6 +269,7 @@ function setLang(lang) {
     // Re-render JS dynamic parts
     if (typeof updateLiveClock === 'function') updateLiveClock();
     if (typeof loadData === 'function') loadData(); // Reload table and specific texts
+    if (typeof onLangChange === 'function') onLangChange(); // Halaman lain (mis. kalender.html)
 }
 
 // Initialized on load
